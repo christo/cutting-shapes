@@ -1,0 +1,11 @@
+{
+  "extends": ["config:base"],
+  "packageRules": [
+    {
+      "packageNames": ["*"]
+    }
+  ],
+  "schedule": ["after 10am and before 5pm every weekday"],
+  "prConcurrentLimit": 3,
+  "ignoreDeps": []
+}
