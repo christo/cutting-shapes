@@ -20,6 +20,7 @@ visual effects and interactive elements.
 
 ## References
 
+* https://mediapipe-studio.webapps.google.com/demo/pose_landmarker
 * https://devpost.com/software/boxing-simulator
 * https://playground.babylonjs.com/#ZZUZEG
 * [ ] check phantom dev:
