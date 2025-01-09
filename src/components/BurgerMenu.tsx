@@ -14,6 +14,18 @@ const BurgerMenu = () => {
       <Link className="menu-item" to="/contact">
         Contact
       </Link>
+      <div>
+        show fps
+      </div>
+      <div>
+        show camera feed
+      </div>
+      <div>
+        record / playback / live
+      </div>
+      <div>
+        debug
+      </div>
     </Menu>
   );
 };
