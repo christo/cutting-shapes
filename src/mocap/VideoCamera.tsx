@@ -3,7 +3,7 @@ import {Stack} from "@mui/material";
 import {PoseSystem} from "./PoseSystem.ts";
 import {Detection} from "@mediapipe/tasks-vision";
 
-type VisionConsumer = {
+interface VisionConsumer {
   video: (video: HTMLVideoElement, startTimeMs: number, deltaMs: number) => Promise<void>,
   image: (image: HTMLImageElement) => Promise<void>,
 }
@@ -49,7 +49,7 @@ function VideoCamera({consumers}: { consumers: VisionConsumer[] }) {
   // we seemingly need to attach camera video stream to an on-page html element probably so it binds to gpu context
   // enabling gpu ai model direct access to the video frame, it can be hidden:
   // {display: none} breaks it but {visibility: hidden} does not
-  return <Stack sx={{position: "absolute", top: 0, right: 0, visibility: "hidden"}}>
+  return <Stack sx={{visibility: "visible", width: 400}}>
     <video ref={camRef} autoPlay playsInline></video>
   </Stack>;
 }
