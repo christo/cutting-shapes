@@ -1,6 +1,7 @@
 import { slide as Menu } from 'react-burger-menu';
 import './BurgerMenu.css';
 import { Link } from 'react-router-dom';
+import {Box} from "@mui/material";
 
 const BurgerMenu = () => {
   return (
@@ -15,8 +16,11 @@ const BurgerMenu = () => {
         Contact
       </Link>
       <div>
-        show fps
+        show fps / ups
       </div>
+      <Box>
+        background: black / green / video
+      </Box>
       <div>
         show camera feed
       </div>
