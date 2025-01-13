@@ -5,52 +5,6 @@ Interactive art installation with motion capture. People moving in the camera
 field control humanoid figures on the projector screen which composites these with
 visual effects and interactive elements.
 
-## Scene Ideas
-
-* Moon
-* Space station
-* Hyperspace
-* Jackson 5 feedback void
-* virtual space
-* jungle (maybe alien planet)
-* under the ocean
-* shrunken people on a desk
-* Lego Land
-* beach
-
-## References
-
-* https://mediapipe-studio.webapps.google.com/demo/pose_landmarker
-* https://devpost.com/software/boxing-simulator
-* https://playground.babylonjs.com/#ZZUZEG
-* [ ] check phantom dev:
-  * https://github.com/phantom-software-AZ
-  * [ ] https://github.com/phantom-software-AZ/v3d-web?tab=readme-ov-file
-  * [ ] https://www.phantom-dev.com/demo
-* 3d character sources:
-  * https://www.cgtrader.com/rigged-3d-models
-  * https://www.mixamo.com/#/?limit=96&page=1&type=Character
-  * https://sketchfab.com/3d-models/teddy-bears-e84b12b4ac20402aaf4d40f2219cd0e2
-  * https://sketchfab.com/3d-models/shy-leopard-hunter-hand-painted-5208a216aded482a893874f9f68d8037
-  * https://sketchfab.com/3d-models/asset-cartoons-animal-pig-rig-3d-model-f2dd8a5f25824d81a52d59eef5966b60
-  * https://sketchfab.com/3d-models/tripo-astronaut-2-stylized-and-animated-fe594ac4364942e8abad34744e507038
-  * https://sketchfab.com/3d-models/gangster-mafia-pbr-game-ready-7cec2b8537e14591946189de222ace92
-  * https://sketchfab.com/3d-models/hyper-casual-stickman-pack-fb97fbbf72b94713b14212f6550c5eae
-  * https://sketchfab.com/3d-models/low-poly-falling-astronaut-3december-df27a4d72cc74c5080bb95289f5778ca
-  * https://sketchfab.com/3d-models/astro13-shoot-b78b1f5c5815452d91e0fdfdabdcebc5
-  * https://sketchfab.com/3d-models/puffin-64f8d2ee800b48cf97a1489546f8a48e
-  * https://sketchfab.com/3d-models/blender-chan-7d732af0a882476daaebeb6869cec1c0
-  * https://amarilloarts.itch.io/blender-chan
-  * https://www.cgtrader.com/3d-models/character/anatomy/cartoon-characters-3-02
-  * https://www.cgtrader.com/3d-models/exterior/sci-fi-exterior/polygon-sci-fi-pack
-  * https://www.cgtrader.com/3d-models/character/anatomy/characters-6-01
-  * https://www.cgtrader.com/3d-models/character/anatomy/characters-6-09
-  * https://www.cgtrader.com/3d-models/character/other/cartoon-characters-3-06-professions
-  * https://www.cgtrader.com/3d-models/character/sci-fi-character/mx01-sci-fi-suit-male-7b343d2a-7bc5-41c9-877a-10d73739722b
-  * https://www.cgtrader.com/3d-models/character/anatomy/cartoon-characters-3-03
-  * https://www.cgtrader.com/3d-models/character/other/cartoon-characters-5-01
-
-
 ## TODO
 
 * vertical slice
@@ -85,7 +39,7 @@ visual effects and interactive elements.
   * power loss test
   * resolution test - performance impact
 * installation plan:
-  * power board, access, 
+  * power board, access,
   * which projector?
     * hire
     * buy
@@ -149,6 +103,54 @@ visual effects and interactive elements.
   * stats
   * performance
 * create redundancy checklist
+
+## Scene Ideas
+
+* Moon
+* Space station
+* Hyperspace
+* Jackson 5 feedback void
+* virtual space
+* jungle (maybe alien planet)
+* under the ocean
+* shrunken people on a desk
+* Lego Land
+* beach
+
+## References
+
+* https://mediapipe-studio.webapps.google.com/demo/pose_landmarker
+* https://devpost.com/software/boxing-simulator
+* https://playground.babylonjs.com/#ZZUZEG
+* [ ] check phantom dev:
+  * https://github.com/phantom-software-AZ
+  * [ ] https://github.com/phantom-software-AZ/v3d-web?tab=readme-ov-file
+  * [ ] https://www.phantom-dev.com/demo
+* 3d character sources:
+  * https://www.cgtrader.com/rigged-3d-models
+  * https://www.mixamo.com/#/?limit=96&page=1&type=Character
+  * https://sketchfab.com/3d-models/teddy-bears-e84b12b4ac20402aaf4d40f2219cd0e2
+  * https://sketchfab.com/3d-models/shy-leopard-hunter-hand-painted-5208a216aded482a893874f9f68d8037
+  * https://sketchfab.com/3d-models/asset-cartoons-animal-pig-rig-3d-model-f2dd8a5f25824d81a52d59eef5966b60
+  * https://sketchfab.com/3d-models/tripo-astronaut-2-stylized-and-animated-fe594ac4364942e8abad34744e507038
+  * https://sketchfab.com/3d-models/gangster-mafia-pbr-game-ready-7cec2b8537e14591946189de222ace92
+  * https://sketchfab.com/3d-models/hyper-casual-stickman-pack-fb97fbbf72b94713b14212f6550c5eae
+  * https://sketchfab.com/3d-models/low-poly-falling-astronaut-3december-df27a4d72cc74c5080bb95289f5778ca
+  * https://sketchfab.com/3d-models/astro13-shoot-b78b1f5c5815452d91e0fdfdabdcebc5
+  * https://sketchfab.com/3d-models/puffin-64f8d2ee800b48cf97a1489546f8a48e
+  * https://sketchfab.com/3d-models/blender-chan-7d732af0a882476daaebeb6869cec1c0
+  * https://amarilloarts.itch.io/blender-chan
+  * https://www.cgtrader.com/3d-models/character/anatomy/cartoon-characters-3-02
+  * https://www.cgtrader.com/3d-models/exterior/sci-fi-exterior/polygon-sci-fi-pack
+  * https://www.cgtrader.com/3d-models/character/anatomy/characters-6-01
+  * https://www.cgtrader.com/3d-models/character/anatomy/characters-6-09
+  * https://www.cgtrader.com/3d-models/character/other/cartoon-characters-3-06-professions
+  * https://www.cgtrader.com/3d-models/character/sci-fi-character/mx01-sci-fi-suit-male-7b343d2a-7bc5-41c9-877a-10d73739722b
+  * https://www.cgtrader.com/3d-models/character/anatomy/cartoon-characters-3-03
+  * https://www.cgtrader.com/3d-models/character/other/cartoon-characters-5-01
+
+
+
   
 
 
