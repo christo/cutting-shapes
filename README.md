@@ -11,8 +11,10 @@ visual effects and interactive elements.
   * [ ] essential page elements
   * [ ] realtime mocap render default pose markers
   * animate custom stick figure puppet
+    * how does webgl load interact with gpu for vision? 
   * multiple figures (1 or 2)
   * obs integration MVP to evaluate easy scene composition
+    * how does obs load interact with GPU for vision?
 * [ ] test scene with more than two people:
   * [ ] how stable is the choice of which one or two people are tracked?
   * [ ] how to indicate that the person being tracked has changed
