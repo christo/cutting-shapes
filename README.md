@@ -7,8 +7,9 @@ visual effects and interactive elements.
 
 ## TODO
 
-* vertical slice
-  * realtime mocap
+* [ ] vertical slice
+  * [ ] essential page elements
+  * [ ] realtime mocap render default pose markers
   * animate custom stick figure puppet
   * multiple figures (1 or 2)
   * obs integration MVP to evaluate easy scene composition
