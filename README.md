@@ -10,8 +10,13 @@ visual effects and interactive elements.
 * vertical slice
   * realtime mocap
   * animate custom stick figure puppet
-  * multiple figures
+  * multiple figures (1 or 2)
   * obs integration MVP to evaluate easy scene composition
+* [ ] test scene with more than two people:
+  * [ ] how stable is the choice of which one or two people are tracked?
+  * [ ] how to indicate that the person being tracked has changed
+  * [ ] how to smooth transition between vastly different poses?
+    * e.g. puff of smoke, disappear/reappear, zoom in etc.
 * deployment test on candidate installation machines
   * external camera
   * raspi 4 test
@@ -33,11 +38,31 @@ visual effects and interactive elements.
   * logitech
   * go pro
   * ?
-* x-flip
+* x-flip (mirror mode)
 * specific testing
   * dark test - sufficient lighting
+    * ground rope lights in front of subjects
+    * side key lights
+    * prevent light spill direct into camera
   * power loss test
   * resolution test - performance impact
+* gear checklist
+  * black semi-transparent screen (from photosynthesiser)
+  * white projection screen sheet
+  * projector (jasper? hire?)
+  * hdmi cables
+  * screen poles
+  * tie-down ropes/straps
+  * heavy anchor pegs
+  * on-site repair hardware and tools
+  * hdmi capture (2-computer setup) or network stream
+  * wifi base station (for mobile web controller)
+  * rope lights
+  * tape, clamps, pole stands, light guards, tarps, tent poles
+  * road cases, bags
+  * labels, pens, velcro straps, adapters
+  * small tent for storage
+  * padlocks for peli cases
 * installation plan:
   * power board, access,
   * which projector?
@@ -60,6 +85,9 @@ visual effects and interactive elements.
     * gazebo?
     * rain proofing
     * wind proofing
+  * back of subject semi-transparent black screen to obscure crowd from camera field
+  * subject lighting
+  * dance area should be robust against mud!
 * configuration
   * point of view translation
   * continuity loss smoothing
