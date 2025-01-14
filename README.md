@@ -17,10 +17,10 @@ visual effects and interactive elements.
   * [ ] camera dimensions / aspect ratio
   * [ ] render canvas dimensions and aspect ratio
   * [ ] composited scene dimensions (can be larger)
-  * [ ] 
+  * [ ] how to do camera adjustment to ensure camera field is in desired hot box
 * obs integration MVP to evaluate easy scene composition
   * how does obs load interact with GPU for vision?
-* [ ] test scene with more than two people:
+* [ ] test scene with more than two people (or more than max if max is greater than two):
   * [ ] how stable is the choice of which one or two people are tracked?
   * [ ] how to indicate that the person being tracked has changed
   * [ ] how to smooth transition between vastly different poses?
