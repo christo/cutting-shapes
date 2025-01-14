@@ -12,6 +12,7 @@ visual effects and interactive elements.
   * [x] realtime mocap render default pose markers
   * [x] plain black fullscreen render
   * [x] animate custom stick figure puppet
+* [ ] x-flip (mirror mode)
 * multiple figures (1 or 2)
 * figure out:
   * [ ] camera dimensions / aspect ratio
@@ -46,7 +47,6 @@ visual effects and interactive elements.
   * logitech
   * go pro
   * ?
-* x-flip (mirror mode)
 * specific testing
   * dark test - sufficient lighting
     * ground rope lights in front of subjects
