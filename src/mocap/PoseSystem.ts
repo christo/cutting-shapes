@@ -58,14 +58,14 @@ class PoseSystem {
     }
     if (this.canvas) {
       // clear
-      const ctx = this.canvas.getContext('2d');
+      const ctx = this.canvas.getContext('2d')!;
       // Draw something initially
       ctx!.fillStyle = "00000001";
       ctx!.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
       const plm = await this.getPose(2, "VIDEO");
       plm.detectForVideo(source, timestamp, (result: PoseLandmarkerResult) => {
-        const drawingUtils = new DrawingUtils((this.canvas!.getContext("2d"))!);
+        const drawingUtils = new DrawingUtils(ctx);
         for (const landmark of result.landmarks) {
           drawingUtils.drawLandmarks(landmark, {
             // make the closer node dots bigger
