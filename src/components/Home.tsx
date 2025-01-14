@@ -44,7 +44,7 @@ const Home = () => {
     <Box className="App-body">
       <Typography variant="h2">Cutting Shapes</Typography>
       <Box sx={{border: "orange dotted thick", p: 2, bgcolor: 'green', w: "100%", h: "100%"}}>
-        <canvas ref={staticCanvas} id="main_view" width="100%" height="100%" style={{position: "relative", left: 0, top: 0, width: "100%", height: "100%",transform: 'scaleX(-1)'}}></canvas>
+        <canvas ref={staticCanvas} id="main_view" width="100%" height="100%" style={{position: "relative", left: 0, top: 0, width: "100%", height: "100%"}}></canvas>
         <VideoCamera consumers={tempVc}/>
       </Box>
     </Box>
