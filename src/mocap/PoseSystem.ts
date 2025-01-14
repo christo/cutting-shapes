@@ -1,15 +1,11 @@
 import {
   DrawingUtils,
-  FaceLandmarker,
   FilesetResolver,
-  ObjectDetector,
   PoseLandmarker,
   PoseLandmarkerResult
 } from "@mediapipe/tasks-vision";
 
 type RunningMode = "IMAGE" | "VIDEO";
-
-const OBJ_PERSON = "person";
 
 /**
  * Component responsible for low-latency client-side image analysis to find people in the camera-field
@@ -21,165 +17,76 @@ class PoseSystem {
    */
   private vision: any;
   private canvas: HTMLCanvasElement | null = null;
-  private faceDrawingUtils: DrawingUtils | null = null;
-  private objectDetector: ObjectDetector | null = null;
-
-  async getPoseFromImage(numPoses: 1 | 2): Promise<PoseLandmarker> {
-    return this.getPose(numPoses, "IMAGE");
-  }
+  private poseLandmarker: PoseLandmarker | null = null;
 
   /**
    * Gets body poses from 1 or two people
    * @param numPoses the maximum number of people to detect
-   * @param runningMode image or video
-   */
-  async getPose(numPoses: 1 | 2 = 1, runningMode: RunningMode = "IMAGE"): Promise<PoseLandmarker> {
-    return await PoseLandmarker.createFromOptions(await this.getVision(), {
-      baseOptions: {
-        modelAssetPath: `/models/pose_landmarker_heavy.task`,
-        delegate: "GPU"
-      },
-      runningMode: runningMode,
-      numPoses: numPoses
-    });
-  }
-
-  /**
-   * Detects objects in the "person" category in the frame of the given vision input.
    * @param runningMode
    */
-  async personDetect(runningMode: RunningMode): Promise<ObjectDetector> {
-    // models downloaded from https://ai.google.dev/edge/mediapipe/solutions/vision/object_detector
-    // various quantizations, input shape dimensions, memory impact and performance
-    if (!this.objectDetector) {
-      // expensive - only construct once
-      this.objectDetector = await ObjectDetector.createFromOptions(await this.getVision(), {
+  async getPose(numPoses: 1 | 2 = 1, runningMode: RunningMode = "VIDEO"): Promise<PoseLandmarker> {
+    if (!this.poseLandmarker) {
+      console.log("creating pose landmarker")
+      this.poseLandmarker = await PoseLandmarker.createFromOptions(await this.getVision(), {
         baseOptions: {
-          // lite2_float32 published latency for Pixel 6 GPU: 41.15ms CPU: 197.98ms
-          modelAssetPath: `/models/efficientdet_lite2_float32.tflite`,
-          delegate: "GPU",
+          modelAssetPath: `/models/pose_landmarker_heavy.task`,
+          delegate: "GPU"
         },
-        // values here are trained label categories as listed in `/public/models/object_detector_labelmap.txt`
-        categoryAllowlist: [OBJ_PERSON],
-        scoreThreshold: 0.5, // 0.5 seems good on first approximation
-        maxResults: 5,       // max number of people to detect
-        runningMode: runningMode
+        runningMode: runningMode,
+        numPoses: numPoses
       });
-      await this.objectDetector.setOptions({runningMode: runningMode});
     }
-    return this.objectDetector;
-  }
-
-  async getFaceFromImage(numFaces: 1 | 2 = 1) {
-    return this.getFace(numFaces, "IMAGE");
-  }
-
-  /** Gets a face landmarker */
-  async getFace(numFaces: 1 | 2 = 1, runningMode: RunningMode = "IMAGE") {
-    return await FaceLandmarker.createFromOptions(await this.getVision(), {
-      baseOptions: {
-        modelAssetPath: `/models/face_landmarker.task`,
-        delegate: "GPU"
-      },
-      runningMode: runningMode,
-      outputFaceBlendshapes: true,
-      outputFacialTransformationMatrixes: true,
-      numFaces: numFaces,
-    });
-  }
-
-  async attachFaceToImage(image: HTMLImageElement, zIndex: number): Promise<HTMLCanvasElement> {
-    const faceLandmarkerResult = (await this.getFaceFromImage(1)).detect(image);
-    this.resetCanvas();
-    const canvas = this.overlayCanvas(image, zIndex);
-
-    image.parentNode!.appendChild(canvas);
-    // TODO use setOption to use GPU context - see jsdoc for DrawingUtils
-    const drawingUtils = new DrawingUtils((canvas.getContext("2d"))!);
-    for (const landmarks of faceLandmarkerResult.faceLandmarks) {
-      drawingUtils.drawConnectors(
-          landmarks,
-          FaceLandmarker.FACE_LANDMARKS_TESSELATION,
-          {color: "rgba(114,192,58,0.91)", lineWidth: 0.5},
-      );
-      drawingUtils.drawConnectors(
-          landmarks,
-          FaceLandmarker.FACE_LANDMARKS_RIGHT_EYE,
-          {color: "#5fa15f"}
-      );
-      drawingUtils.drawConnectors(
-          landmarks,
-          FaceLandmarker.FACE_LANDMARKS_RIGHT_EYEBROW,
-          {color: "#20a820"}
-      );
-      drawingUtils.drawConnectors(
-          landmarks,
-          FaceLandmarker.FACE_LANDMARKS_LEFT_EYE,
-          {color: "#5fa15f"}
-      );
-      drawingUtils.drawConnectors(
-          landmarks,
-          FaceLandmarker.FACE_LANDMARKS_LEFT_EYEBROW,
-          {color: "#20a820"}
-      );
-      drawingUtils.drawConnectors(
-          landmarks,
-          FaceLandmarker.FACE_LANDMARKS_FACE_OVAL,
-          {color: "#95b01a", lineWidth: 2}
-      );
-      drawingUtils.drawConnectors(landmarks, FaceLandmarker.FACE_LANDMARKS_LIPS, {
-        lineWidth: 4,
-        color: "#e16507"
-      });
-      drawingUtils.drawConnectors(
-          landmarks,
-          FaceLandmarker.FACE_LANDMARKS_RIGHT_IRIS,
-          {color: "#5fa15f"}
-      );
-      drawingUtils.drawConnectors(
-          landmarks,
-          FaceLandmarker.FACE_LANDMARKS_LEFT_IRIS,
-          {color: "#5fa15f"}
-      );
+    if (this.poseLandmarker) {
+      return this.poseLandmarker;
+    } else {
+      console.warn("no poseLandmarker");
+      return Promise.reject("No Pose Landmarker");
     }
-    this.faceDrawingUtils = drawingUtils;
-    return canvas;
   }
 
   /**
-   * Attaches the standard body pose markers to the given image at the given zIndex, calling the given callback
-   * with the resulting appended canvas so the caller can remove it whenever.
-   * @param image the image to attach to
-   * @param zIndex zIndex of the canvas
-   * @param callback passed the canvas when complete
+   * Draw landmarks as a registered overlay canvas over the given canvas at the given zIndex.
+   * If the zIndex is lower than that of the canvas it will not be above!
+   * Does not attach to the given canv if already created. To reattach, call resetCanvas() first.
+   * TODO: maybe automatically draw at +1 of the zIndex of canv?
    */
-  async attachPoseToImage(image: HTMLImageElement, zIndex: number, callback: (c: HTMLCanvasElement) => void) {
-    const pm = await this.getPoseFromImage(1);
-    pm.detect(image, (result: PoseLandmarkerResult) => {
-      const canvas = this.overlayCanvas(image, zIndex);
-      image.parentNode!.appendChild(canvas);
-      const drawingUtils = new DrawingUtils((canvas.getContext("2d"))!);
-      for (const landmark of result.landmarks) {
-        drawingUtils.drawLandmarks(landmark, {
-          radius: (data) => DrawingUtils.lerp(data.from!.z, -0.15, 0.1, 5, 1)
-        });
-        drawingUtils.drawConnectors(landmark, PoseLandmarker.POSE_CONNECTIONS);
-      }
-      // future: rewrite as Promise
-      callback(canvas);
-    });
-  }
+  async drawLandmarks(source: TexImageSource, timestamp: number, dest: HTMLCanvasElement, zIndex: number) {
+    if (!this.canvas) {
+      // lazy init canvas
+      console.log("lazy init drawing canvas");
+      dest.parentNode!.appendChild(this.overlayCanvas(dest, zIndex));
+    }
+    if (this.canvas) {
+      // clear
+      const ctx = this.canvas.getContext('2d');
+      // Draw something initially
+      ctx!.fillStyle = "00000001";
+      ctx!.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
+      const plm = await this.getPose(2, "VIDEO");
+      plm.detectForVideo(source, timestamp, (result: PoseLandmarkerResult) => {
+        const drawingUtils = new DrawingUtils((this.canvas!.getContext("2d"))!);
+        for (const landmark of result.landmarks) {
+          drawingUtils.drawLandmarks(landmark, {
+            // make the closer node dots bigger
+            radius: (data) => DrawingUtils.lerp(data.from!.z, -0.15, 0.1, 5, 1)
+
+          });
+          drawingUtils.drawConnectors(landmark, PoseLandmarker.POSE_CONNECTIONS, {
+            lineWidth: 35,
+          });
+        }
+      });
+    } else {
+      console.warn("PoseSystem has no canvas?");
+    }
+  }
   /**
    * Removes any previously attached canvas element and attempts to free up resources used.
    */
   resetCanvas() {
     if (this.canvas) {
       this.canvas.remove();
-    }
-    if (this.faceDrawingUtils) {
-      this.faceDrawingUtils.close();
-      this.faceDrawingUtils = null;
     }
   }
 
@@ -196,25 +103,27 @@ class PoseSystem {
   }
 
   /**
-   * Precisely fits a new canvas element on the given image.
+   * Precisely fits a new canvas element on the given element.
    * @param image
    * @param zIndex the z-height of the created canvas
    * @private
    */
-  private overlayCanvas(image: HTMLImageElement, zIndex: number) {
+  private overlayCanvas(canv: HTMLCanvasElement, zIndex: number) {
     this.canvas = document.createElement("canvas") as HTMLCanvasElement;
     this.canvas.setAttribute("class", "canvas");
-    this.canvas.setAttribute("width", image.naturalWidth * 2 + "px");
-    this.canvas.setAttribute("height", image.naturalHeight * 2 + "px");
-    const imstyle = image.computedStyleMap();
+    const bounds = canv.getBoundingClientRect();
+    this.canvas.setAttribute("width", bounds.width * 2 + "px");
+    this.canvas.setAttribute("height", bounds.height * 2 + "px");
+    const refStyle = canv.computedStyleMap();
     this.canvas.setAttribute("style", `position: absolute;
-        left: ${imstyle.get("left")};
-        top: ${imstyle.get("top")};
-        width: ${imstyle.get("width")};
-        height: ${imstyle.get("height")};
+        left: ${refStyle.get("left")};
+        top: ${refStyle.get("top")};
+        width: ${refStyle.get("width")};
+        height: ${refStyle.get("height")};
+        transform: ${refStyle.get("transform")};
         z-index: ${zIndex};
-        object-fit: ${imstyle.get("object-fit")};
-        object-position: ${imstyle.get("object-position")};`)
+        object-fit: ${refStyle.get("object-fit")};
+        object-position: ${refStyle.get("object-position")};`)
     return this.canvas;
   }
 }

@@ -1,13 +1,9 @@
 import {MutableRefObject, useEffect, useRef, useState} from "react";
-import {Stack} from "@mui/material";
-import {PoseSystem} from "./PoseSystem.ts";
-import {Detection} from "@mediapipe/tasks-vision";
 
 interface VisionConsumer {
   video: (video: HTMLVideoElement, startTimeMs: number, deltaMs: number) => Promise<void>,
   image: (image: HTMLImageElement) => Promise<void>,
 }
-
 
 /**
  * Single on-page video camera component subscribed to by the given consumers.
@@ -49,33 +45,7 @@ function VideoCamera({consumers}: { consumers: VisionConsumer[] }) {
   // we seemingly need to attach camera video stream to an on-page html element probably so it binds to gpu context
   // enabling gpu ai model direct access to the video frame, it can be hidden:
   // {display: none} breaks it but {visibility: hidden} does not
-  return <Stack sx={{visibility: "visible", width: 400}}>
-    <video ref={camRef} autoPlay playsInline></video>
-  </Stack>;
+  return <video ref={camRef} autoPlay playsInline style={{visibility: "hidden", transform: 'scaleX(-1)'}}></video>
 }
 
-const PERIOD_DETECT_PERSON_MS = 2000;
-
-function poseConsumer(poseSystem: PoseSystem, setPeople: (d: Detection[]) => void) {
-  let lastPeopleUpdate = 0;
-  return {
-    async image(image: HTMLImageElement): Promise<void> {
-      const od = await poseSystem.personDetect("VIDEO");
-      const detections = od.detect(image);
-      const ds = detections.detections;
-      setPeople(ds);
-      return Promise.resolve();
-    },
-    async video(video: HTMLVideoElement, startTimeMs: number, _deltaMs: number): Promise<void> {
-      if (Date.now() - lastPeopleUpdate > PERIOD_DETECT_PERSON_MS) {
-        const od = await poseSystem.personDetect("VIDEO");
-        const detections = od.detectForVideo(video, startTimeMs);
-        const ds = detections.detections;
-        setPeople(ds);
-      }
-    }
-  } as VisionConsumer;
-}
-
-
-export {VideoCamera, poseConsumer, type VisionConsumer};
+export {VideoCamera, type VisionConsumer};

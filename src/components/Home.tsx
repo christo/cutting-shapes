@@ -1,42 +1,53 @@
-import {useState} from 'react';
 import {Box, Typography} from "@mui/material";
 import {VideoCamera, VisionConsumer} from "../mocap/VideoCamera.tsx";
+import {PoseSystem} from "../mocap/PoseSystem.ts";
+import {useRef} from "react";
 
-function mkPunterDetector(): VisionConsumer {
-  return {
-    video: async (_video: HTMLVideoElement, _startTimeMs: number, _deltaMs: number): Promise<void> => {
-      //console.log(`consumeVideo: start ${startTimeMs}ms ${deltaMs} ms`);
-      return Promise.resolve();
-    },
-    image: async (_image: HTMLImageElement): Promise<void> => {
-      console.log(`consumeImage`);
-      return Promise.resolve();
-    }
-  };
+const poseSystem = new PoseSystem();
+
+function drawX(canvas: HTMLCanvasElement) {
+  const ctx = canvas.getContext('2d')!;
+
+  // Draw first diagonal (top-left to bottom-right)
+  ctx.beginPath();
+  ctx.moveTo(0, 0);
+  ctx.lineTo(canvas.width, canvas.height);
+  ctx.stroke();
+
+  // Draw second diagonal (top-right to bottom-left)
+  ctx.beginPath();
+  ctx.moveTo(canvas.width, 0);
+  ctx.lineTo(0, canvas.height);
+  ctx.stroke();
 }
 
 const Home = () => {
+  const staticCanvas = useRef<HTMLCanvasElement | null>(null);
 
-  const tempVc: VisionConsumer[] = [mkPunterDetector()];
-  const [count, setCount] = useState(0);
+  if (staticCanvas.current) {
+    drawX(staticCanvas.current)
+  }
+  const tempVc: VisionConsumer[] = [{
+    video: async (video: HTMLVideoElement, startTimeMs: number, _deltaMs: number): Promise<void> => {
+      if (staticCanvas.current) {
+        await poseSystem.drawLandmarks(video, startTimeMs, staticCanvas.current, 50);
+      }
+      return;
+    },
+    image: async (_image: HTMLImageElement): Promise<void> => {
+      console.log(`consumeImage`);
+      return Promise.reject("not implemented");
+    }
+  }];
+
   return (
-    <div className="App-body">
+    <Box className="App-body">
       <Typography variant="h2">Cutting Shapes</Typography>
-      <Box className="card">
-        <button onClick={() => setCount((count) => count + 1)}>count is {count}</button>
-      </Box>
-      <Box>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-        magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
-        laborum.
-      </Box>
-      <Box sx={{border: "orange dotted thick", p: 5}}>
-        <canvas id="main_view"></canvas>
+      <Box sx={{border: "orange dotted thick", p: 2, bgcolor: 'green', w: "100%", h: "100%"}}>
+        <canvas ref={staticCanvas} id="main_view" width="100%" height="100%" style={{position: "relative", left: 0, top: 0, width: "100%", height: "100%",transform: 'scaleX(-1)'}}></canvas>
         <VideoCamera consumers={tempVc}/>
       </Box>
-    </div>
+    </Box>
   );
 };
 
