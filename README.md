@@ -7,12 +7,11 @@ visual effects and interactive elements.
 
 ## TODO
 
-* [ ] vertical slice
+* [x] vertical slice
   * [x] essential page elements
   * [x] realtime mocap render default pose markers
   * [x] plain black fullscreen render
-  * [ ] animate custom stick figure puppet
-    * Q how does webgl load interact with gpu for vision? 
+  * [x] animate custom stick figure puppet
 * multiple figures (1 or 2)
 * figure out:
   * [ ] camera dimensions / aspect ratio
