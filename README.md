@@ -8,13 +8,19 @@ visual effects and interactive elements.
 ## TODO
 
 * [ ] vertical slice
-  * [ ] essential page elements
-  * [ ] realtime mocap render default pose markers
-  * animate custom stick figure puppet
-    * how does webgl load interact with gpu for vision? 
-  * multiple figures (1 or 2)
-  * obs integration MVP to evaluate easy scene composition
-    * how does obs load interact with GPU for vision?
+  * [x] essential page elements
+  * [x] realtime mocap render default pose markers
+  * [x] plain black fullscreen render
+  * [ ] animate custom stick figure puppet
+    * Q how does webgl load interact with gpu for vision? 
+* multiple figures (1 or 2)
+* figure out:
+  * [ ] camera dimensions / aspect ratio
+  * [ ] render canvas dimensions and aspect ratio
+  * [ ] composited scene dimensions (can be larger)
+  * [ ] 
+* obs integration MVP to evaluate easy scene composition
+  * how does obs load interact with GPU for vision?
 * [ ] test scene with more than two people:
   * [ ] how stable is the choice of which one or two people are tracked?
   * [ ] how to indicate that the person being tracked has changed
@@ -127,7 +133,7 @@ visual effects and interactive elements.
 * beat detection
 * fault detection, auto restart
 * capture wifi access point
-* event branding
+* event styling
 * logging
   * events
   * faults
@@ -150,6 +156,8 @@ visual effects and interactive elements.
 
 ## References
 
+* [ ] spike drawing hand-coded 3d stick figure in [babylonjs](https://www.babylonjs.com/) 
+* [ ] read https://temugeb.github.io/python/computer_vision/2021/09/14/bodypose3d.html
 * https://mediapipe-studio.webapps.google.com/demo/pose_landmarker
 * https://devpost.com/software/boxing-simulator
 * https://playground.babylonjs.com/#ZZUZEG
