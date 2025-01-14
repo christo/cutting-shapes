@@ -60,7 +60,7 @@ class PoseSystem {
       // clear
       const ctx = this.canvas.getContext('2d')!;
       // Draw something initially
-      ctx!.fillStyle = "00000001";
+      ctx!.fillStyle = "rgba(0, 0, 0, 0.2)"; // echo ghosts
       ctx!.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
       const plm = await this.getPose(2, "VIDEO");
@@ -69,8 +69,7 @@ class PoseSystem {
         for (const landmark of result.landmarks) {
           drawingUtils.drawLandmarks(landmark, {
             // make the closer node dots bigger
-            radius: (data) => DrawingUtils.lerp(data.from!.z, -0.15, 0.1, 5, 1)
-
+            radius: (data) => DrawingUtils.lerp(data.from!.z, -0.15, 0.1, 5, 1)*5
           });
           drawingUtils.drawConnectors(landmark, PoseLandmarker.POSE_CONNECTIONS, {
             lineWidth: 35,
