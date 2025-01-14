@@ -59,7 +59,7 @@ function drawCustomStickFigure(result: PoseLandmarkerResult, ctx: CanvasRenderin
 
     [BODY.left_shoulder, BODY.right_hip],
     [BODY.right_shoulder, BODY.left_hip],
-
+    // additional sticks between derived points are below
   ];
 
   const line = (x1: number, y1: number, x2: number, y2: number) => {
@@ -81,21 +81,19 @@ function drawCustomStickFigure(result: PoseLandmarkerResult, ctx: CanvasRenderin
 
   const arc = (startX: number, startY: number, endX: number, endY: number, radiusFactor: number) => {
 
-    // Calculate the center point and angles
+    // this is borked
+
     const dx = endX - startX;
     const dy = endY - startY;
     const distance = Math.sqrt(dx * dx + dy * dy);
 
     const radius = distance * radiusFactor;
-    // Calculate the center point of the arc
     const centerX = (startX + endX) / 2;
     const centerY = (startY + endY) / 2;
 
-    // Calculate start and end angles
     const startAngle = Math.atan2(startY - centerY, startX - centerX);
     const endAngle = Math.atan2(endY - centerY, endX - centerX);
 
-    // Begin the path
     ctx.beginPath();
     ctx.arc(centerX, centerY, radius, startAngle, endAngle);
     ctx.stroke();
@@ -117,11 +115,10 @@ function drawCustomStickFigure(result: PoseLandmarkerResult, ctx: CanvasRenderin
       visibility: (a.visibility + b.visibility) / 2,
     } as NormalizedLandmark;
   }
-  result.landmarks
-      .forEach((ls, pi) => {
-        ctx.font = '20px Arial';
+  result.landmarks.forEach((ls, pi) => {
+        ctx.font = '28px Arial';
         ctx.fillStyle = 'white';
-        ctx.fillText(`pose # ${pi}`, 20, (pi + 2) * 20);
+        ctx.fillText(`person ${pi+1}`, 20, (pi + 2) * 20);
         const canvasPoint = (part: BODY): NormalizedLandmark => {
           return canvasmirror(ls[part.valueOf()]);
         }
