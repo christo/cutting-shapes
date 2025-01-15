@@ -1,8 +1,7 @@
 import {MutableRefObject, useEffect, useRef, useState} from "react";
 
-interface VisionConsumer {
+interface VideoConsumer {
   video: (video: HTMLVideoElement, startTimeMs: number, deltaMs: number) => Promise<void>,
-  image: (image: HTMLImageElement) => Promise<void>,
 }
 
 /**
@@ -11,7 +10,7 @@ interface VisionConsumer {
  * and current state.
  * @param consumers each will be passed the video on each frame update.
  */
-function VideoCamera({consumers}: { consumers: VisionConsumer[] }) {
+function VideoCamera({consumers}: { consumers: VideoConsumer[] }) {
   const camRef: MutableRefObject<HTMLVideoElement | null> = useRef(null);
   const [lastVideoTime, setLastVideoTime] = useState(-1);
 
@@ -48,4 +47,4 @@ function VideoCamera({consumers}: { consumers: VisionConsumer[] }) {
   return <video ref={camRef} autoPlay playsInline style={{visibility: "hidden", transform: 'scaleX(-1)'}}></video>
 }
 
-export {VideoCamera, type VisionConsumer};
+export {VideoCamera, type VideoConsumer};

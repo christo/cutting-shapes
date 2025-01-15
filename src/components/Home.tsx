@@ -1,5 +1,5 @@
 import {Box, Typography} from "@mui/material";
-import {VideoCamera, VisionConsumer} from "../mocap/VideoCamera.tsx";
+import {VideoCamera, VideoConsumer} from "../mocap/VideoCamera.tsx";
 import {PoseSystem} from "../mocap/PoseSystem.ts";
 import {useRef} from "react";
 
@@ -27,16 +27,12 @@ const Home = () => {
   if (staticCanvas.current) {
     drawX(staticCanvas.current)
   }
-  const tempVc: VisionConsumer[] = [{
+  const tempVc: VideoConsumer[] = [{
     video: async (video: HTMLVideoElement, startTimeMs: number, _deltaMs: number): Promise<void> => {
       if (staticCanvas.current) {
         await poseSystem.drawLandmarks(video, startTimeMs, staticCanvas.current, 50);
       }
       return;
-    },
-    image: async (_image: HTMLImageElement): Promise<void> => {
-      console.log(`consumeImage`);
-      return Promise.reject("not implemented");
     }
   }];
 
