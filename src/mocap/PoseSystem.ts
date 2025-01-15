@@ -33,7 +33,7 @@ class PoseSystem {
   private poseLandmarker: PoseLandmarker | null = null;
 
   /**
-   * Gets body poses from 1 or two people
+   * Gets body poses with trained model, running on GPU
    * @param numPoses the maximum number of people to detect
    * @param runningMode
    */
