@@ -32,6 +32,8 @@ class PoseSystem {
   private canvas: HTMLCanvasElement | null = null;
   private poseLandmarker: PoseLandmarker | null = null;
 
+
+
   /**
    * Gets body poses with trained model, running on GPU
    * @param numPoses the maximum number of people to detect
@@ -105,6 +107,7 @@ class PoseSystem {
     if (!this.vision) {
       console.log("Vision system loading");
       this.vision = await FilesetResolver.forVisionTasks("/node_modules/@mediapipe/tasks-vision/wasm");
+      console.log("Vision system loaded");
     }
     return this.vision;
   }
