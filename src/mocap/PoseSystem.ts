@@ -31,8 +31,11 @@ class PoseSystem {
   private vision: any;
   private canvas: HTMLCanvasElement | null = null;
   private poseLandmarker: PoseLandmarker | null = null;
+  private debugMode: boolean = true;
 
-
+  setDebugMode(debugMode: boolean) {
+    this.debugMode = debugMode;
+  }
 
   /**
    * Gets body poses with trained model, running on GPU
@@ -83,7 +86,7 @@ class PoseSystem {
       const plm = await this.getPose(2, "VIDEO");
       plm.detectForVideo(source, timestamp, (result: PoseLandmarkerResult) => {
         // drawDefaultLandmarkers(result, ctx);
-        drawCustomStickFigure(result, ctx);
+        drawCustomStickFigure(result, ctx, this.debugMode);
       });
     } else {
       console.warn("PoseSystem has no canvas?");

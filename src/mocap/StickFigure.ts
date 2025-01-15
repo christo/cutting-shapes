@@ -1,7 +1,8 @@
 import {DrawingUtils, NormalizedLandmark, PoseLandmarkerResult} from "@mediapipe/tasks-vision";
 import {Body} from "./Body.ts";
+import {midPoint} from "./Draw.ts";
 
-export function drawCustomStickFigure(result: PoseLandmarkerResult, ctx: CanvasRenderingContext2D) {
+export function drawCustomStickFigure(result: PoseLandmarkerResult, ctx: CanvasRenderingContext2D, debugMode: boolean) {
   const noseIndex = Body.nose.valueOf();
   const leftEyeIndex = Body.left_eye.valueOf();
   const rightEyeIndex = Body.right_eye.valueOf();
@@ -92,9 +93,12 @@ export function drawCustomStickFigure(result: PoseLandmarkerResult, ctx: CanvasR
     } as NormalizedLandmark;
   }
   result.landmarks.forEach((ls, pi) => {
-    ctx.font = '28px Arial';
-    ctx.fillStyle = 'white';
-    ctx.fillText(`person ${pi + 1}`, 20, (pi + 2) * 20);
+    if (debugMode) {
+      ctx.font = '28px Arial';
+      ctx.fillStyle = 'white';
+      ctx.fillText(`person ${pi + 1}`, 20, (pi + 2) * 20);
+    }
+
     const canvasPoint = (part: Body): NormalizedLandmark => {
       return canvasmirror(ls[part.valueOf()]);
     }
