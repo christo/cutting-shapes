@@ -293,6 +293,9 @@ class PoseSystem {
   }
 }
 
+/**
+ * Enum type carefully ensuring numeric values match corresponding Landmark indices.
+ */
 enum BODY {
   nose,
   left_eye_inner,
