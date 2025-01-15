@@ -84,14 +84,6 @@ export function drawCustomStickFigure(result: PoseLandmarkerResult, ctx: CanvasR
     }
   }
 
-  const midPoint = (a: NormalizedLandmark, b: NormalizedLandmark): NormalizedLandmark => {
-    return {
-      x: (a.x + b.x) / 2,
-      y: (a.y + b.y) / 2,
-      z: (a.z + b.z) / 2,
-      visibility: (a.visibility + b.visibility) / 2,
-    } as NormalizedLandmark;
-  }
   result.landmarks.forEach((ls, pi) => {
     if (debugMode) {
       ctx.font = '28px Arial';
