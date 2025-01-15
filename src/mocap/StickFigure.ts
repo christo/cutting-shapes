@@ -115,8 +115,10 @@ export function drawCustomStickFigure(result: PoseLandmarkerResult, ctx: CanvasR
           spot(x, y, 10);
           break;
         default:
-          ctx.strokeStyle = "blue";
-          cross(x, y, 5)
+          if (debugMode) {
+            ctx.strokeStyle = "blue";
+            cross(x, y, 5)
+          }
           break
       }
     });
@@ -139,7 +141,7 @@ export function drawCustomStickFigure(result: PoseLandmarkerResult, ctx: CanvasR
       const p2 = canvasPoint(pair[1]);
       line(p1.x, p1.y, p2.x, p2.y);
     }
-    // draw spine special case
+    // draw spine special case by joining hip and shoulder midpoints
     const leftShoulder = canvasPoint(Body.left_shoulder);
     const rightShoulder = canvasPoint(Body.right_shoulder);
     const leftHip = canvasPoint(Body.left_hip);

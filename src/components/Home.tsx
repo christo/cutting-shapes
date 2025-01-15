@@ -4,6 +4,7 @@ import {PoseSystem} from "../mocap/PoseSystem.ts";
 import {useRef} from "react";
 
 const poseSystem = new PoseSystem();
+poseSystem.setDebugMode(false);
 
 function drawX(canvas: HTMLCanvasElement) {
   const ctx = canvas.getContext('2d')!;
