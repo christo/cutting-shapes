@@ -1,0 +1,1 @@
+export type StateSetter<T> = (value: (((prevState: T) => T) | T)) => void;
