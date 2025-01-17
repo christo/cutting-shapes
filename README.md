@@ -9,6 +9,7 @@ visual effects and interactive elements.
 
 * [ ] spike 3d stick character in [babylonjs](https://www.babylonjs.com/)
   can be hand-coded meshes or loaded character, whatever is easiest
+  * [ ] hello world scene
   * [ ] evaluate using/not react-bablyonjs
   * [ ] read https://brianzinn.github.io/react-babylonjs/examples
   * [ ] get example running
