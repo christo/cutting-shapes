@@ -53,7 +53,6 @@ export const BurgerMenu2 = ({setConfig, config}: BurgerMenuProps) => {
 }
 
 const DrawerPanel = ({setConfig, config}: BurgerMenuProps) => {
-  // TODO determine if Switch components need to be in a FormGroup
   const debugCheckbox = <Switch checked={config.debug}
                                  onChange={event => setConfig({...config, debug: event.target.checked})}
                                  inputProps={{'aria-label': 'controlled'}}/>;
