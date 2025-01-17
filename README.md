@@ -7,12 +7,6 @@ visual effects and interactive elements.
 
 ## TODO
 
-* [x] vertical slice
-  * [x] essential page elements
-  * [x] realtime mocap render default pose markers
-  * [x] plain black fullscreen render
-  * [x] animate custom stick figure puppet
-* [x] x-flip (mirror mode)
 * [ ] spike drawing hand-coded 3d stick figure in [babylonjs](https://www.babylonjs.com/)
 * [ ] read https://temugeb.github.io/python/computer_vision/2021/09/14/bodypose3d.html
 * [x] multiple figures (1 or 2)
