@@ -1,33 +1,19 @@
 import {Box, Typography} from "@mui/material";
+import {Config} from "../Config.ts";
 import {VideoCamera, VideoConsumer} from "../mocap/VideoCamera.tsx";
 import {PoseSystem} from "../mocap/PoseSystem.ts";
 import {useRef} from "react";
 
 const poseSystem = new PoseSystem();
-poseSystem.setDebugMode(false);
 
-function drawX(canvas: HTMLCanvasElement) {
-  const ctx = canvas.getContext('2d')!;
-
-  // Draw first diagonal (top-left to bottom-right)
-  ctx.beginPath();
-  ctx.moveTo(0, 0);
-  ctx.lineTo(canvas.width, canvas.height);
-  ctx.stroke();
-
-  // Draw second diagonal (top-right to bottom-left)
-  ctx.beginPath();
-  ctx.moveTo(canvas.width, 0);
-  ctx.lineTo(0, canvas.height);
-  ctx.stroke();
+interface HomeProps {
+  config: Config;
 }
 
-const Home = () => {
+const Home = ({config}: HomeProps) => {
   const staticCanvas = useRef<HTMLCanvasElement | null>(null);
+  poseSystem.setDebugMode(config.debug);
 
-  if (staticCanvas.current) {
-    drawX(staticCanvas.current)
-  }
   const tempVc: VideoConsumer[] = [{
     video: async (video: HTMLVideoElement, startTimeMs: number, _deltaMs: number): Promise<void> => {
       if (staticCanvas.current) {
@@ -38,13 +24,14 @@ const Home = () => {
   }];
 
   return (
-    <Box className="App-body">
-      <Typography variant="h2">Cutting Shapes</Typography>
-      <Box sx={{border: "orange dotted thick", p: 2, bgcolor: 'green', w: "100%", h: "100%"}}>
-        <canvas ref={staticCanvas} id="main_view" width="100%" height="100%" style={{position: "relative", left: 0, top: 0, width: "100%", height: "100%"}}></canvas>
-        <VideoCamera consumers={tempVc}/>
+      <Box className="App-body">
+        <Typography variant="h2">Cutting Shapes</Typography>
+        <Box sx={{border: "orange dotted thick", p: 2, bgcolor: 'green', w: "100%", h: "100%"}}>
+          <canvas ref={staticCanvas} id="main_view" width="100%" height="100%"
+                  style={{position: "relative", left: 0, top: 0, width: "100%", height: "100%"}}></canvas>
+          <VideoCamera consumers={tempVc}/>
+        </Box>
       </Box>
-    </Box>
   );
 };
 
