@@ -29,7 +29,7 @@ const Home = ({config}: HomeProps) => {
         <Box sx={{border: "orange dotted thick", p: 2, bgcolor: 'green', w: "100%", h: "100%"}}>
           <canvas ref={staticCanvas} id="main_view" width="100%" height="100%"
                   style={{position: "relative", left: 0, top: 0, width: "100%", height: "100%"}}></canvas>
-          <VideoCamera consumers={tempVc}/>
+          <VideoCamera consumers={tempVc} visible={config.camera} />
         </Box>
       </Box>
   );

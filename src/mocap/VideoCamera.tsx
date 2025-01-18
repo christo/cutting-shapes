@@ -10,7 +10,7 @@ interface VideoConsumer {
  * and current state.
  * @param consumers each will be passed the video on each frame update.
  */
-function VideoCamera({consumers}: { consumers: VideoConsumer[] }) {
+function VideoCamera({consumers, visible}: { consumers: VideoConsumer[], visible: boolean }) {
   const camRef: MutableRefObject<HTMLVideoElement | null> = useRef(null);
   const [lastVideoTime, setLastVideoTime] = useState(-1);
 
@@ -44,7 +44,7 @@ function VideoCamera({consumers}: { consumers: VideoConsumer[] }) {
   // we seemingly need to attach camera video stream to an on-page html element probably so it binds to gpu context
   // enabling gpu ai model direct access to the video frame, it can be hidden:
   // {display: none} breaks it but {visibility: hidden} does not
-  return <video ref={camRef} autoPlay playsInline style={{visibility: "hidden", transform: 'scaleX(-1)'}}></video>
+  return <video ref={camRef} autoPlay playsInline style={{visibility: visible?"visible":"hidden", transform: 'scaleX(-1)'}}></video>
 }
 
 export {VideoCamera, type VideoConsumer};

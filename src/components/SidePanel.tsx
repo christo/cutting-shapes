@@ -10,7 +10,7 @@ import {
   SelectChangeEvent,
   Stack,
   SwipeableDrawer,
-  Switch,
+  Switch, Typography,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -33,11 +33,11 @@ const SettingsPanel = ({ setConfig, config }: CommonProps) => {
   const cameraCheckbox = <Switch checked={config.camera}
                                  onChange={event => setConfig({ ...config, camera: event.target.checked })}
                                  inputProps={{ 'aria-label': 'controlled' }} />;
-
-  const liveOrPlayback = <Switch checked={config.live}
-                                 onChange={event => setConfig({ ...config, live: event.target.checked })}
-                                 inputProps={{ 'aria-label': 'controlled' }} />;
-
+  const gotRecording = false;
+  if (!gotRecording && !config.live) {
+    console.log("Not configured for live but no recording available, resetting to live.");
+    setConfig({ ...config, live: true });
+  }
   return <Stack sx={{ p: 2 }}>
     <Link className="menu-item" to="/">
       Home
@@ -53,10 +53,17 @@ const SettingsPanel = ({ setConfig, config }: CommonProps) => {
     <FormControlLabel control={perfCheckbox} label="Performance" />
     <FormControlLabel control={cameraCheckbox} label="Camera" />
     {/* TODO record, stop*/}
-    <Button variant="outlined" startIcon={<Circle />}>
+    <Button variant="outlined" color="error" startIcon={<Circle />}>
       Record
     </Button>
-    <FormControlLabel control={liveOrPlayback} label="Live" />
+    <Stack direction="row" spacing={2} sx={{display: "flex", alignItems: 'center'}}>
+      <Typography >Playback</Typography>
+      <Switch checked={config.live} disabled={!gotRecording}
+              onChange={event => setConfig({ ...config, live: event.target.checked })}
+              inputProps={{ 'aria-label': 'controlled' }} />
+      <Typography >Live</Typography>
+
+    </Stack>
 
     <Box>
       <FormControl sx={{ mt: 2, minWidth: 120 }} size="small">
