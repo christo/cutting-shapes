@@ -12,7 +12,7 @@ interface HomeProps {
 
 const Home = ({config}: HomeProps) => {
   const staticCanvas = useRef<HTMLCanvasElement | null>(null);
-  poseSystem.setDebugMode(config.debug);
+  poseSystem.setConfig(config);
 
   const tempVc: VideoConsumer[] = [{
     video: async (video: HTMLVideoElement, startTimeMs: number, _deltaMs: number): Promise<void> => {

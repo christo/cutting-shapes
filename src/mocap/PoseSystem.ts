@@ -1,4 +1,5 @@
 import {DrawingUtils, FilesetResolver, PoseLandmarker, PoseLandmarkerResult} from "@mediapipe/tasks-vision";
+import { Config } from '../Config.ts';
 import {drawCustomStickFigure} from "./StickFigure.ts";
 
 type RunningMode = "IMAGE" | "VIDEO";
@@ -31,10 +32,10 @@ class PoseSystem {
   private vision: any;
   private canvas: HTMLCanvasElement | null = null;
   private poseLandmarker: PoseLandmarker | null = null;
-  private debugMode: boolean = true;
+  private config: Config = new Config();
 
-  setDebugMode(debugMode: boolean) {
-    this.debugMode = debugMode;
+  setConfig(config: Config) {
+    this.config = config;
   }
 
   /**
@@ -75,18 +76,26 @@ class PoseSystem {
       dest.parentNode!.appendChild(this.overlayCanvas(dest, zIndex));
     }
     if (this.canvas) {
-      // clear
       const ctx = this.canvas.getContext('2d', {
-        willReadFrequently: false
+        willReadFrequently: false, // TODO do we need this or anything here?
       })!;
-      // Draw something initially
-      ctx!.fillStyle = "rgba(0, 0, 0, 0.2)"; // echo ghosts
+
+      // clear drawing area
+      if (this.config.bg === "Ghost") {
+        ctx!.fillStyle = "rgba(0, 0, 0, 0.1)"; // echo ghosts
+      } else if (this.config.bg === "Green") {
+        ctx!.fillStyle = "rgba(0, 255, 0, 1.0)";
+      } else if (this.config.bg === "Blue") {
+        ctx!.fillStyle = "rgba(0, 0, 255, 1.0)";
+      } else if (this.config.bg === "Black") {
+        ctx!.fillStyle = "rgba(0, 0, 0, 1.0)";
+      }
       ctx!.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
       const plm = await this.getPose(2, "VIDEO");
       plm.detectForVideo(source, timestamp, (result: PoseLandmarkerResult) => {
         // drawDefaultLandmarkers(result, ctx);
-        drawCustomStickFigure(result, ctx, this.debugMode);
+        drawCustomStickFigure(result, ctx, this.config.debug);
       });
     } else {
       console.warn("PoseSystem has no canvas?");
@@ -100,6 +109,7 @@ class PoseSystem {
     if (this.canvas) {
       this.canvas.remove();
     }
+    this.poseLandmarker = null;
   }
 
   /**
