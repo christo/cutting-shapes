@@ -51,7 +51,24 @@ const PerfPanel = ({ perfTime }: { perfTime: PerfTime }) => {
   </Stack>;
 };
 
+function Splash({showSplash}: { showSplash: boolean }) {
+  return <Box sx={{
+    display: "flex",
+    flexDirection: "column",
+    alignContent: "center",
+    justifyItems: "center",
+    p: 10, width: "50%",
+    height: "50%",
+    border: "pink dotted thick",
+    zIndex: 500,
+    visibility: showSplash ? "visible" : "hidden",
+  }}>
+    <Titles titleFontSize={80} authorFontSize={44}/>
+  </Box>;
+}
+
 const Home = ({ config }: HomeProps) => {
+  const [showSplash, setShowSplash] = useState(true);
   const staticCanvas = useRef<HTMLCanvasElement | null>(null);
   poseSystem.setConfig(config);
   const [perfTime, setPerfTime] = useState<PerfTime>(PerfTime.NULL);
@@ -70,6 +87,7 @@ const Home = ({ config }: HomeProps) => {
   const renderer: VideoConsumer = {
     video: async (video: HTMLVideoElement, startTimeMs: number, _deltaMs: number): Promise<void> => {
       if (staticCanvas.current) {
+        setShowSplash(false)
         await poseSystem.drawLandmarks(video, startTimeMs, staticCanvas.current, 50);
       }
     }
@@ -77,9 +95,7 @@ const Home = ({ config }: HomeProps) => {
 
   return (
     <Box className="App-body" sx={{position: "absolute", alignContent: "center", justifyItems: "center", top: 0, left: 0, width: "100%", height: "100%"}}>
-      <Box sx={{display: "flex", flexDirection: "column", alignContent: "center", justifyItems: "center", p: 10, width: "50%", height: "50%", border: "pink dotted thick"}}>
-        <Titles titleFontSize={80} authorFontSize={44}/>
-      </Box>
+      <Splash showSplash={showSplash} />
       {config.perf && perfTime && <PerfPanel perfTime={perfTime} />}
       <canvas ref={staticCanvas} id="main_view" height="100%"
               style={{ position: 'absolute', left: 0, top: 0, width: '100%', height: '100%' }}></canvas>
