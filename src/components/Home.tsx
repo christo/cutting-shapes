@@ -43,6 +43,8 @@ const PerfPanel = ({ perfTime }: { perfTime: PerfTime }) => {
     color: 'red',
     display: 'flex', alignItems: 'end',
     padding: 3,
+    margin: 2,
+    border: "red dashed thin",
     position: 'absolute', right: 0, top: 0, zIndex: 500,
   }}>
     {perfDetail}
