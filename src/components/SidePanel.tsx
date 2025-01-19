@@ -40,7 +40,7 @@ const SettingsPanel = ({ setConfig, config }: CommonProps) => {
     setConfig({ ...config, live: true });
   }
   return <Stack sx={{ p: 2 }}>
-    <Titles titleFontSize={30} authorFontSize={14}/>
+    <Titles titleFontSize={30} authorFontSize={12}/>
 
     <Stack sx={{mt: 1, mb: 1}}>
       <Link className="menu-item" to="/">
