@@ -10,7 +10,8 @@ import {Config} from "./Config.ts";
 function App() {
 
   const [config, setConfig] = useState(new Config());
-
+  config.perf = true;
+  config.camera = true;
   return (
     <Router>
       <div className="App">
