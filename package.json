@@ -21,13 +21,11 @@
     "@mui/icons-material": "^6.3.1",
     "@mui/material": "^6.3.1",
     "react": "^18.2.0",
-    "react-babylonjs": "^3.2.2",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.20.0",
     "renovate": "^37.74.0"
   },
   "devDependencies": {
-    "@types/react-burger-menu": "^2.8.6",
     "@types/react-router-dom": "^5.3.3",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
