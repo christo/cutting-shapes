@@ -12,14 +12,14 @@ export function Titles({titleFontSize, authorFontSize}: {titleFontSize: number, 
       color: 'secondary.main',
     }}>Cutting Shapes</Typography>
     <Typography sx={{
-      fontFamily: "\"Playwrite AU QLD\", cursive",
+      fontFamily: "\"Playwrite AU QLD\", cursive", // TODO replace with fatter font like Lobster
       textAlign: "center",
       fontWeight: 400,
       fontSize: authorFontSize,
       color: 'primary.main',
       mt: 1,
       mb: 1
-    }}>Chris Mountford</Typography>
+    }}>Chris Mountford 2025</Typography>
 
   </>
 }
