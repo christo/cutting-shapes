@@ -32,4 +32,9 @@ export class Config {
    * Input source drives motion capture.
    */
   live: boolean = true;
+
+  /**
+   * Whether or not to do motion smoothing.
+   */
+  smoothing: boolean = false;
 }

@@ -34,6 +34,10 @@ const SettingsPanel = ({ setConfig, config }: CommonProps) => {
   const cameraCheckbox = <Switch checked={config.camera}
                                  onChange={event => setConfig({ ...config, camera: event.target.checked })}
                                  inputProps={{ 'aria-label': 'controlled' }} />;
+  const smoothingCheckbox = <Switch checked={config.smoothing}
+                                 onChange={event => setConfig({ ...config, smoothing: event.target.checked })}
+                                 inputProps={{ 'aria-label': 'controlled' }} />;
+
   const gotRecording = false;
   if (!gotRecording && !config.live) {
     console.log("Not configured for live but no recording available, resetting to live.");
@@ -72,6 +76,7 @@ const SettingsPanel = ({ setConfig, config }: CommonProps) => {
     <FormControlLabel control={debugCheckbox} label="Debug" />
     <FormControlLabel control={perfCheckbox} label="Performance" />
     <FormControlLabel control={cameraCheckbox} label="Camera" />
+    <FormControlLabel control={smoothingCheckbox} label="Motion Smoothing" />
     {/* TODO record, stop modal control */}
     <Button sx={{m: 2}} variant="contained" color="error" startIcon={<Circle />}>
       Record

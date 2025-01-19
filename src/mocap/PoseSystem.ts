@@ -1,5 +1,12 @@
-import { DrawingUtils, FilesetResolver, PoseLandmarker, PoseLandmarkerResult } from '@mediapipe/tasks-vision';
+import {
+  DrawingUtils,
+  FilesetResolver,
+  NormalizedLandmark,
+  PoseLandmarker,
+  PoseLandmarkerResult,
+} from '@mediapipe/tasks-vision';
 import { Config } from '../Config.ts';
+import { midPoint } from './Draw.ts';
 import { RingStat } from './RingStat.ts';
 import { drawCustomStickFigure } from './StickFigure.ts';
 
@@ -39,15 +46,20 @@ class PerfTime {
   }
 }
 
+function cloneLandmarks(nlss: NormalizedLandmark[][]): NormalizedLandmark[][] {
+  return nlss.map((nls): NormalizedLandmark[] => nls.map(nl => ({ ...nl })));
+}
 
 /**
  * Component responsible for low-latency client-side image analysis to find people in the camera-field
  */
 class PoseSystem {
 
-  msVisionTime: RingStat = new RingStat(100);
-  msRenderTime: RingStat = new RingStat(100);
-  msUpdateTime: RingStat = new RingStat(100);
+  private msVisionTime: RingStat = new RingStat(100);
+  private msRenderTime: RingStat = new RingStat(100);
+  private msUpdateTime: RingStat = new RingStat(100);
+
+  private previousLm: NormalizedLandmark[][] | undefined;
 
   /**
    * WasmFileset that holds GPU or CPU inference bundle. Accessed through {@link #getVision()}
@@ -57,6 +69,24 @@ class PoseSystem {
   private poseLandmarker: PoseLandmarker | null = null;
   private config: Config = new Config();
 
+  smooth(nlss: NormalizedLandmark[][]): NormalizedLandmark[][] {
+    // TODO better smoothing using configurable proportional hysteresis etc.
+    // currently smooth by averaging last two landmark points by finding the
+    // midpoint between previous and next
+    if (this.previousLm) {
+      this.previousLm = this.previousLm.map((nls: NormalizedLandmark[], nlsIdx: number) => {
+        return nls.map((nl: NormalizedLandmark, nlIdx: number) => {
+          return midPoint(nl, nlss[nlsIdx][nlIdx]);
+        });
+      });
+      return this.previousLm;
+    } else {
+      // straight clone because there is no history
+      this.previousLm = cloneLandmarks(nlss);
+      return this.previousLm;
+    }
+  }
+
   setConfig(config: Config) {
     this.config = config;
   }
@@ -65,7 +95,7 @@ class PoseSystem {
     return new PerfTime(
       this.msVisionTime.mean(),
       this.msRenderTime.mean(),
-      this.msUpdateTime.mean()
+      this.msUpdateTime.mean(),
     );
   };
 
@@ -130,7 +160,8 @@ class PoseSystem {
         this.msVisionTime.push(performance.now() - startVision);
         const startRender = performance.now();
         // drawDefaultLandmarkers(result, ctx);
-        drawCustomStickFigure(result, ctx, this.config.debug);
+        const landmarks = this.config.smoothing ? this.smooth(result.landmarks) : result.landmarks;
+        drawCustomStickFigure(landmarks, ctx, this.config.debug);
         this.msRenderTime.push(performance.now() - startRender);
       });
       this.msUpdateTime.push(performance.now() - startUpdate);
@@ -169,6 +200,9 @@ class PoseSystem {
    * @private
    */
   private overlayCanvas(canv: HTMLCanvasElement, zIndex: number) {
+    if (this.canvas) {
+      console.warn('creating duplicate canvas!');
+    }
     this.canvas = document.createElement('canvas') as HTMLCanvasElement;
     this.canvas.setAttribute('class', 'canvas');
     const bounds = canv.getBoundingClientRect();

@@ -2,6 +2,7 @@ import { Box, CircularProgress, Stack, Typography } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 import { Config } from '../Config.ts';
 import { PerfTime, PoseSystem } from '../mocap/PoseSystem.ts';
+import { Render3D } from '../mocap/Render3D.tsx';
 import { VideoCamera, VideoConsumer } from '../mocap/VideoCamera.tsx';
 import { Titles } from './Titles.tsx';
 
@@ -97,8 +98,8 @@ const Home = ({ config }: HomeProps) => {
     <Box className="App-body" sx={{position: "absolute", alignContent: "center", justifyItems: "center", top: 0, left: 0, width: "100%", height: "100%"}}>
       <Splash showSplash={showSplash} />
       {config.perf && perfTime && <PerfPanel perfTime={perfTime} />}
-      <canvas ref={staticCanvas} id="main_view" height="100%"
-              style={{ position: 'absolute', left: 0, top: 0, width: '100%', height: '100%' }}></canvas>
+      <canvas ref={staticCanvas} id="main_view"
+              style={{ position: 'absolute', left: 0, top: 0, width: '50%', height: '50%' }}></canvas>
       <Box sx={{
         position: 'absolute',
         right: 0,
@@ -108,6 +109,7 @@ const Home = ({ config }: HomeProps) => {
       }}>
         <VideoCamera consumers={[renderer]} />
       </Box>
+      <Render3D sx={{position: 'absolute', left: 0, bottom: 0, width: '50%', height: '50%'}}/>
     </Box>
   );
 };
