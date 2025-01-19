@@ -103,7 +103,7 @@ const Home = ({ config }: HomeProps) => {
         position: 'absolute',
         right: 0,
         bottom: 0,
-        zIndex: 100,
+        zIndex: 50,
         visibility: config.camera ? 'visible' : 'hidden',
       }}>
         <VideoCamera consumers={[renderer]} />
