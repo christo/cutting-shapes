@@ -16,6 +16,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Bg, BgValues, Config } from '../Config';
 import { StateSetter } from '../Util.ts';
+import { Titles } from './Titles.tsx';
 
 interface CommonProps {
   config: Config;
@@ -39,22 +40,9 @@ const SettingsPanel = ({ setConfig, config }: CommonProps) => {
     setConfig({ ...config, live: true });
   }
   return <Stack sx={{ p: 2 }}>
-    <Typography sx={{
-      fontFamily: "\"Londrina Solid\", sans-serif",
-      fontWeight: 900,
-      fontStyle: "normal",
-      textAlign: "center",
-      fontSize: 30,
-      color: "#aaffcc",
-    }}>Cutting Shapes</Typography>
-    <Typography sx={{
-      fontFamily: "\"Playwrite AU QLD\", cursive",
-      textAlign: "center",
-      fontWeight: 400,
-      fontSize: 14
-    }}>Chris Mountford</Typography>
+    <Titles titleFontSize={30} authorFontSize={14}/>
 
-    <Stack>
+    <Stack sx={{mt: 1, mb: 1}}>
       <Link className="menu-item" to="/">
         Home
       </Link>
@@ -65,24 +53,7 @@ const SettingsPanel = ({ setConfig, config }: CommonProps) => {
         Contact
       </Link>
     </Stack>
-
-    <FormControlLabel control={debugCheckbox} label="Debug" />
-    <FormControlLabel control={perfCheckbox} label="Performance" />
-    <FormControlLabel control={cameraCheckbox} label="Camera" />
-    {/* TODO record, stop*/}
-    <Button variant="outlined" color="error" startIcon={<Circle />}>
-      Record
-    </Button>
-    <Stack direction="row" spacing={2} sx={{display: "flex", alignItems: 'center'}}>
-      <Typography >Playback</Typography>
-      <Switch checked={config.live} disabled={!gotRecording}
-              onChange={event => setConfig({ ...config, live: event.target.checked })}
-              inputProps={{ 'aria-label': 'controlled' }} />
-      <Typography >Live</Typography>
-
-    </Stack>
-
-    <Box>
+    <Box sx={{mb: 1}}>
       <FormControl sx={{ mt: 2, minWidth: 120 }} size="small">
         <InputLabel id={`Background-select-label`} shrink>Background</InputLabel>
         <Select
@@ -98,6 +69,23 @@ const SettingsPanel = ({ setConfig, config }: CommonProps) => {
         </Select>
       </FormControl>
     </Box>
+    <FormControlLabel control={debugCheckbox} label="Debug" />
+    <FormControlLabel control={perfCheckbox} label="Performance" />
+    <FormControlLabel control={cameraCheckbox} label="Camera" />
+    {/* TODO record, stop modal control */}
+    <Button sx={{m: 2}} variant="contained" color="error" startIcon={<Circle />}>
+      Record
+    </Button>
+    <Stack direction="row" spacing={2} sx={{display: "flex", alignItems: 'center'}}>
+      <Typography sx={{opacity: !gotRecording ? 0.5 : 1.0 }}>Playback</Typography>
+      <Switch checked={config.live} disabled={!gotRecording}
+              onChange={event => setConfig({ ...config, live: event.target.checked })}
+              inputProps={{ 'aria-label': 'controlled' }} />
+      <Typography >Live</Typography>
+
+    </Stack>
+
+
   </Stack>;
 };
 

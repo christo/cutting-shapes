@@ -1,8 +1,9 @@
 import { Box, CircularProgress, Stack, Typography } from '@mui/material';
-import {Config} from "../Config.ts";
-import {VideoCamera, VideoConsumer} from "../mocap/VideoCamera.tsx";
-import { PerfTime, PoseSystem } from '../mocap/PoseSystem.ts';
 import { useEffect, useRef, useState } from 'react';
+import { Config } from '../Config.ts';
+import { PerfTime, PoseSystem } from '../mocap/PoseSystem.ts';
+import { VideoCamera, VideoConsumer } from '../mocap/VideoCamera.tsx';
+import { Titles } from './Titles.tsx';
 
 const poseSystem = new PoseSystem();
 
@@ -10,78 +11,86 @@ interface HomeProps {
   config: Config;
 }
 
-const PerfDetail = ({perfTime}: { perfTime: PerfTime }) => {
+const PerfDetail = ({ perfTime }: { perfTime: PerfTime }) => {
   const formatNumber = (value: number) => {
     if (isNaN(value)) {
-      return "?"
+      return '?';
     } else {
       return value.toFixed(2);
     }
-  }
-  const statStyle = {
-    fontFamily: "monospace",
-    fontSize: "14px",
   };
-  return <><Typography sx={statStyle}>vision {formatNumber(perfTime.msVisionTime)} ms</Typography>
-  <Typography sx={statStyle}>render {formatNumber(perfTime.msRenderTime)} ms</Typography>
-  <Typography sx={statStyle}>update {formatNumber(perfTime.msUpdateTime)} ms</Typography>
-  <Typography sx={statStyle}>ups {formatNumber(1000 / perfTime.msUpdateTime)} Hz</Typography></>
-}
+  const sx = {
+    fontFamily: '"JetBrainsMono Nerd Font", monospace',
+    fontSize: '22px',
+    fontWeight: 'bold',
+    textShadow: '0 0 5px rgba(200, 50, 50, 0.7), 0 0 8px rgba(200, 50, 50, 0.4)',
+  };
+  // TODO format prettier with grid:
+  return <>
+    <Typography sx={sx}>{formatNumber(perfTime.msVisionTime)} ms vision</Typography>
+    <Typography sx={sx}>{formatNumber(perfTime.msRenderTime)} ms render</Typography>
+    <Typography sx={sx}>{formatNumber(perfTime.msUpdateTime)} ms update</Typography>
+    <Typography sx={sx}>{formatNumber(1000 / perfTime.msUpdateTime)} Hz u-freq</Typography>
+  </>;
+};
 
-const PerfPanel = ({perfTime}: { perfTime: PerfTime }) => {
-  const perfDetail = perfTime.ready() ? <PerfDetail perfTime={perfTime} /> : <CircularProgress sx={{m:2}} color="success" />;
+const PerfPanel = ({ perfTime }: { perfTime: PerfTime }) => {
+  const perfDetail = perfTime.ready() ? <PerfDetail perfTime={perfTime} /> :
+    <CircularProgress sx={{ m: 4 }} color="error" size={88}/>;
 
   return <Stack sx={{
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    color: "lightgreen",
-    display: "flex", alignItems: "end",
-    padding: 2,
-    position: "absolute", right: 0, top: 0, zIndex: 500
+    color: 'red',
+    display: 'flex', alignItems: 'end',
+    padding: 3,
+    position: 'absolute', right: 0, top: 0, zIndex: 500,
   }}>
     {perfDetail}
   </Stack>;
-}
+};
 
-const Home = ({config}: HomeProps) => {
+const Home = ({ config }: HomeProps) => {
   const staticCanvas = useRef<HTMLCanvasElement | null>(null);
   poseSystem.setConfig(config);
   const [perfTime, setPerfTime] = useState<PerfTime>(PerfTime.NULL);
   useEffect(() => {
     let animationFrameId: number;
-
     const updateStats = () => {
       setPerfTime(poseSystem.getPerfTime());
       animationFrameId = requestAnimationFrame(updateStats);
     };
-
     updateStats();
-
-    // Cleanup function
     return () => {
       cancelAnimationFrame(animationFrameId);
     };
-
   }, []);
 
-  const tempVc: VideoConsumer[] = [{
+  const renderer: VideoConsumer = {
     video: async (video: HTMLVideoElement, startTimeMs: number, _deltaMs: number): Promise<void> => {
       if (staticCanvas.current) {
         await poseSystem.drawLandmarks(video, startTimeMs, staticCanvas.current, 50);
       }
-      return;
     }
-  }];
+  };
 
   return (
-      <Box className="App-body">
-        <Typography variant="h2">Cutting Shapes</Typography>
-          {config.perf && perfTime && <PerfPanel perfTime={perfTime}/>}
-          <canvas ref={staticCanvas} id="main_view" height="100%"
-                  style={{position: "absolute", left: 0, top: 0, width: "100%", height: "100%"}}></canvas>
-          <Box sx={{position: "absolute", right: 0, bottom: 0, zIndex: 100, visibility: config.camera ? "visible": "hidden"}}>
-            <VideoCamera consumers={tempVc}/>
-          </Box>
+    <Box className="App-body" sx={{position: "absolute", alignContent: "center", justifyItems: "center", top: 0, left: 0, width: "100%", height: "100%"}}>
+      <Box sx={{display: "flex", flexDirection: "column", alignContent: "center", justifyItems: "center", p: 10, width: "50%", height: "50%", border: "pink dotted thick"}}>
+        <Titles titleFontSize={80} authorFontSize={44}/>
       </Box>
+      {config.perf && perfTime && <PerfPanel perfTime={perfTime} />}
+      <canvas ref={staticCanvas} id="main_view" height="100%"
+              style={{ position: 'absolute', left: 0, top: 0, width: '100%', height: '100%' }}></canvas>
+      <Box sx={{
+        position: 'absolute',
+        right: 0,
+        bottom: 0,
+        zIndex: 100,
+        visibility: config.camera ? 'visible' : 'hidden',
+      }}>
+        <VideoCamera consumers={[renderer]} />
+      </Box>
+    </Box>
   );
 };
 
