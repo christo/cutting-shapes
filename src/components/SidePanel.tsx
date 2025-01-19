@@ -39,15 +39,32 @@ const SettingsPanel = ({ setConfig, config }: CommonProps) => {
     setConfig({ ...config, live: true });
   }
   return <Stack sx={{ p: 2 }}>
-    <Link className="menu-item" to="/">
-      Home
-    </Link>
-    <Link className="menu-item" to="/about">
-      About
-    </Link>
-    <Link className="menu-item" to="/contact">
-      Contact
-    </Link>
+    <Typography sx={{
+      fontFamily: "\"Londrina Solid\", sans-serif",
+      fontWeight: 900,
+      fontStyle: "normal",
+      textAlign: "center",
+      fontSize: 30,
+      color: "#aaffcc",
+    }}>Cutting Shapes</Typography>
+    <Typography sx={{
+      fontFamily: "\"Playwrite AU QLD\", cursive",
+      textAlign: "center",
+      fontWeight: 400,
+      fontSize: 14
+    }}>Chris Mountford</Typography>
+
+    <Stack>
+      <Link className="menu-item" to="/">
+        Home
+      </Link>
+      <Link className="menu-item" to="/about">
+        Credits
+      </Link>
+      <Link className="menu-item" to="/contact">
+        Contact
+      </Link>
+    </Stack>
 
     <FormControlLabel control={debugCheckbox} label="Debug" />
     <FormControlLabel control={perfCheckbox} label="Performance" />
