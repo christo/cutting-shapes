@@ -143,6 +143,8 @@ class PoseSystem {
    * If the zIndex is lower than that of the canvas it will not be above!
    * Does not attach to the given canv if already created. To reattach, call resetCanvas() first.
    * TODO: maybe automatically draw at +1 of the zIndex of canv?
+   * TODO: separate figure detection from landmark drawing
+   * TODO: move drawing out of this class, subscribe to landmarks like poses
    */
   async drawLandmarks(source: TexImageSource, timestamp: number, dest: HTMLCanvasElement, zIndex: number) {
     if (!this.canvas) {
