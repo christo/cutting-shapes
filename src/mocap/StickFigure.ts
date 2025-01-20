@@ -1,6 +1,6 @@
-import {DrawingUtils, NormalizedLandmark} from "@mediapipe/tasks-vision";
-import {Body} from "./Body.ts";
-import {midPoint} from "./Draw.ts";
+import { DrawingUtils, NormalizedLandmark } from '@mediapipe/tasks-vision';
+import { Body } from './Body.ts';
+import { midPoint } from './Draw.ts';
 
 export function drawCustomStickFigure(landmarks: NormalizedLandmark[][], ctx: CanvasRenderingContext2D, debugMode: boolean) {
   const noseIndex = Body.nose.valueOf();
@@ -44,17 +44,17 @@ export function drawCustomStickFigure(landmarks: NormalizedLandmark[][], ctx: Ca
     ctx.moveTo(x1, y1);
     ctx.lineTo(x2, y2);
     ctx.stroke();
-  }
+  };
 
   const spot = (x: number, y: number, radius: number) => {
     ctx.beginPath();
     ctx.arc(x, y, radius, 0, Math.PI * 2);
     ctx.fill();
-  }
+  };
   const cross = (x: number, y: number, size: number) => {
     line(x - size, y - size, x + size, y + size);
     line(x + size, y - size, x - size, y + size);
-  }
+  };
 
   const arc = (startX: number, startY: number, endX: number, endY: number, radiusFactor: number) => {
 
@@ -74,15 +74,15 @@ export function drawCustomStickFigure(landmarks: NormalizedLandmark[][], ctx: Ca
     ctx.beginPath();
     ctx.arc(centerX, centerY, radius, startAngle, endAngle);
     ctx.stroke();
-  }
+  };
   const canvasmirror = (l: NormalizedLandmark) => {
     return {
       x: ctx.canvas.width - (l.x * ctx.canvas.width),
       y: l.y * ctx.canvas.height,
       z: l.z,
       visibility: l.visibility,
-    }
-  }
+    };
+  };
 
   landmarks.forEach((ls, pi) => {
     if (debugMode) {
@@ -93,7 +93,7 @@ export function drawCustomStickFigure(landmarks: NormalizedLandmark[][], ctx: Ca
 
     const canvasPoint = (part: Body): NormalizedLandmark => {
       return canvasmirror(ls[part.valueOf()]);
-    }
+    };
     // draw all points
     ls.filter(l => l.visibility > 0.8).map(canvasmirror).forEach((l, i) => {
 
@@ -103,23 +103,23 @@ export function drawCustomStickFigure(landmarks: NormalizedLandmark[][], ctx: Ca
 
       switch (i) {
         case noseIndex:
-          ctx.fillStyle = "red";
+          ctx.fillStyle = 'red';
           spot(x, y, DrawingUtils.lerp(l.z, -0.15, 0.1, 15, 1));
           break;
         case leftEyeIndex:
-          ctx.fillStyle = "orange";
+          ctx.fillStyle = 'orange';
           spot(x, y, 10);
           break;
         case rightEyeIndex:
-          ctx.fillStyle = "orange";
+          ctx.fillStyle = 'orange';
           spot(x, y, 10);
           break;
         default:
           if (debugMode) {
-            ctx.strokeStyle = "blue";
-            cross(x, y, 5)
+            ctx.strokeStyle = 'blue';
+            cross(x, y, 5);
           }
-          break
+          break;
       }
     });
 
@@ -127,7 +127,7 @@ export function drawCustomStickFigure(landmarks: NormalizedLandmark[][], ctx: Ca
     let mouthLeft = canvasPoint(Body.mouth_left);
     let mouthRight = canvasPoint(Body.mouth_right);
     if (mouthLeft.visibility > 0.6 && mouthRight.visibility > 0.6) {
-      ctx.strokeStyle = "red";
+      ctx.strokeStyle = 'red';
       ctx.lineWidth = 4;
       arc(mouthRight.x, mouthRight.y, mouthLeft.x, mouthLeft.y, 0.6);
       arc(mouthRight.x, mouthRight.y, mouthLeft.x, mouthLeft.y, 0.8);
