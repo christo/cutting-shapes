@@ -2,37 +2,45 @@
 
 Hopefully all rigged, many are free.
 
-* https://market.pmnd.rs/model/pirate-officer
-* https://market.pmnd.rs/model/skater-female
-* https://market.pmnd.rs/model/skater-male
-* https://itch.io/game-assets/tag-gltf
-* https://www.cgtrader.com/3d-models/character/man/cyberpunk-hacker-game-ready-character-model
-* https://www.cgtrader.com/3d-models/character/woman/cyberpunk-tattooed-woman-pbr-unreal-engine-4
-* https://www.cgtrader.com/3d-models/character/woman/barbie-ecf01051-0b6a-402f-ae98-5384b24a2188
-* https://www.renderhub.com/elegant-mesh-3d/naked-girl-asian-woman-realtime-japanese-korean-female-3d
-* https://www.turbosquid.com/3d-models/female-cyborg-842954
-* https://www.turbosquid.com/3d-models/redhead-woman-in-leather-suit-fully-rigged-pbr-1755366
-* https://www.turbosquid.com/3d-models/cyborg-girl-1769186
-* https://www.turbosquid.com/3d-models/mountiangiant-lwo-385158
-* https://www.turbosquid.com/3d-models/fairy-404521
+## Good Commercial Models
+
+* $ very cool high detail https://www.cgtrader.com/3d-models/character/clothing/hazmat-character
+* $ https://www.cgtrader.com/3d-models/character/fantasy-character/post-apocalyptic-girl-e2502e73-b2db-4518-9942-3b77ec9f6552
+* pack https://www.cgtrader.com/3d-model-collections/post-apocalyptic-characters-pack-98e3e36e-aae6-42e2-a5b0-2d5b12645607
+* $104.31 amazing https://www.cgtrader.com/3d-models/character/fantasy-character/girl-monk-vma01
+* $ https://www.cgtrader.com/3d-models/character/man/cyberpunk-hacker-game-ready-character-model
+* $ https://www.cgtrader.com/3d-models/character/woman/cyberpunk-tattooed-woman-pbr-unreal-engine-4
+* $ https://www.cgtrader.com/3d-models/character/woman/barbie-ecf01051-0b6a-402f-ae98-5384b24a2188
+* $ sexy https://www.turbosquid.com/3d-models/woman-with-scifi-space-suit-1740616
+* $ https://www.turbosquid.com/3d-models/minimal-astronaut-3d-cartoon-character-1795098
+* $ pack https://www.turbosquid.com/3d-models/winter-people-pack-rigged-and-animated-2041812
+* $25 https://www.turbosquid.com/3d-models/girl-in-shiny-black-outfit-rigged-1004217
+* $9.94 https://www.turbosquid.com/3d-models/cartoon-astronaut-1600696
+* $60 yeti https://www.cgtrader.com/3d-models/character/fantasy-character/yeti-with-groom-hair
+* https://www.cgtrader.com/3d-models/character/sci-fi-character/sci-fi-droid
+
+## Free Rigged Models
+
+* humanoid robot https://www.cgtrader.com/free-3d-models/character/sci-fi-character/robot-da945a7b-84a1-4d53-98fa-4b628cb77c31
+* cartoon bear https://www.cgtrader.com/free-3d-models/animals/mammal/cartoon-rigged-bear
+* https://www.cgtrader.com/free-3d-models/character/woman/ruby-blue-fortnite
+* https://www.cgtrader.com/free-3d-models/character/woman/girl-blind
+* https://www.cgtrader.com/free-3d-models/character/sci-fi-character/astronaut-d481bc2e-fbf7-4512-93de-f1a6f429c7a6
+* https://www.cgtrader.com/free-3d-models/character/sci-fi-character/the-low-poly-astronaut
+* https://www.cgtrader.com/free-3d-models/character/woman/wild-stylized-girl-animation-ready
 * https://www.turbosquid.com/3d-models/walking-plastic-man-446067
-* https://www.turbosquid.com/3d-models/woman-with-scifi-space-suit-1740616
-* https://www.turbosquid.com/3d-models/minimal-astronaut-3d-cartoon-character-1795098
-* https://www.turbosquid.com/3d-models/brian-griffin-609969
-* https://www.turbosquid.com/3d-models/winter-people-pack-rigged-and-animated-2041812
+* https://market.pmnd.rs/model/pirate-officer
+* https://poly.pizza/bundle/100-Avatars-R1-amJ23JjkKG
+* https://www.turbosquid.com/3d-models/fairy-404521
+* https://itch.io/game-assets/tag-gltf
+* dog https://www.turbosquid.com/3d-models/brian-griffin-609969 "editorial use only"
 * https://www.turbosquid.com/3d-models/female-robot-707421
-* https://www.turbosquid.com/3d-models/girl-in-shiny-black-outfit-rigged-1004217
-* https://www.turbosquid.com/3d-models/cartoon-astronaut-1600696
 * https://www.turbosquid.com/3d-models/cartoon-samurai-rabbit-596514
-* https://www.turbosquid.com/3d-models/clothes-for-3d-models-727725
-* https://www.turbosquid.com/3d-models/arcane-jinx-1962713
-* https://www.turbosquid.com/3d-models/clothes-727733
-* https://www.turbosquid.com/3d-models/rigged-golden-android-female-1714203
-* https://www.turbosquid.com/3d-models/djogun-753-1154074
-* https://www.turbosquid.com/3d-models/battle-machine-1245542
-* https://www.turbosquid.com/3d-models/sonic-pack-1-640134
-* https://www.turbosquid.com/3d-models/astronaut-3d-model-1663634
-* https://www.turbosquid.com/3d-models/astronaut-toy-character-white-rigged-for-cinema-4d-2020936
+* https://www.cgtrader.com/free-3d-models/character/woman/realistic-female-55d10401-55ef-421f-b715-82864cdc6b18
+* https://www.cgtrader.com/free-3d-models/character/man/special-man
+
+## Unsorted
+
 * https://sketchfab.com/3d-models/anime-3d-assassin-rabbit-d29f5cd54115424d811fa039c9c7850b
 * https://sketchfab.com/3d-models/vrcquest-de39b7051b7946fa9c23d5cbcc47f20d
 * https://sketchfab.com/3d-models/jax-for-vrm-33ff97e5b3184c4b86b7bee12bc3cc73
@@ -104,3 +112,20 @@ Hopefully all rigged, many are free.
 * https://www.cgtrader.com/3d-models/character/sci-fi-character/mx01-sci-fi-suit-male-7b343d2a-7bc5-41c9-877a-10d73739722b
 * https://www.cgtrader.com/3d-models/character/anatomy/cartoon-characters-3-03
 * https://www.cgtrader.com/3d-models/character/other/cartoon-characters-5-01
+* https://www.turbosquid.com/3d-models/clothes-for-3d-models-727725
+* https://www.turbosquid.com/3d-models/arcane-jinx-1962713
+* https://www.turbosquid.com/3d-models/clothes-727733
+* https://www.turbosquid.com/3d-models/rigged-golden-android-female-1714203
+* https://www.turbosquid.com/3d-models/djogun-753-1154074
+* https://www.turbosquid.com/3d-models/battle-machine-1245542
+* https://www.turbosquid.com/3d-models/sonic-pack-1-640134
+* https://www.turbosquid.com/3d-models/astronaut-3d-model-1663634
+* https://www.turbosquid.com/3d-models/astronaut-toy-character-white-rigged-for-cinema-4d-2020936
+
+
+## Too Sexy
+
+* $ https://www.turbosquid.com/3d-models/female-cyborg-842954
+* $ https://www.turbosquid.com/3d-models/redhead-woman-in-leather-suit-fully-rigged-pbr-1755366
+* $ https://www.turbosquid.com/3d-models/cyborg-girl-1769186
+
