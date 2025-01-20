@@ -88,7 +88,9 @@ const Home = ({ config }: HomeProps) => {
   const renderer: VideoConsumer = {
     video: async (video: HTMLVideoElement, startTimeMs: number, _deltaMs: number): Promise<void> => {
       if (staticCanvas.current) {
-        setShowSplash(false)
+        if (showSplash) {
+          setShowSplash(false)
+        }
         await poseSystem.drawLandmarks(video, startTimeMs, staticCanvas.current, 50);
       }
     }
