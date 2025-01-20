@@ -7,13 +7,12 @@ visual effects and interactive elements.
 
 ## TODO
 
-* [ ] spike 3d stick character in [babylonjs](https://www.babylonjs.com/)
+* [x] spike 3d character in [babylonjs](https://www.babylonjs.com/)
   can be hand-coded meshes or loaded character, whatever is easiest
   * [x] hello world scene
-  * [ ] try without react-bablyonjs
-  * [ ] read https://brianzinn.github.io/react-babylonjs/examples
-  * [ ] get example running
-  * [ ] try to load gltf rigged character into scene
+  * [x] try without react-bablyonjs
+  * [x] get example running
+  * [x] try to load gltf rigged character into scene
 * [ ] read https://temugeb.github.io/python/computer_vision/2021/09/14/bodypose3d.html
 * test different 3d model sources
   * VRM format is popular for V-tubers: https://sketchfab.com/search?q=tag%3Avrm&sort_by=-likeCount&type=models
