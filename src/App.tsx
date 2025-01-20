@@ -6,6 +6,7 @@ import Home from './components/Home';
 import Contact from './components/Contact';
 import About from './components/About';
 import {Config} from "./Config.ts";
+import { PUPPETS } from './mocap/Puppet.ts';
 
 function App() {
 
@@ -20,7 +21,7 @@ function App() {
       </div>
       <Routes>
         <Route path="/" element={<Home config={config} />} />
-        <Route path="/about" element={<About />} />
+        <Route path="/about" element={<About puppets={PUPPETS}/>} />
         <Route path="/contact" element={<Contact />} />
       </Routes>
     </Router>
