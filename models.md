@@ -21,6 +21,7 @@ Hopefully all rigged, many are free.
 
 ## Free Rigged Models
 
+* CC0 https://quaternius.com/packs/ultimatedanimatedcharacter.html
 * humanoid robot https://www.cgtrader.com/free-3d-models/character/sci-fi-character/robot-da945a7b-84a1-4d53-98fa-4b628cb77c31
 * cartoon bear https://www.cgtrader.com/free-3d-models/animals/mammal/cartoon-rigged-bear
 * https://www.cgtrader.com/free-3d-models/character/woman/ruby-blue-fortnite
