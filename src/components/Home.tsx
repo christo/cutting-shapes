@@ -72,7 +72,7 @@ function Splash({showSplash}: { showSplash: boolean }) {
 
 const Home = ({ config }: HomeProps) => {
   const [showSplash, setShowSplash] = useState(true);
-  const staticCanvas = useRef<HTMLCanvasElement | null>(null);
+  const stickFigureCanvas = useRef<HTMLCanvasElement | null>(null);
   poseSystem.setConfig(config);
   const [perfTime, setPerfTime] = useState<PerfTime>(PerfTime.NULL);
   useEffect(() => {
@@ -86,15 +86,15 @@ const Home = ({ config }: HomeProps) => {
     return () => {
       cancelAnimationFrame(animationFrameId);
     };
-  }, [staticCanvas]);
+  }, [stickFigureCanvas]);
 
   const renderer: VideoConsumer = {
     video: async (video: HTMLVideoElement, startTimeMs: number, _deltaMs: number): Promise<void> => {
-      if (staticCanvas.current) {
+      if (stickFigureCanvas.current) {
         if (showSplash) {
           setShowSplash(false)
         }
-        await poseSystem.drawLandmarks(video, startTimeMs, staticCanvas.current, 50);
+        await poseSystem.drawLandmarks(video, startTimeMs, stickFigureCanvas.current, 50);
       }
     }
   };
@@ -106,7 +106,7 @@ const Home = ({ config }: HomeProps) => {
     <Box className="App-body" sx={{position: "absolute", alignContent: "center", justifyItems: "center", top: 0, left: 0, width: "100%", height: "100%"}}>
       <Splash showSplash={showSplash} />
       {config.perf && perfTime && <PerfPanel perfTime={perfTime} />}
-      <canvas ref={staticCanvas} id="main_view"
+      <canvas ref={stickFigureCanvas} id="main_view"
               style={{ position: 'absolute', left: 0, top: 0, width: '50%', height: '50%' }}></canvas>
       <Box sx={{
         position: 'absolute',
