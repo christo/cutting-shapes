@@ -1,24 +1,25 @@
 import { Axis, ISceneLoaderAsyncResult, Vector3 } from '@babylonjs/core';
+import { License } from './License.ts';
 import { RiggedModel } from './RiggedModel.tsx';
 
-const CC_BY = 'CC-BY Creative Commons By Attribution';
-const CG_ROYALTY_FREE = 'CG Trader Royalty Free License - No AI';
-const CC0 = 'CC0 (Public Domain)';
-const MIT = 'MIT License';
+const CC_BY = new License("CC-BY", 'CC-BY Creative Commons By Attribution');
+const CG_RF_NOAI = new License("CG-RF-NOAI", 'CG Trader Royalty Free License - No AI');
+const CC0 = new License("CC0", 'CC0 (Public Domain)');
+const MIT = new License("MIT", 'MIT License');
 
 type PostLoader = (r: ISceneLoaderAsyncResult) => void;
 
 export class Puppet implements RiggedModel {
   readonly attribution: string;
   readonly name: string;
-  readonly license: string;
+  readonly license: License;
   readonly filepath: string;
   readonly headIdx: number;
   readonly charMeshIdx: number;
   readonly src: string;
   postLoad: PostLoader;
 
-  constructor(name: string, attribution: string, license: string, src: string,
+  constructor(name: string, attribution: string, license: License, src: string,
               filepath: string,
               headIdx: number, charMeshIdx: number, setup: PostLoader = () => {}) {
     this.name = name;
@@ -38,7 +39,7 @@ const lpp = (name: string, path: string) => {
 };
 export const PUPPETS = [
 
-  new Puppet('Toon Trooper', 'Toon Trooper by Blender Zone', CG_ROYALTY_FREE,
+  new Puppet('Toon Trooper', 'Toon Trooper by Blender Zone', CG_RF_NOAI,
     'https://www.cgtrader.com/free-3d-models/character/sci-fi-character/toon-trooper-rigged', '/3d/TROOPER.glb',
     3, 0, (r) => {
       r.meshes[0].scaling = new Vector3(0.2, 0.2, 0.2);
@@ -52,7 +53,7 @@ export const PUPPETS = [
     'https://poly.pizza/m/dLHpzNdygsg', '/3d/Astronaut.glb', 0, 0),
 
   // did not appear although model data could be logged (blender export probably done wrong):
-  new Puppet('Astronaut Orange Trim', 'Astronaut free VR / AR / low-poly 3d model', CG_ROYALTY_FREE,
+  new Puppet('Astronaut Orange Trim', 'Astronaut free VR / AR / low-poly 3d model', CG_RF_NOAI,
     'https://www.cgtrader.com/free-3d-models/character/sci-fi-character/astronaut-d481bc2e-fbf7-4512-93de-f1a6f429c7a6',
     '/3d/astronaut-orange-trim_4882913_Astronaut_1.glb', 3, 1),
   new Puppet('SkaterGirl', 'Female Skater by Kenney', CC0,
