@@ -14,9 +14,9 @@ import {
 import { Box } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 import '@babylonjs/loaders';
+import { dumpMeshes, dumpSkeletons } from './ModelDebug.ts';
 import { Pose } from './Pose.ts';
 import { Puppet, PUPPETS } from './Puppet.ts';
-import { dumpMeshes, dumpSkeletons } from './ModelDebug.ts';
 
 
 let punterIndex = 0;
