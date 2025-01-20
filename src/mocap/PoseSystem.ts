@@ -34,6 +34,26 @@ function cloneLandmarks(nlss: NormalizedLandmark[][]): NormalizedLandmark[][] {
 }
 
 /**
+ * Canonical comparison for detected poses in the form of
+ * @param a
+ * @param b
+ */
+const compareNlss = (a: NormalizedLandmark[], b:NormalizedLandmark[]) => {
+  // guessing most likely visible landmark is a shoulder
+  // x position preferred in camera field because gravity
+  // future: empirical evidence from reference video of most useful way to distinguish people
+  return a[Body.left_shoulder].x - b[Body.left_shoulder].x;
+}
+
+/**
+ * In place canonical reordering to impose inter-frame stability.
+ * @param nlss
+ */
+function sortPeople(nlss: NormalizedLandmark[][]) {
+  nlss.sort(compareNlss)
+}
+
+/**
  * Component responsible for low-latency client-side image analysis to find people in the camera-field
  */
 class PoseSystem {
