@@ -116,8 +116,8 @@ export function Render3D({ sx, poseSupplier }: Render3DProps) {
     }
   }, []);
 
-  return <Box sx={{ border: 'dotted purple thick', ...sx }}>
-    <canvas ref={renderCanvas} width="600" height="400"></canvas>
+  return <Box sx={sx}>
+    <canvas ref={renderCanvas} style={{width: '100%', height: '100%'}}></canvas>
   </Box>;
 }
 
