@@ -42,12 +42,17 @@ async function loadPunter(scene: Scene, model: Puppet, poses: () => Pose[]) {
   }
   if (skeleton) {
     let bone = skeleton.bones[model.headIdx];
+    // depending on the mesh/skeleton, need to use TransformNode
+    // TODO figure out determinant - when/if/always etc.
     const tn = bone.getTransformNode();
     if (tn) {
       scene.registerBeforeRender(function() {
         const pose = poses()[0];
         tn.rotation = new Vector3(pose.headRotX, pose.headRotY, pose.headRotZ);
       });
+    } else {
+      // TODO maybe rotate the bone directly if there's no TransformNode?
+      console.warn(`no transform node on bone ${bone.name}`);
     }
 
   }
