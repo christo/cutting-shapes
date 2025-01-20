@@ -31,7 +31,7 @@ async function loadPunter(scene: Scene, model: Puppet, poses: () => Pose[]) {
   puppet.showBoundingBox = true;
   puppet.position.x = 0;
   puppet.position.y = 0;
-  puppet.position.z = -2;
+  puppet.position.z = 0;
   console.log(`${result.skeletons.length} skeletons`);
   dumpSkeletons(result.skeletons);
   const skeleton = result.skeletons[0];
@@ -74,19 +74,12 @@ export function Render3D({ sx, poses }: Render3DProps) {
       const canvas = renderCanvas.current;
       const engine = new Engine(canvas, true);
       const createScene = async function() {
-        // Creates a basic Babylon Scene object
         const scene = new Scene(engine);
-        // Creates and positions a free camera
-        const camera = new FreeCamera('camera1', new Vector3(0, 2.8, -5), scene);
-        // Targets the camera to scene origin
-        camera.setTarget(Vector3.Zero());
-        // This attaches the camera to the canvas
+        const camera = new FreeCamera('camera1', new Vector3(0, 1.3, -4), scene);
+        camera.setTarget(new Vector3(0, 1, 0));
         camera.attachControl(canvas, true);
-        // Creates a light, aiming 0,1,0 - to the sky
         const light = new HemisphericLight('light', new Vector3(0, 1, 0), scene);
-        // Dim the light a small amount - 0 to 1
         light.intensity = 0.7;
-        // Built-in 'ground' shape.
         const ground = MeshBuilder.CreateGround('ground', { width: 8, height: 8 }, scene);
         const groundMaterial = new StandardMaterial('Ground Material', scene);
         groundMaterial.diffuseColor = Color3.Purple();
