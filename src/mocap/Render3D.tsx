@@ -108,7 +108,6 @@ export function Render3D({ sx, poseSupplier }: Render3DProps) {
         });
         setScene(scene);
         window.addEventListener('resize', () => {
-          console.log('resizing 3d engine');
           // assumes scene canvas is proportional to window
           engine.resize();
         });
