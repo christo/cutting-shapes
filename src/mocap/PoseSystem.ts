@@ -197,7 +197,7 @@ class PoseSystem {
 
   /**
    * Precisely fits a new canvas element on the given element.
-   * @param image
+   * @param canv target
    * @param zIndex the z-height of the created canvas
    * @private
    */
