@@ -23,9 +23,10 @@ const PerfDetail = ({ perfTime }: { perfTime: PerfTime }) => {
     }
   };
   const sx = {
-    fontFamily: '"JetBrainsMono Nerd Font", monospace',
+    fontFamily: '"Kode Mono", monospace',
     fontSize: '22px',
-    fontWeight: 'bold',
+    fontWeight: 400,
+    fontStyle: 'normal',
     textShadow: '0 0 5px rgba(200, 50, 50, 0.7), 0 0 8px rgba(200, 50, 50, 0.4)',
   };
   // TODO format prettier with grid:
