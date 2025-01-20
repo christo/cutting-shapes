@@ -1,7 +1,6 @@
-
 export class RingStat {
   private index: number;
-  private readonly list: number[]
+  private readonly list: number[];
   private readonly size: number;
 
   constructor(size: number) {
@@ -25,6 +24,6 @@ export class RingStat {
     for (let i = 0; i < this.list.length; i++) {
       sum += this.list[i];
     }
-    return sum/this.list.length;
+    return sum / this.list.length;
   }
 }
