@@ -2,7 +2,6 @@ import { Box, CircularProgress, Stack, Typography } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 import { Config } from '../Config.ts';
 import { PerfTime } from '../mocap/PerfTime.ts';
-import { Pose } from '../mocap/Pose.ts';
 import { PoseSystem } from '../mocap/PoseSystem.ts';
 import { Render3D } from '../mocap/Render3D.tsx';
 import { VideoCamera, VideoConsumer } from '../mocap/VideoCamera.tsx';
@@ -95,14 +94,11 @@ const Home = ({ config }: HomeProps) => {
         if (showSplash) {
           setShowSplash(false)
         }
-        await poseSystem.drawLandmarks(video, startTimeMs, stickFigureCanvas.current, 50);
+        await poseSystem.detect(video, startTimeMs);
+        poseSystem.justDraw(stickFigureCanvas.current, 50);
       }
     }
   };
-  const poses = () => {
-    // TODO proper implementation
-    return [new Pose(0, Math.sin(performance.now()/300), 0)]
-  }
   return (
     <Box className="App-body" sx={{position: "absolute", alignContent: "center", justifyItems: "center", top: 0, left: 0, width: "100%", height: "100%"}}>
       <Splash showSplash={showSplash} />
@@ -118,7 +114,7 @@ const Home = ({ config }: HomeProps) => {
       }}>
         <VideoCamera consumers={[renderer]} />
       </Box>
-      <Render3D sx={{position: 'absolute', left: 0, bottom: 0, width: '50%', height: '50%'}} poses={poses}/>
+      <Render3D sx={{position: 'absolute', left: 0, bottom: 0, width: '50%', height: '50%'}} poseSupplier={poseSystem.subscribe}/>
     </Box>
   );
 };

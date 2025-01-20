@@ -1,16 +1,18 @@
+import { SkeletalRotation } from './SkeletalRotation.ts';
+
+
+export type PoseSupplier = () => Pose[];
 
 /**
  * Project domain representation of body position.
  * Default position is canonical T-pose.
  */
 export class Pose {
-  headRotX: number;
-  headRotY: number;
-  headRotZ: number;
+  skeletalRotation: SkeletalRotation;
 
-  constructor(headRotX: number, headRotY: number, headRotZ: number) {
-    this.headRotX = headRotX;
-    this.headRotY = headRotY;
-    this.headRotZ = headRotZ;
+  // TODO may need to integrate joint position in case skeletal rotation is crazy
+
+  constructor(skeletalRotation: SkeletalRotation) {
+    this.skeletalRotation = skeletalRotation;
   }
 }

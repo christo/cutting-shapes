@@ -15,7 +15,7 @@ import { Box } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 import '@babylonjs/loaders';
 import { dumpMeshes, dumpSkeletons } from './ModelDebug.ts';
-import { Pose } from './Pose.ts';
+import { Pose, PoseSupplier } from './Pose.ts';
 import { Puppet, PUPPETS } from './Puppet.ts';
 
 
@@ -47,8 +47,15 @@ async function loadPunter(scene: Scene, model: Puppet, poses: () => Pose[]) {
     const tn = bone.getTransformNode();
     if (tn) {
       scene.registerBeforeRender(function() {
-        const pose = poses()[0];
-        tn.rotation = new Vector3(pose.headRotX, pose.headRotY, pose.headRotZ);
+
+        const poses1 = poses();
+        if (poses1.length > 0) {
+          const pose = poses1[0];
+          const headRot = pose.skeletalRotation.head;
+          // note rotation is ignored if rotationQuaternion is set
+          // TODO confirm chirality, may need per-model sign flips in Puppet
+          tn.rotation = new Vector3(headRot.pitch, headRot.yaw, headRot.roll);
+        }
       });
     } else {
       // TODO maybe rotate the bone directly if there's no TransformNode?
@@ -61,7 +68,7 @@ async function loadPunter(scene: Scene, model: Puppet, poses: () => Pose[]) {
 
 interface Render3DProps {
   sx: any; // TODO what type should this be to pass to mui component?
-  poses: () => Pose[];
+  poseSupplier: PoseSupplier;
 }
 
 /**
@@ -69,7 +76,7 @@ interface Render3DProps {
  * @param sx
  * @constructor
  */
-export function Render3D({ sx, poses }: Render3DProps) {
+export function Render3D({ sx, poseSupplier }: Render3DProps) {
 
   const renderCanvas = useRef<HTMLCanvasElement | null>(null);
   const [scene, setScene] = useState<Scene | null>(null);
@@ -89,7 +96,7 @@ export function Render3D({ sx, poses }: Render3DProps) {
         const groundMaterial = new StandardMaterial('Ground Material', scene);
         groundMaterial.diffuseColor = Color3.Purple();
         ground.material = groundMaterial;
-        await loadPunter(scene, PUPPETS[punterIndex], poses);
+        await loadPunter(scene, PUPPETS[punterIndex], poseSupplier);
 
         return scene;
       };

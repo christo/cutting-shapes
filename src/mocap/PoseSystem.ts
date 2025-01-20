@@ -65,25 +65,57 @@ class PoseSystem {
   private msRenderTime: RingStat = new RingStat(100);
   private msUpdateTime: RingStat = new RingStat(100);
 
-  private prevLandmarks: NormalizedLandmark[][] | undefined;
+  /**
+   * Historic storage for subscribers and calculating smoothed motion.
+   * future: consider kalman filtering, prediction and configurable histeresis
+   * @private
+   */
+  private prevLandmarks: NormalizedLandmark[][] = [];
+
+  /**
+   * True iff pose cache invalid.
+   */
+  private poseCacheDirty: boolean = true;
+
+  /**
+   * Calculated from landmarks. Each pose corresponds to a person, canonically ordered by
+   * landmark sorting.
+   * @private
+   */
+  private poseCache: Pose[] = [];
 
   /**
    * WasmFileset that holds GPU or CPU inference bundle. Accessed through {@link #getVision()}
    */
   private vision: any;
   private canvas: HTMLCanvasElement | null = null;
+
+  /**
+   * Reference to MediaPipe service interface.
+   * @private
+   */
   private poseLandmarker: PoseLandmarker | null = null;
+
+  /**
+   * Dynamic mutable settings.
+   * @private
+   */
   private config: Config = new Config();
 
-  smooth(nlss: NormalizedLandmark[][]): NormalizedLandmark[][] {
+  /**
+   * Returns a new object graph, including smoothing (if configured)
+   * @param nlss
+   */
+  processLandmarks(nlss: NormalizedLandmark[][]): NormalizedLandmark[][] {
     // TODO better smoothing using configurable proportional hysteresis etc.
     // TODO verify bug with more than 1 person: person index is probably unstable?
     //      so I need canonical sort (use, say, x pos of left shoulder?)
     // TODO if the number of landmarks in a single pose is previously smaller, just clone the new one
+    // TODO multi-person logic needs serious review
     // currently smooth by averaging last two landmark points by finding the
     // midpoint between previous and next
-    if (this.prevLandmarks) {
-      this.prevLandmarks = this.prevLandmarks.map((nls: NormalizedLandmark[], nlsIdx: number) => {
+    if (this.prevLandmarks.length > 0 && this.config.smoothing) {
+      return this.prevLandmarks.map((nls: NormalizedLandmark[], nlsIdx: number) => {
         return nls.map((nl: NormalizedLandmark, nlIdx: number) => {
           if (nlss.length > nlsIdx && nlss[nlsIdx].length > nlIdx) {
             return midPoint(nl, nlss[nlsIdx][nlIdx]);
@@ -93,11 +125,9 @@ class PoseSystem {
           }
         });
       });
-      return this.prevLandmarks;
     } else {
-      // straight clone because there is no history
-      this.prevLandmarks = cloneLandmarks(nlss);
-      return this.prevLandmarks;
+      // straight clone
+      return cloneLandmarks(nlss);
     }
   }
 
@@ -114,46 +144,31 @@ class PoseSystem {
   };
 
   /**
-   * Gets body poses with trained model, running on GPU
-   * @param numPoses the maximum number of people to detect
-   * @param runningMode
+   * A function that always returns the latest pose landmarks.
    */
-  async getPose(numPoses: 1 | 2 = 1, runningMode: RunningMode = 'VIDEO'): Promise<PoseLandmarker> {
-    if (!this.poseLandmarker) {
-      console.log('creating pose landmarker');
-      this.poseLandmarker = await PoseLandmarker.createFromOptions(await this.getVision(), {
-        baseOptions: {
-          modelAssetPath: `/models/pose_landmarker_heavy.task`,
-          delegate: 'GPU',
-        },
-        runningMode: runningMode,
-        numPoses: numPoses,
-      });
+  subscribe: () => Pose[] = () => {
+    if (this.poseCacheDirty) {
+      this.poseCache = this.calcPose(this.prevLandmarks);
+      this.poseCacheDirty = false;
     }
-    if (this.poseLandmarker) {
-      return this.poseLandmarker;
-    } else {
-      console.warn('no poseLandmarker');
-      return Promise.reject('No Pose Landmarker');
-    }
-  }
+    return this.poseCache;
+  };
 
   /**
    * Draw landmarks as a registered overlay canvas over the given canvas at the given zIndex.
    * If the zIndex is lower than that of the canvas it will not be above!
    * Does not attach to the given canv if already created. To reattach, call resetCanvas() first.
    * TODO: maybe automatically draw at +1 of the zIndex of canv?
-   * TODO: separate figure detection from landmark drawing
    * TODO: move drawing out of this class, subscribe to landmarks like poses
    */
-  async drawLandmarks(source: TexImageSource, timestamp: number, dest: HTMLCanvasElement, zIndex: number) {
+  justDraw(dest: HTMLCanvasElement, zIndex: number) {
+    const startUpdate = performance.now();
     if (!this.canvas) {
       // lazy init canvas
       console.log('lazy init drawing canvas');
       dest.parentNode!.appendChild(this.overlayCanvas(dest, zIndex));
     }
     if (this.canvas) {
-      const startUpdate = performance.now();
       // TODO use 3D canvas drawing context?
       const ctx = this.canvas.getContext('2d', {
         willReadFrequently: false, // TODO do we need this or anything here?
@@ -171,20 +186,42 @@ class PoseSystem {
       }
       ctx!.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-      const plm = await this.getPose(2, 'VIDEO');
-      const startVision = performance.now();
-      plm.detectForVideo(source, timestamp, (result: PoseLandmarkerResult) => {
-        this.msVisionTime.push(performance.now() - startVision);
-        const startRender = performance.now();
-        // drawDefaultLandmarkers(result, ctx);
-        const landmarks = this.config.smoothing ? this.smooth(result.landmarks) : result.landmarks;
-        drawCustomStickFigure(landmarks, ctx, this.config.debug);
-        this.msRenderTime.push(performance.now() - startRender);
-      });
-      this.msUpdateTime.push(performance.now() - startUpdate);
+
+      // const plm = await this.getLandmarker(2, 'VIDEO');
+      // const startVision = performance.now();
+      // plm.detectForVideo(source, timestamp, (result: PoseLandmarkerResult) => {
+      //   this.msVisionTime.push(performance.now() - startVision);
+      //   if (result.landmarks.length > 1) {
+      //     sortPeople(result.landmarks);
+      //   }
+      const startRender = performance.now();
+      // drawDefaultLandmarkers(result, ctx);
+      // const landmarks = this.config.smoothing ? this.processLandmarks(result.landmarks) : result.landmarks;
+
+      drawCustomStickFigure(this.prevLandmarks, ctx, this.config.debug);
+      this.msRenderTime.push(performance.now() - startRender);
+      // });
     } else {
       console.warn('PoseSystem has no canvas?');
     }
+    this.msUpdateTime.push(performance.now() - startUpdate);
+  }
+
+  /**
+   * Detects landmarks in the given source, processes according to config and stores result.
+   * @param source
+   * @param timestamp
+   */
+  async detect(source: TexImageSource, timestamp: number) {
+    const startVision = performance.now();
+    const plm = await this.getLandmarker(2, 'VIDEO');
+    plm.detectForVideo(source, timestamp, (result: PoseLandmarkerResult) => {
+      this.msVisionTime.push(performance.now() - startVision);
+      if (result.landmarks.length > 1) {
+        sortPeople(result.landmarks);
+      }
+      this.prevLandmarks = result.landmarks;
+    });
   }
 
   /**
@@ -195,6 +232,52 @@ class PoseSystem {
       this.canvas.remove();
     }
     this.poseLandmarker = null;
+  }
+
+  /**
+   * Calculate the skeletal poses from the given landmarks.
+   * @param lss
+   */
+  calcPose(lss: NormalizedLandmark[][]): Pose[] {
+    // TODO unit test
+    if (this.poseCacheDirty) {
+      for (let i = 0; i < lss.length; i++) {
+        const ls = this.prevLandmarks[i];
+        // @ts-ignore
+        const midEar = midPoint(ls[Body.left_ear], ls[Body.right_ear]);
+        // head rotation vector is midEar to nose
+
+        // @ts-ignore
+        const midEye = midPoint(ls[Body.left_eye], ls[Body.right_ear]);
+
+      }
+    }
+    return [];
+  }
+
+  /**
+   * Gets body poses with trained model, running on GPU
+   * @param numPoses the maximum number of people to detect
+   * @param runningMode
+   */
+  private async getLandmarker(numPoses: 1 | 2 = 1, runningMode: RunningMode = 'VIDEO'): Promise<PoseLandmarker> {
+    if (!this.poseLandmarker) {
+      console.log('creating pose landmarker');
+      this.poseLandmarker = await PoseLandmarker.createFromOptions(await this.getVision(), {
+        baseOptions: {
+          modelAssetPath: `/models/pose_landmarker_heavy.task`,
+          delegate: 'GPU',
+        },
+        runningMode: runningMode,
+        numPoses: numPoses,
+      });
+    }
+    if (this.poseLandmarker) {
+      return this.poseLandmarker;
+    } else {
+      console.warn('no poseLandmarker');
+      return Promise.reject('No Pose Landmarker');
+    }
   }
 
   /**
@@ -239,4 +322,4 @@ class PoseSystem {
   }
 }
 
-export { PoseSystem, PerfTime };
+export { PoseSystem };
