@@ -96,16 +96,13 @@ export function Render3D({ sx, poses }: Render3DProps) {
       if (!scene) {
         createScene().then(scene => {
           engine.runRenderLoop(() => {
-
-            // try updating positions here
-            //const fatGuy = scene.meshes.find(mesh => mesh.name === 'char-fat-man-type-1');
-            //randomBoneRotations(fatGuy!);
             scene.render();
           });
         });
         setScene(scene);
         window.addEventListener('resize', () => {
           console.log('resizing 3d engine');
+          // assumes scene canvas is proportional to window
           engine.resize();
         });
       }
