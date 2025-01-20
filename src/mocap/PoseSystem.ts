@@ -73,6 +73,7 @@ class PoseSystem {
     // TODO better smoothing using configurable proportional hysteresis etc.
     // TODO verify bug with more than 1 person: person index is probably unstable?
     //      so I need canonical sort
+    // TODO if the number of landmarks in a single pose is previously smaller, just clone the new one
     // currently smooth by averaging last two landmark points by finding the
     // midpoint between previous and next
     if (this.prevLandmarks) {
