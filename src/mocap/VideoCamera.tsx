@@ -1,4 +1,4 @@
-import {MutableRefObject, useEffect, useRef, useState} from "react";
+import { MutableRefObject, useEffect, useRef, useState } from 'react';
 
 interface VideoConsumer {
   video: (video: HTMLVideoElement, startTimeMs: number, deltaMs: number) => Promise<void>,
@@ -10,7 +10,7 @@ interface VideoConsumer {
  * and current state.
  * @param consumers each will be passed the video on each frame update.
  */
-function VideoCamera({consumers}: { consumers: VideoConsumer[]}) {
+function VideoCamera({ consumers }: { consumers: VideoConsumer[] }) {
   const camRef: MutableRefObject<HTMLVideoElement | null> = useRef(null);
   const [lastVideoTime, setLastVideoTime] = useState(-1);
 
@@ -28,23 +28,23 @@ function VideoCamera({consumers}: { consumers: VideoConsumer[]}) {
         window.requestAnimationFrame(readVideoFrame);
       }
 
-      navigator.mediaDevices.getUserMedia({video: true, audio: true})
-          .then(function (stream) {
-            if (camRef.current) {
-              camRef.current.srcObject = stream;
-              camRef.current.addEventListener("loadeddata", readVideoFrame);
-            }
-          })
-          .catch((err) => {
-            // camRef will simply not be set
-            console.error(`webcam error: `, err);
-          });
+      navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+        .then(function(stream) {
+          if (camRef.current) {
+            camRef.current.srcObject = stream;
+            camRef.current.addEventListener('loadeddata', readVideoFrame);
+          }
+        })
+        .catch((err) => {
+          // camRef will simply not be set
+          console.error(`webcam error: `, err);
+        });
     }
   }, []);
   // we seemingly need to attach camera video stream to an on-page html element probably so it binds to gpu context
   // enabling gpu ai model direct access to the video frame, it can be hidden:
   // {display: none} breaks it but {visibility: hidden} does not
-  return <video ref={camRef} autoPlay playsInline style={{transform: 'scaleX(-1)'}}></video>
+  return <video ref={camRef} autoPlay playsInline style={{ transform: 'scaleX(-1)' }}></video>;
 }
 
-export {VideoCamera, type VideoConsumer};
+export { VideoCamera, type VideoConsumer };
