@@ -34,7 +34,7 @@ const PerfDetail = ({ perfTime }: { perfTime: PerfTime }) => {
     <Typography sx={sx}>{formatNumber(perfTime.msVisionTime)} ms vision</Typography>
     <Typography sx={sx}>{formatNumber(perfTime.msRenderTime)} ms render</Typography>
     <Typography sx={sx}>{formatNumber(perfTime.msUpdateTime)} ms update</Typography>
-    <Typography sx={sx}>{formatNumber(1000 / perfTime.msUpdateTime)} Hz u-freq</Typography>
+    <Typography sx={sx}>{formatNumber(1000 / perfTime.msUpdateTime)} Hz uMfreq</Typography>
   </>;
 };
 
