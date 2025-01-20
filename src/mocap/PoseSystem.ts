@@ -59,7 +59,7 @@ class PoseSystem {
   private msRenderTime: RingStat = new RingStat(100);
   private msUpdateTime: RingStat = new RingStat(100);
 
-  private previousLm: NormalizedLandmark[][] | undefined;
+  private prevLandmarks: NormalizedLandmark[][] | undefined;
 
   /**
    * WasmFileset that holds GPU or CPU inference bundle. Accessed through {@link #getVision()}
@@ -71,19 +71,21 @@ class PoseSystem {
 
   smooth(nlss: NormalizedLandmark[][]): NormalizedLandmark[][] {
     // TODO better smoothing using configurable proportional hysteresis etc.
+    // TODO verify bug with more than 1 person: person index is probably unstable?
+    //      so I need canonical sort
     // currently smooth by averaging last two landmark points by finding the
     // midpoint between previous and next
-    if (this.previousLm) {
-      this.previousLm = this.previousLm.map((nls: NormalizedLandmark[], nlsIdx: number) => {
+    if (this.prevLandmarks) {
+      this.prevLandmarks = this.prevLandmarks.map((nls: NormalizedLandmark[], nlsIdx: number) => {
         return nls.map((nl: NormalizedLandmark, nlIdx: number) => {
           return midPoint(nl, nlss[nlsIdx][nlIdx]);
         });
       });
-      return this.previousLm;
+      return this.prevLandmarks;
     } else {
       // straight clone because there is no history
-      this.previousLm = cloneLandmarks(nlss);
-      return this.previousLm;
+      this.prevLandmarks = cloneLandmarks(nlss);
+      return this.prevLandmarks;
     }
   }
 
