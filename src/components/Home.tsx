@@ -99,7 +99,7 @@ const Home = ({ config }: HomeProps) => {
   };
   const poses = () => {
     // TODO proper implementation
-    return [new Pose(0, Math.sin(performance.now()/200), 0)]
+    return [new Pose(0, Math.sin(performance.now()/300), 0)]
   }
   return (
     <Box className="App-body" sx={{position: "absolute", alignContent: "center", justifyItems: "center", top: 0, left: 0, width: "100%", height: "100%"}}>
