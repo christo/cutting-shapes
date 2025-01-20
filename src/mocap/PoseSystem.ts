@@ -154,6 +154,7 @@ class PoseSystem {
     }
     if (this.canvas) {
       const startUpdate = performance.now();
+      // TODO use 3D canvas drawing context?
       const ctx = this.canvas.getContext('2d', {
         willReadFrequently: false, // TODO do we need this or anything here?
       })!;
