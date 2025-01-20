@@ -78,7 +78,12 @@ class PoseSystem {
     if (this.prevLandmarks) {
       this.prevLandmarks = this.prevLandmarks.map((nls: NormalizedLandmark[], nlsIdx: number) => {
         return nls.map((nl: NormalizedLandmark, nlIdx: number) => {
-          return midPoint(nl, nlss[nlsIdx][nlIdx]);
+          if (nlss.length > nlsIdx && nlss[nlsIdx].length > nlIdx) {
+            return midPoint(nl, nlss[nlsIdx][nlIdx]);
+          } else {
+            // new corresponding landmark is missing, return prev instead
+            return nl;
+          }
         });
       });
       return this.prevLandmarks;

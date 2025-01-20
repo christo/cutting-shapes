@@ -1,6 +1,7 @@
 import { Box, CircularProgress, Stack, Typography } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 import { Config } from '../Config.ts';
+import { Pose } from '../mocap/Pose.ts';
 import { PerfTime, PoseSystem } from '../mocap/PoseSystem.ts';
 import { Render3D } from '../mocap/Render3D.tsx';
 import { VideoCamera, VideoConsumer } from '../mocap/VideoCamera.tsx';
@@ -74,6 +75,7 @@ const Home = ({ config }: HomeProps) => {
   poseSystem.setConfig(config);
   const [perfTime, setPerfTime] = useState<PerfTime>(PerfTime.NULL);
   useEffect(() => {
+    console.log("effect: setup updatestats");
     let animationFrameId: number;
     const updateStats = () => {
       setPerfTime(poseSystem.calcPerfTime());
@@ -83,7 +85,7 @@ const Home = ({ config }: HomeProps) => {
     return () => {
       cancelAnimationFrame(animationFrameId);
     };
-  }, []);
+  }, [staticCanvas]);
 
   const renderer: VideoConsumer = {
     video: async (video: HTMLVideoElement, startTimeMs: number, _deltaMs: number): Promise<void> => {
@@ -95,7 +97,10 @@ const Home = ({ config }: HomeProps) => {
       }
     }
   };
-
+  const poses = () => {
+    // TODO proper implementation
+    return [new Pose(0, Math.sin(performance.now()/200), 0)]
+  }
   return (
     <Box className="App-body" sx={{position: "absolute", alignContent: "center", justifyItems: "center", top: 0, left: 0, width: "100%", height: "100%"}}>
       <Splash showSplash={showSplash} />
@@ -111,7 +116,7 @@ const Home = ({ config }: HomeProps) => {
       }}>
         <VideoCamera consumers={[renderer]} />
       </Box>
-      <Render3D sx={{position: 'absolute', left: 0, bottom: 0, width: '50%', height: '50%'}}/>
+      <Render3D sx={{position: 'absolute', left: 0, bottom: 0, width: '50%', height: '50%'}} poses={poses}/>
     </Box>
   );
 };
