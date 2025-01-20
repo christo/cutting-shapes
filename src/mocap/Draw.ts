@@ -1,4 +1,4 @@
-import {NormalizedLandmark} from "@mediapipe/tasks-vision";
+import { NormalizedLandmark } from '@mediapipe/tasks-vision';
 
 /**
  * Calculates 3D midpoint with midpoint visibility as NormalizedLandmark.
@@ -12,4 +12,4 @@ export const midPoint = (a: NormalizedLandmark, b: NormalizedLandmark): Normaliz
     z: (a.z + b.z) / 2,
     visibility: (a.visibility + b.visibility) / 2,
   } as NormalizedLandmark;
-}
+};
