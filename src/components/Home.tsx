@@ -1,8 +1,9 @@
 import { Box, CircularProgress, Stack, Typography } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 import { Config } from '../Config.ts';
+import { PerfTime } from '../mocap/PerfTime.ts';
 import { Pose } from '../mocap/Pose.ts';
-import { PerfTime, PoseSystem } from '../mocap/PoseSystem.ts';
+import { PoseSystem } from '../mocap/PoseSystem.ts';
 import { Render3D } from '../mocap/Render3D.tsx';
 import { VideoCamera, VideoConsumer } from '../mocap/VideoCamera.tsx';
 import { Titles } from './Titles.tsx';
