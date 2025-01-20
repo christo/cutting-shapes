@@ -1,11 +1,10 @@
-// @ts-ignore
-// noinspection JSUnusedLocalSymbols
-import { AbstractMesh, Axis, Bone, Scene, SceneLoader, Skeleton } from '@babylonjs/core';
+import { AbstractMesh, Axis, Bone, Scene, SceneLoader, Skeleton, Vector3 } from '@babylonjs/core';
 
+// code for testing and debugging models
 
 // noinspection JSUnusedLocalSymbols
 // @ts-ignore
-export async function loadTestModel(scene: Scene) {
+export async function loadTestModel(scene: Scene, position: Vector3, rotation: Vector3, scale: number) {
   console.log('loading puppet');
   const strData = JSON.stringify(testModelData);
   const result = await SceneLoader.ImportMeshAsync(null, `data:${strData}`, undefined, scene);
@@ -13,9 +12,9 @@ export async function loadTestModel(scene: Scene) {
   const skeleton = result.skeletons[0];
   // @ts-ignore
   const mesh = result.meshes[0];
-
-
-  //mesh.rotation.x = Math.PI * .25;
+  mesh.position = position;
+  mesh.rotation = rotation;
+  mesh.scaling = new Vector3(scale, scale, scale);
 
   scene.registerBeforeRender(function() {
 
