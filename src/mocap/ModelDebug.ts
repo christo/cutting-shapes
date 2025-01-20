@@ -25,6 +25,7 @@ export async function loadTestModel(scene: Scene, position: Vector3, rotation: V
   });
 }
 
+/** From a babylonjs skeleton rotation example */
 const testModelData = {
   'producer': { 'name': 'Blender', 'version': '2.76 (sub 0)', 'exporter_version': '4.6.0', 'file': 'test3.babylon' },
   'autoClear': true, 'clearColor': [0.0509, 0.0509, 0.0509], 'ambientColor': [0, 0, 0], 'gravity': [0, -9.81, 0],
