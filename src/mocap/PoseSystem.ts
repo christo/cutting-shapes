@@ -107,14 +107,11 @@ class PoseSystem {
    * @param nlss
    */
   processLandmarks(nlss: NormalizedLandmark[][]): NormalizedLandmark[][] {
-    // TODO better smoothing using configurable proportional hysteresis etc.
-    // TODO verify bug with more than 1 person: person index is probably unstable?
-    //      so I need canonical sort (use, say, x pos of left shoulder?)
-    // TODO if the number of landmarks in a single pose is previously smaller, just clone the new one
     // TODO multi-person logic needs serious review
-    // currently smooth by averaging last two landmark points by finding the
-    // midpoint between previous and next
     if (this.prevLandmarks.length > 0 && this.config.smoothing) {
+      // TODO if the number of landmarks in a single pose is previously smaller, just clone the new one
+      // currently smooth by averaging last two landmark points by finding the
+      // midpoint between previous and next
       return this.prevLandmarks.map((nls: NormalizedLandmark[], nlsIdx: number) => {
         return nls.map((nl: NormalizedLandmark, nlIdx: number) => {
           if (nlss.length > nlsIdx && nlss[nlsIdx].length > nlIdx) {
@@ -185,22 +182,9 @@ class PoseSystem {
         ctx!.fillStyle = 'rgba(0, 0, 0, 1.0)';
       }
       ctx!.fillRect(0, 0, this.canvas.width, this.canvas.height);
-
-
-      // const plm = await this.getLandmarker(2, 'VIDEO');
-      // const startVision = performance.now();
-      // plm.detectForVideo(source, timestamp, (result: PoseLandmarkerResult) => {
-      //   this.msVisionTime.push(performance.now() - startVision);
-      //   if (result.landmarks.length > 1) {
-      //     sortPeople(result.landmarks);
-      //   }
       const startRender = performance.now();
-      // drawDefaultLandmarkers(result, ctx);
-      // const landmarks = this.config.smoothing ? this.processLandmarks(result.landmarks) : result.landmarks;
-
       drawCustomStickFigure(this.prevLandmarks, ctx, this.config.debug);
       this.msRenderTime.push(performance.now() - startRender);
-      // });
     } else {
       console.warn('PoseSystem has no canvas?');
     }
@@ -217,7 +201,7 @@ class PoseSystem {
     const plm = await this.getLandmarker(2, 'VIDEO');
     plm.detectForVideo(source, timestamp, (result: PoseLandmarkerResult) => {
       if (result.landmarks.length > 1) {
-        sortPeople(result.landmarks);
+        sortPeople(result.landmarks); // TODO don't mutate result?
       }
       this.prevLandmarks = this.processLandmarks(result.landmarks);
     });
