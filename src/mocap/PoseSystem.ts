@@ -6,7 +6,10 @@ import {
   PoseLandmarkerResult,
 } from '@mediapipe/tasks-vision';
 import { Config } from '../Config.ts';
+import { Body } from './Body.ts';
 import { midPoint } from './Draw.ts';
+import { PerfTime } from './PerfTime.ts';
+import { Pose } from './Pose.ts';
 import { RingStat } from './RingStat.ts';
 import { drawCustomStickFigure } from './StickFigure.ts';
 
