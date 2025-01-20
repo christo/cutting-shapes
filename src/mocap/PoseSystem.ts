@@ -216,12 +216,12 @@ class PoseSystem {
     const startVision = performance.now();
     const plm = await this.getLandmarker(2, 'VIDEO');
     plm.detectForVideo(source, timestamp, (result: PoseLandmarkerResult) => {
-      this.msVisionTime.push(performance.now() - startVision);
       if (result.landmarks.length > 1) {
         sortPeople(result.landmarks);
       }
-      this.prevLandmarks = result.landmarks;
+      this.prevLandmarks = this.processLandmarks(result.landmarks);
     });
+    this.msVisionTime.push(performance.now() - startVision);
   }
 
   /**
