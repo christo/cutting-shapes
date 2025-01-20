@@ -76,7 +76,7 @@ const Home = ({ config }: HomeProps) => {
   useEffect(() => {
     let animationFrameId: number;
     const updateStats = () => {
-      setPerfTime(poseSystem.getPerfTime());
+      setPerfTime(poseSystem.calcPerfTime());
       animationFrameId = requestAnimationFrame(updateStats);
     };
     updateStats();

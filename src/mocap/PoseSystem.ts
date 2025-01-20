@@ -91,7 +91,7 @@ class PoseSystem {
     this.config = config;
   }
 
-  getPerfTime = () => {
+  calcPerfTime = () => {
     return new PerfTime(
       this.msVisionTime.mean(),
       this.msRenderTime.mean(),
