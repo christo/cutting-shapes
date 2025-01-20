@@ -1,6 +1,6 @@
 // @ts-ignore
 // noinspection JSUnusedLocalSymbols
-import { Axis, Scene, SceneLoader } from '@babylonjs/core';
+import { AbstractMesh, Axis, Bone, Scene, SceneLoader, Skeleton } from '@babylonjs/core';
 
 
 // noinspection JSUnusedLocalSymbols
@@ -128,3 +128,22 @@ const testModelData = {
   }],
   'shadowGenerators': [],
 };
+
+function dumpBones(bones: Bone[]) {
+  console.log(bones.map((b, i) => `\tbone ${i} ${b.name}`).join(',\n'));
+}
+
+export function dumpSkeletons(skeletons: Skeleton[]) {
+  skeletons.forEach(skeleton => {
+    console.log(`skeleton ${skeleton.name} ${skeleton.bones.length} bones`);
+    dumpBones(skeleton.bones);
+    console.log('.');
+  });
+}
+
+export function dumpMeshes(meshes: AbstractMesh[]) {
+  meshes.forEach((mesh, i) => {
+    const children = mesh.getChildMeshes().length > 0 ? `${mesh.getChildMeshes().length} children` : '';
+    console.log(`mesh ${i} ${mesh.name} ${children}`);
+  });
+}
