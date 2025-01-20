@@ -29,23 +29,6 @@ function drawDefaultLandmarkers(result: PoseLandmarkerResult, ctx: CanvasRenderi
   }
 }
 
-class PerfTime {
-  msVisionTime: number;
-  msRenderTime: number;
-  msUpdateTime: number;
-  static NULL: PerfTime = new PerfTime(NaN, NaN, NaN);
-
-  constructor(msVisionTime: number, msRenderTime: number, msUpdateTime: number) {
-    this.msVisionTime = msVisionTime;
-    this.msRenderTime = msRenderTime;
-    this.msUpdateTime = msUpdateTime;
-  }
-
-  ready() {
-    return !(isNaN(this.msVisionTime) || isNaN(this.msRenderTime) || isNaN(this.msUpdateTime));
-  }
-}
-
 function cloneLandmarks(nlss: NormalizedLandmark[][]): NormalizedLandmark[][] {
   return nlss.map((nls): NormalizedLandmark[] => nls.map(nl => ({ ...nl })));
 }
