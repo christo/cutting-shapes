@@ -55,7 +55,7 @@ export const PerfPanel = ({ poseSystem }: { poseSystem: PoseSystem }) => {
     display: 'flex', alignItems: 'end',
     padding: 3,
     gap: 1,
-    margin: 2,
+    margin: 0,
     // border: 'red dashed',
     position: 'absolute', right: 0, top: 0, zIndex: 500,
     minWidth: '30%',
