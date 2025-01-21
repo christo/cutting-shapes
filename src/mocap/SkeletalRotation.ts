@@ -46,14 +46,25 @@ function v3(landmark: NormalizedLandmark): Vector3 {
   return new Vector3(landmark.x, landmark.y, landmark.z);
 }
 
+const UNIT_V3 = new Vector3(1, 1, 1);
+
+
 /**
  * Calculates the 3d rotation of a subject bone with respect to a connected reference bone.
  * e.g. calculate the rotation of the forearm at the elbow with shoulder, elbow, wrist.
  * @param startJoint start of reference bone
  * @param midJoint end of reference bone, start of subject bone
  * @param endJoint end of subject bone
+ * @param scale optional scaling factor applied to result
+ * @param offset optional constant offset applied to result after scaling
  */
-function calcBone(startJoint: Vector3, midJoint: Vector3, endJoint: Vector3,): Rot {
+function calcBone(
+  startJoint: Vector3,
+  midJoint: Vector3,
+  endJoint: Vector3,
+  scale: Vector3 = UNIT_V3,
+  offset: Vector3 = Vector3.Zero()
+  ): Rot {
   const refBone = midJoint.subtract(startJoint).normalize();
   const target = endJoint.subtract(midJoint).normalize();
 
@@ -70,7 +81,11 @@ function calcBone(startJoint: Vector3, midJoint: Vector3, endJoint: Vector3,): R
   const dot = Vector3.Dot(refBone, target);
   const roll = Math.atan2(cross.length(), dot);
 
-  return { yaw, pitch, roll };
+  return {
+    yaw: yaw * scale.x + offset.x,
+    pitch: pitch * scale.y + offset.y,
+    roll: roll * scale.z + offset.z
+  };
 }
 
 function calculateSpineRotation(
