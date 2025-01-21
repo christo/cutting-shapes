@@ -139,7 +139,6 @@ export function skeletalRotations(ls: NormalizedLandmark[]): SkeletalRotation {
   const midShoulder = Vector3.Center(leftShoulder, rightShoulder);
   const midHip = Vector3.Center(leftHip, rightHip);
 
-  // TODO midEar and midEye should be parallel, prefer deriving this line for orthogonals from highest confidence pair
   // const earsConfidence = ls[Body.left_ear].visibility + ls[Body.right_ear].visibility;
   // const outerEyesConfidence = ls[Body.left_eye_outer].visibility + ls[Body.right_eye_outer].visibility;
   // const innerEyesConfidence = ls[Body.left_eye_inner].visibility + ls[Body.right_eye_inner].visibility;
@@ -148,14 +147,18 @@ export function skeletalRotations(ls: NormalizedLandmark[]): SkeletalRotation {
   const midEar = Vector3.Center(leftEar, rightEar);
   //const midEye = Vector3.Center(leftOuterEye, rightOuterEye);
 
-  // Calculate all rotations
+  // TODO need to define joint rotation rest positions for t-pose
   return {
+    // t-pose colinear
     spine: calculateSpineRotation(leftHip, rightHip, leftShoulder, rightShoulder),
 
+    // t-pose: colinear
     neck: calcBone(midHip, midShoulder, midEar),
 
+    // t-pose has a ~90 degree pitch offset
     head: calcBone(midShoulder, midEar, nose),
 
+    // probably should be called upper arm
     leftShoulder: calcBone(midShoulder, leftShoulder, leftElbow),
 
     leftArm: calcBone(leftShoulder, leftElbow, leftWrist),
