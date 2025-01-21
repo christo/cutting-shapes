@@ -9,10 +9,6 @@ import { Titles } from './Titles.tsx';
 
 const poseSystem = new PoseSystem();
 
-interface HomeProps {
-  config: Config;
-}
-
 const PerfDetail = ({ perfTime }: { perfTime: PerfTime }) => {
   const formatNumber = (value: number) => {
     if (isNaN(value)) {
@@ -23,10 +19,11 @@ const PerfDetail = ({ perfTime }: { perfTime: PerfTime }) => {
   };
   const sx = {
     fontFamily: '"Kode Mono", monospace',
-    fontSize: '22px',
+    fontSize: '18px',
     fontWeight: 400,
     fontStyle: 'normal',
-    textShadow: '0 0 5px rgba(200, 50, 50, 0.7), 0 0 8px rgba(200, 50, 50, 0.4)',
+    color: 'rgba(255, 80, 80, 1)',
+    textShadow: '0 0 5px rgba(255, 50, 50, 0.7), 0 0 8px rgba(255, 50, 50, 0.4)',
   };
   // TODO format prettier with grid:
   return <>
@@ -67,6 +64,10 @@ function Splash({showSplash}: { showSplash: boolean }) {
   }}>
     <Titles titleFontSize={80} authorFontSize={44}/>
   </Box>;
+}
+
+interface HomeProps {
+  config: Config;
 }
 
 const Home = ({ config }: HomeProps) => {
