@@ -106,7 +106,6 @@ export function Render3D({ sx, poseSupplier }: Render3DProps) {
         groundMaterial.diffuseColor = Color3.Purple();
         ground.material = groundMaterial;
         await loadPunter(scene, PUPPETS[punterIndex], poseSupplier);
-
         return scene;
       };
       if (!scene) {
