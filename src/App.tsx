@@ -13,6 +13,8 @@ function App() {
   let defaultConfig = new Config();
   defaultConfig.perf = true;
   defaultConfig.camera = true;
+  defaultConfig.smoothing = true;
+  defaultConfig.debug = true;
   const [config, setConfig] = useState(defaultConfig);
   return (
     <Router>
