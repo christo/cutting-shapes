@@ -28,8 +28,8 @@ const SettingsPanel = ({ setConfig, config }: CommonProps) => {
   const debugCheckbox = <Switch checked={config.debug}
                                 onChange={event => setConfig({ ...config, debug: event.target.checked })}
                                 inputProps={{ 'aria-label': 'controlled' }} />;
-  const perfCheckbox = <Switch checked={config.perf}
-                               onChange={event => setConfig({ ...config, perf: event.target.checked })}
+  const perfCheckbox = <Switch checked={config.diag}
+                               onChange={event => setConfig({ ...config, diag: event.target.checked })}
                                inputProps={{ 'aria-label': 'controlled' }} />;
   const cameraCheckbox = <Switch checked={config.camera}
                                  onChange={event => setConfig({ ...config, camera: event.target.checked })}

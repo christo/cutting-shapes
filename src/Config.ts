@@ -15,7 +15,7 @@ export class Config {
   /**
    * Whether to show performance data like frames per second, updates per second etc.
    */
-  perf: boolean = false;
+  diag: boolean = false;
 
   /**
    * Background to render.

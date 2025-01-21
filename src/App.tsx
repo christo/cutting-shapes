@@ -10,12 +10,12 @@ import { PUPPETS } from './mocap/Puppet.ts';
 
 function App() {
 
-  let defaultConfig = new Config();
-  defaultConfig.perf = true;
-  defaultConfig.camera = true;
-  defaultConfig.smoothing = true;
-  defaultConfig.debug = true;
-  const [config, setConfig] = useState(defaultConfig);
+  let cfg = new Config();
+  cfg.diag = true;
+  cfg.camera = false;
+  cfg.smoothing = true;
+  cfg.debug = true;
+  const [config, setConfig] = useState(cfg);
   return (
     <Router>
       <div className="App">
