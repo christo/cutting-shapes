@@ -30,10 +30,9 @@ const PerfDetail = ({ perfTime }: { perfTime: PerfTime }) => {
   };
   // TODO format prettier with grid:
   return <>
-    <Typography sx={sx}>{formatNumber(perfTime.msVisionTime)} ms vision</Typography>
-    <Typography sx={sx}>{formatNumber(perfTime.msRenderTime)} ms render</Typography>
-    <Typography sx={sx}>{formatNumber(perfTime.msUpdateTime)} ms update</Typography>
-    <Typography sx={sx}>{formatNumber(1000 / perfTime.msUpdateTime)} Hz uMfreq</Typography>
+    <Typography sx={sx}>{formatNumber(1000 / perfTime.msVisionTime)} Hz {formatNumber(perfTime.msVisionTime)} ms vision</Typography>
+    <Typography sx={sx}>{formatNumber(1000 / perfTime.msRenderTime)} Hz {formatNumber(perfTime.msRenderTime)} ms render</Typography>
+    <Typography sx={sx}>{formatNumber(1000 / perfTime.msTransformTime)} Hz {formatNumber(perfTime.msTransformTime)} ms x-form</Typography>
   </>;
 };
 
