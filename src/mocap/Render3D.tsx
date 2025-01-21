@@ -22,23 +22,23 @@ import { Puppet, PUPPETS } from './Puppet.ts';
 
 let punterIndex = 0;
 
-async function loadPunter(scene: Scene, model: Puppet, poseSupplier: () => Pose[]) {
+async function loadPunter(scene: Scene, puppet: Puppet, poseSupplier: () => Pose[]) {
   console.log('loading puppet');
-  const result: ISceneLoaderAsyncResult = await SceneLoader.ImportMeshAsync(null, model.filepath, undefined, scene);
+  const result: ISceneLoaderAsyncResult = await SceneLoader.ImportMeshAsync(null, puppet.filepath, undefined, scene);
   // console.log(puppet.name);
   dumpMeshes(result.meshes);
-  const mesh = result.meshes[model.charMeshIdx];
+  const mesh = result.meshes[puppet.charMeshIdx];
   mesh.position.x = 0;
   mesh.position.y = 0;
   mesh.position.z = 0;
   mesh.rotate(Axis.Y, Math.PI);
-  model.postLoad(result);
+  puppet.postLoad(result);
 
   console.log(`${result.skeletons.length} skeletons`);
   dumpSkeletons(result.skeletons);
 
   const skeleton = (result.skeletons.length === 0) ?
-    result.meshes[model.charMeshIdx].skeleton :
+    result.meshes[puppet.charMeshIdx].skeleton :
     result.skeletons[0];
   if (skeleton) {
     skeleton.returnToRest();
@@ -48,7 +48,7 @@ async function loadPunter(scene: Scene, model: Puppet, poseSupplier: () => Pose[
     result.animationGroups[0].stop();
   }
   if (skeleton) {
-    let bone = skeleton.bones[model.headIdx];
+    let bone = skeleton.bones[puppet.headIdx];
     // depending on the mesh/skeleton, need to use TransformNode
     // TODO figure out determinant - when/if/always etc.
     const tn = bone.getTransformNode();
@@ -81,7 +81,7 @@ interface Render3DProps {
 }
 
 /**
- * BabylonJs implementation of renderer (WIP)
+ * BabylonJs implementation of renderer
  * @param sx
  * @constructor
  */
@@ -91,7 +91,7 @@ export function Render3D({ sx, poseSupplier }: Render3DProps) {
   const [scene, setScene] = useState<Scene | null>(null);
   useEffect(() => {
     if (renderCanvas.current) {
-      console.log('effect: rendercanvas good, setting up 3d scene');
+      console.log('rendercanvas good, setting up 3d scene');
       const canvas = renderCanvas.current;
       const engine = new Engine(canvas, true);
       const createScene = async function() {
@@ -111,11 +111,11 @@ export function Render3D({ sx, poseSupplier }: Render3DProps) {
       };
       if (!scene) {
         createScene().then(scene => {
+          setScene(scene);
           engine.runRenderLoop(() => {
             scene.render();
           });
         });
-        setScene(scene);
         window.addEventListener('resize', () => {
           // assumes scene canvas is proportional to window
           engine.resize();
