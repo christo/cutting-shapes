@@ -16,7 +16,6 @@ function VideoCamera({ consumers }: { consumers: VideoConsumer[] }) {
 
   useEffect(() => {
     if (camRef.current !== null) {
-      // TODO confirm the audio can be read by consumers but is simply not monitored to client
       camRef.current.volume = 0;
 
       async function readVideoFrame() {
