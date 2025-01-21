@@ -1,5 +1,5 @@
 /**
- * Map of {@link Body} to model bone name
+ * Map of model bone names
  */
 export type BoneMap = {
   head: string,
@@ -7,6 +7,7 @@ export type BoneMap = {
 };
 
 export type RiggedModel = {
+  // TODO need to store something like per-bone rotation scale and offset pairs
   filepath: string,
   boneMap: BoneMap,
   charMeshIdx: number,
