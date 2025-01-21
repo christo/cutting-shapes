@@ -22,7 +22,7 @@ import { Puppet, PUPPETS } from './Puppet.ts';
 
 let punterIndex = 0;
 
-async function loadPunter(scene: Scene, puppet: Puppet, poseSupplier: () => Pose[]) {
+async function loadPuppet(scene: Scene, puppet: Puppet, poseSupplier: () => Pose[]): Promise<ISceneLoaderAsyncResult> {
   console.log('loading puppet');
   const result: ISceneLoaderAsyncResult = await SceneLoader.ImportMeshAsync(null, puppet.filepath, undefined, scene);
   // console.log(puppet.name);
@@ -72,7 +72,7 @@ async function loadPunter(scene: Scene, puppet: Puppet, poseSupplier: () => Pose
     }
 
   }
-
+  return result;
 }
 
 interface Render3DProps {
@@ -91,7 +91,7 @@ export function Render3D({ sx, poseSupplier }: Render3DProps) {
   const [scene, setScene] = useState<Scene | null>(null);
   useEffect(() => {
     if (renderCanvas.current) {
-      console.log('rendercanvas good, setting up 3d scene');
+      console.log('renderCanvas is good, creating 3d scene');
       const canvas = renderCanvas.current;
       const engine = new Engine(canvas, true);
       const createScene = async function() {
@@ -105,7 +105,8 @@ export function Render3D({ sx, poseSupplier }: Render3DProps) {
         const groundMaterial = new StandardMaterial('Ground Material', scene);
         groundMaterial.diffuseColor = Color3.Purple();
         ground.material = groundMaterial;
-        await loadPunter(scene, PUPPETS[punterIndex], poseSupplier);
+        // TODO keep return value in state so puppets can be disposed and swapped
+        await loadPuppet(scene, PUPPETS[punterIndex], poseSupplier);
         return scene;
       };
       if (!scene) {
