@@ -148,6 +148,19 @@ export function drawCustomStickFigure(landmarks: NormalizedLandmark[][], ctx: Ca
     const rightHip = canvasPoint(Body.right_hip);
     const neck = midPoint(leftShoulder, rightShoulder);
     const sacrum = midPoint(leftHip, rightHip);
-    line(neck.x, neck.y, sacrum.x, sacrum.y);
+
+    if (debugMode) {
+      const leftEar = canvasPoint(Body.left_ear);
+      const rightEar = canvasPoint(Body.right_ear);
+      const midEar = midPoint(leftEar, rightEar);
+      const nose = canvasPoint(Body.nose);
+      // derived bones
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = 'white';
+      line(leftEar.x, leftEar.y, rightEar.x, rightEar.y);
+      line(neck.x, neck.y, sacrum.x, sacrum.y);
+      line(neck.x, neck.y, midEar.x, midEar.y);
+      line(midEar.x, midEar.y, nose.x, nose.y);
+    }
   });
 }
