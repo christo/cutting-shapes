@@ -74,8 +74,9 @@ const SettingsPanel = ({ setConfig, config }: CommonProps) => {
       </FormControl>
     </Box>
     <FormControlLabel control={debugCheckbox} label="Debug" />
-    <FormControlLabel control={perfCheckbox} label="Performance" />
+    <FormControlLabel control={perfCheckbox} label="Perf Stats" />
     <FormControlLabel control={cameraCheckbox} label="Camera" />
+    {/* TODO slider for how much smoothing */}
     <FormControlLabel control={smoothingCheckbox} label="Motion Smoothing" />
     {/* TODO record, stop modal control */}
     <Button sx={{m: 2}} variant="contained" color="error" startIcon={<Circle />}>

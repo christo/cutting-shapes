@@ -1,0 +1,45 @@
+import { CircularProgress, Stack, Typography } from '@mui/material';
+import { PerfTime } from '../mocap/PerfTime.ts';
+
+const PerfDetail = ({ perfTime }: { perfTime: PerfTime }) => {
+  const formatNumber = (value: number) => {
+    if (isNaN(value)) {
+      return '?';
+    } else {
+      return value.toFixed(2);
+    }
+  };
+  const sx = {
+    fontFamily: '"Kode Mono", monospace',
+    fontSize: '18px',
+    fontWeight: 400,
+    fontStyle: 'normal',
+    color: 'rgba(255, 80, 80, 1)',
+    textShadow: '0 0 5px rgba(255, 50, 50, 0.7), 0 0 8px rgba(255, 50, 50, 0.4)',
+  };
+  // TODO format prettier with grid:
+  return <>
+    <Typography sx={sx}>{formatNumber(1000 / perfTime.msVisionTime)} Hz {formatNumber(perfTime.msVisionTime)} ms
+      vision</Typography>
+    <Typography sx={sx}>{formatNumber(1000 / perfTime.msRenderTime)} Hz {formatNumber(perfTime.msRenderTime)} ms
+      render</Typography>
+    <Typography sx={sx}>{formatNumber(1000 / perfTime.msTransformTime)} Hz {formatNumber(perfTime.msTransformTime)} ms
+      x-form</Typography>
+  </>;
+};
+export const PerfPanel = ({ perfTime }: { perfTime: PerfTime }) => {
+  const perfDetail = perfTime.ready() ? <PerfDetail perfTime={perfTime} /> :
+    <CircularProgress sx={{ m: 4 }} color="error" size={88} />;
+
+  return <Stack sx={{
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    color: 'red',
+    display: 'flex', alignItems: 'end',
+    padding: 3,
+    margin: 2,
+    border: 'red dashed thin',
+    position: 'absolute', right: 0, top: 0, zIndex: 500,
+  }}>
+    {perfDetail}
+  </Stack>;
+};
