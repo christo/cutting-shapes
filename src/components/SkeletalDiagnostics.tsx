@@ -50,10 +50,10 @@ function SkeletalDiagnostics({ poseSystem }: { poseSystem: PoseSystem }) {
     <Box>
       <Stack>
         {poses.map((p: Pose, pi: number) => {
-          return <Stack direction="row">
+          return <Stack direction="row" key={`sd_${pi}`}>
             <Box sx={{mr: 1}}><Typography sx={{fontWeight: 'bold', fontSize: "large"}}>{pi + 1}</Typography>
             </Box>
-            <Box sx={{ display: 'flex', flexFlow: 'row wrap', gap: 1 }} key={`sd_${pi}`}>
+            <Box sx={{ display: 'flex', flexFlow: 'row wrap', gap: 1 }} >
               <Pyr part="HEAD" rot={p.skeletalRotation.head} />
               <Pyr part="NECK" rot={p.skeletalRotation.neck} />
               <Pyr part="SPINE" rot={p.skeletalRotation.spine} />
