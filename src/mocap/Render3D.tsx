@@ -30,7 +30,7 @@ async function loadPuppet(scene: Scene, puppet: Puppet, poseSupplier: () => Pose
   mesh.position.x = 0;
   mesh.position.y = 0;
   mesh.position.z = 0;
-  mesh.rotate(Axis.Y, Math.PI);
+  mesh.rotate(Axis.Y, Math.PI); // face camera
   puppet.postLoad(result);
 
   console.log(`${result.skeletons.length} skeletons`);
@@ -69,7 +69,7 @@ async function loadPuppet(scene: Scene, puppet: Puppet, poseSupplier: () => Pose
       });
     } else {
       // TODO maybe rotate the bone directly if there's no TransformNode?
-      console.warn(`missing bone transform node(s): ${headBone.name} or ${spineBone.name}`);
+      console.warn(`missing bone transform node(s)`);
     }
 
   }
