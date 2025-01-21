@@ -11,6 +11,7 @@ import { midPoint } from './Draw.ts';
 import { PerfTime } from './PerfTime.ts';
 import { Pose } from './Pose.ts';
 import { RingStat } from './RingStat.ts';
+import { skeletalRotations } from './SkeletalRotation.ts';
 import { drawCustomStickFigure } from './StickFigure.ts';
 
 type RunningMode = 'IMAGE' | 'VIDEO';
@@ -63,7 +64,7 @@ class PoseSystem {
 
   private msVisionTime: RingStat = new RingStat(100);
   private msRenderTime: RingStat = new RingStat(100);
-  private msUpdateTime: RingStat = new RingStat(100);
+  private msTransformTime: RingStat = new RingStat(100);
 
   /**
    * Historic storage for subscribers and calculating smoothed motion.
@@ -136,7 +137,7 @@ class PoseSystem {
     return new PerfTime(
       this.msVisionTime.mean(),
       this.msRenderTime.mean(),
-      this.msUpdateTime.mean(),
+      this.msTransformTime.mean(),
     );
   };
 
@@ -159,7 +160,6 @@ class PoseSystem {
    * TODO: move drawing out of this class, subscribe to landmarks like poses
    */
   justDraw(dest: HTMLCanvasElement, zIndex: number) {
-    const startUpdate = performance.now();
     if (!this.canvas) {
       // lazy init canvas
       console.log('lazy init drawing canvas');
@@ -188,7 +188,6 @@ class PoseSystem {
     } else {
       console.warn('PoseSystem has no canvas?');
     }
-    this.msUpdateTime.push(performance.now() - startUpdate);
   }
 
   /**
@@ -204,6 +203,7 @@ class PoseSystem {
         sortPeople(result.landmarks); // TODO don't mutate result?
       }
       this.prevLandmarks = this.processLandmarks(result.landmarks);
+      this.poseCacheDirty = true;
     });
     this.msVisionTime.push(performance.now() - startVision);
   }
@@ -215,28 +215,36 @@ class PoseSystem {
     if (this.canvas) {
       this.canvas.remove();
     }
+    this.prevLandmarks = [];
+    this.poseCacheDirty = true;
+    // will be lazily recreated
     this.poseLandmarker = null;
   }
 
   /**
    * Calculate the skeletal poses from the given landmarks.
+   * Updates internal cache
+   * DO NOT MODIFY RESULT (not currently defensively cloning for perf)
    * @param lss
    */
   calcPose(lss: NormalizedLandmark[][]): Pose[] {
+    const startTransform = performance.now();
+
     // TODO unit test
     if (this.poseCacheDirty) {
+
+      const poses = [];
       for (let i = 0; i < lss.length; i++) {
-        const ls = this.prevLandmarks[i];
-        // @ts-ignore
-        const midEar = midPoint(ls[Body.left_ear], ls[Body.right_ear]);
-        // head rotation vector is midEar to nose
 
-        // @ts-ignore
-        const midEye = midPoint(ls[Body.left_eye], ls[Body.right_ear]);
-
+        const ls = lss[i];
+        poses.push(new Pose(skeletalRotations(ls)));
       }
+      this.poseCacheDirty = false;
+      this.poseCache = poses;
     }
-    return [];
+    this.msTransformTime.push(performance.now() - startTransform);
+
+    return this.poseCache; // TODO decide how/whether to warn/protect from mutation
   }
 
   /**
