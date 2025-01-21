@@ -1,6 +1,6 @@
 import { Box, Grid2, Stack, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { Rot } from '../mocap/geometry/la.ts';
+import { Rot } from '../geometry/la.ts';
 import { Pose } from '../mocap/Pose.ts';
 import { PoseSystem } from '../mocap/PoseSystem.ts';
 

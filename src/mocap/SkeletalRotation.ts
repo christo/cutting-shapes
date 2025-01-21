@@ -1,7 +1,7 @@
 import { Vector3 } from '@babylonjs/core';
 import { NormalizedLandmark } from '@mediapipe/tasks-vision';
 import { Body } from './Body.ts';
-import { Rot, ROT_UNIT, ROT_ZERO } from './geometry/la.ts';
+import { Rot, ROT_UNIT, ROT_ZERO } from '../geometry/la.ts';
 
 // TODO implement max rotation extents per joint
 
