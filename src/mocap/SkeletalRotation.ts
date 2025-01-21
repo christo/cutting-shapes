@@ -106,7 +106,7 @@ function calcBone(
   };
 }
 
-function calculateSpineRotation(
+function calcSpine(
   leftHip: Vector3,
   rightHip: Vector3,
   leftShoulder: Vector3,
@@ -179,7 +179,7 @@ export function skeletalRotations(ls: NormalizedLandmark[]): SkeletalRotation {
   // TODO need to define joint rotation rest positions for t-pose
   return {
     // t-pose colinear
-    spine: calculateSpineRotation(leftHip, rightHip, leftShoulder, rightShoulder),
+    spine: calcSpine(leftHip, rightHip, leftShoulder, rightShoulder),
 
     // t-pose: colinear
     neck: calcBone(midHip, midShoulder, midEar),
@@ -216,9 +216,4 @@ export function skeletalRotations(ls: NormalizedLandmark[]): SkeletalRotation {
     // TODO looks wrong
     rightFoot: calcBone(rightAnkle, rightFoot, rightFoot.add(new Vector3(0, -0.1, 0))),
   };
-}
-
-// Helper function to convert rotations to BabylonJS Euler angles
-export function convertToBabylonRotation(rot: Rot): Vector3 {
-  return new Vector3(rot.pitch, rot.yaw, rot.roll);
 }
