@@ -19,8 +19,7 @@ import { dumpMeshes, dumpSkeletons } from './ModelDebug.ts';
 import { Pose, PoseSupplier } from './Pose.ts';
 import { Puppet, PUPPETS } from './Puppet.ts';
 
-
-let punterIndex = 0;
+let puppetIdx = 0;
 
 async function loadPuppet(scene: Scene, puppet: Puppet, poseSupplier: () => Pose[]): Promise<ISceneLoaderAsyncResult> {
   console.log('loading puppet');
@@ -108,7 +107,7 @@ export function Render3D({ sx, poseSupplier }: Render3DProps) {
         groundMaterial.diffuseColor = Color3.Purple();
         ground.material = groundMaterial;
         // TODO keep return value in state so puppets can be disposed and swapped
-        await loadPuppet(scene, PUPPETS[punterIndex], poseSupplier);
+        await loadPuppet(scene, PUPPETS[puppetIdx], poseSupplier);
         return scene;
       };
       if (!scene) {
@@ -127,7 +126,7 @@ export function Render3D({ sx, poseSupplier }: Render3DProps) {
   }, []);
 
   return <Box sx={sx}>
-    <canvas ref={renderCanvas} style={{width: '100%', height: '100%'}}></canvas>
+    <canvas ref={renderCanvas} style={{ width: '100%', height: '100%' }}></canvas>
   </Box>;
 }
 
