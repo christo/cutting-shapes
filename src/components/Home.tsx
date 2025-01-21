@@ -18,7 +18,7 @@ const Home = ({ config }: { config: Config; }) => {
     video: async (video: HTMLVideoElement, startTimeMs: number, _deltaMs: number): Promise<void> => {
       if (stickFigureCanvas.current) {
         if (showSplash) {
-          setShowSplash(false)
+          setShowSplash(false);
         }
         await poseSystem.detect(video, startTimeMs);
         poseSystem.justDraw(stickFigureCanvas.current, 50);
