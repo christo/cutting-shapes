@@ -38,7 +38,7 @@ const SettingsPanel = ({ setConfig, config }: CommonProps) => {
                                  onChange={event => setConfig({ ...config, smoothing: event.target.checked })}
                                  inputProps={{ 'aria-label': 'controlled' }} />;
 
-  // TODO use video sources
+  // TODO use video file sources
   const gotRecording = false;
   if (!gotRecording && !config.live) {
     console.log("Not configured for live but no recording available, resetting to live.");
