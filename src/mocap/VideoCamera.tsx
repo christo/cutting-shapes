@@ -28,7 +28,7 @@ function VideoCamera({ consumers }: { consumers: VideoConsumer[] }) {
         window.requestAnimationFrame(readVideoFrame);
       }
 
-      navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+      navigator.mediaDevices.getUserMedia({ video: true, audio: false })
         .then(function(stream) {
           if (camRef.current) {
             camRef.current.srcObject = stream;
