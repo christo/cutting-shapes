@@ -2,6 +2,7 @@ import { Box, CircularProgress, Stack, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { PerfTime } from '../mocap/PerfTime.ts';
 import { PoseSystem } from '../mocap/PoseSystem.ts';
+import { SkeletalDiagnostics } from './SkeletalDiagnostics.tsx';
 
 const PerfDetail = ({ perfTime }: { perfTime: PerfTime }) => {
   const formatNumber = (value: number) => {
@@ -18,6 +19,8 @@ const PerfDetail = ({ perfTime }: { perfTime: PerfTime }) => {
     fontStyle: 'normal',
     color: 'rgba(255, 80, 80, 1)',
     textShadow: '0 0 5px rgba(255, 50, 50, 0.7), 0 0 8px rgba(255, 50, 50, 0.4)',
+    minWidth: '19rem',
+    textAlign: 'right',
   };
   // TODO format prettier with grid:
   return <>
@@ -53,14 +56,16 @@ export const PerfPanel = ({ poseSystem }: { poseSystem: PoseSystem }) => {
     padding: 3,
     gap: 1,
     margin: 2,
-    border: 'red dashed',
+    // border: 'red dashed',
     position: 'absolute', right: 0, top: 0, zIndex: 500,
+    minWidth: '30%',
   }}>
+    <Box>
+      <SkeletalDiagnostics poseSystem={poseSystem} />
+    </Box>
     <Box>
       {perfDetail}
     </Box>
-    <Box>
-     <Typography>TODO skeletal diagnostics</Typography>
-    </Box>
+
   </Stack>;
 };
