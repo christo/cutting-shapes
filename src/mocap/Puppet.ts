@@ -67,7 +67,76 @@ const toonTrooper = new Puppet('Toon Trooper', 'Toon Trooper by Blender Zone', C
     r.meshes[gunIdx].isVisible = false;
   });
 
-const skaterBoneMap = {head: "Head" /*25*/, spine: "Spine" /* also Chest, UpperChest */};
+const skaterBoneMap = {
+  head: "Head",
+  spine: "Spine",
+};
+
+/**
+ * loads and displays correctly
+ */
+const skatergirl = new Puppet('SkaterGirl', 'Female Skater by Kenney',
+  CC0, 'https://market.pmnd.rs/model/skater-female',
+  '/3d/skatergirl.gltf', skaterBoneMap, 1);
+
+const skaterboy = new Puppet('SkaterBoy', 'Male Skater by Kenney',
+  CC0, 'https://market.pmnd.rs/model/skater-male',
+  '/3d/skaterboy.gltf', skaterBoneMap, 1);
+
+export const PUPPETS = [
+  toonTrooper,
+  fatManA,
+  skaterboy,
+  skatergirl,
+/*
+  // did not appear although model data could be logged (blender export probably done wrong):
+  new Puppet('Astronaut Orange Trim', 'Astronaut free VR / AR / low-poly 3d model', CG_RF_NOAI,
+    'https://www.cgtrader.com/free-3d-models/character/sci-fi-character/astronaut-d481bc2e-fbf7-4512-93de-f1a6f429c7a6',
+    '/3d/astronaut-orange-trim_4882913_Astronaut_1.glb', {head: 3, spine: 0}, 1),
+*/
+];
+
+//low poly people (e.g. fat man a) bone dump:
+// 	bone 0 Armature,
+// 	bone 1 ROOT,
+// 	bone 2 CHEST,
+// 	bone 3 HEAD,
+// 	bone 4 SHOULDER.001,
+// 	bone 5 ARM.001,
+// 	bone 6 FOREARM.001,
+// 	bone 7 WRIST.001,
+// 	bone 8 FINGER.009,
+// 	bone 9 FINGER.010,
+// 	bone 10 FINGER.011,
+// 	bone 11 FINGER.012,
+// 	bone 12 FINGER.013,
+// 	bone 13 FINGER.014,
+// 	bone 14 FINGER.015,
+// 	bone 15 FINGER.016,
+// 	bone 16 FINGER.017,
+// 	bone 17 SHOULDER.002,
+// 	bone 18 ARM.002,
+// 	bone 19 FOREARM.002,
+// 	bone 20 WRIST.002,
+// 	bone 21 FINGER.018,
+// 	bone 22 FINGER.019,
+// 	bone 23 FINGER.020,
+// 	bone 24 FINGER.021,
+// 	bone 25 FINGER.022,
+// 	bone 26 FINGER.023,
+// 	bone 27 FINGER.024,
+// 	bone 28 FINGER.025,
+// 	bone 29 FINGER.026,
+// 	bone 30 HIP,
+// 	bone 31 THIGH R,
+// 	bone 32 SHIN R,
+// 	bone 33 THIGH L,
+// 	bone 34 SHIN L,
+// 	bone 35 WIRE BASE,
+// 	bone 36 LEG R,
+// 	bone 37 KNEE,
+// 	bone 38 LEG. L,
+// 	bone 39 KNEE.001
 
 // skatergirl and skaterboy bone array dump:
 //  bone 0 Root.003,
@@ -130,26 +199,44 @@ const skaterBoneMap = {head: "Head" /*25*/, spine: "Spine" /* also Chest, UpperC
 // 	bone 57 RightToes,
 // 	bone 58 RightToes_end
 
-/**
- * loads and displays correctly
- */
-const skatergirl = new Puppet('SkaterGirl', 'Female Skater by Kenney',
-  CC0, 'https://market.pmnd.rs/model/skater-female',
-  '/3d/skatergirl.gltf', skaterBoneMap, 1);
-
-const skaterboy = new Puppet('SkaterBoy', 'Male Skater by Kenney',
-  CC0, 'https://market.pmnd.rs/model/skater-male',
-  '/3d/skaterboy.gltf', skaterBoneMap, 1);
-
-export const PUPPETS = [
-  skaterboy,
-  skatergirl,
-  fatManA,
-  toonTrooper,
-/*
-  // did not appear although model data could be logged (blender export probably done wrong):
-  new Puppet('Astronaut Orange Trim', 'Astronaut free VR / AR / low-poly 3d model', CG_RF_NOAI,
-    'https://www.cgtrader.com/free-3d-models/character/sci-fi-character/astronaut-d481bc2e-fbf7-4512-93de-f1a6f429c7a6',
-    '/3d/astronaut-orange-trim_4882913_Astronaut_1.glb', {head: 3, spine: 0}, 1),
-*/
-];
+// toon trooper bone dump:
+// 	bone 0 Armature,
+// 	bone 1 ROOT,
+// 	bone 2 CHEST,
+// 	bone 3 HEAD,
+// 	bone 4 SHOULDER.001,
+// 	bone 5 ARM.001,
+// 	bone 6 FOREARM.001,
+// 	bone 7 WRIST.001,
+// 	bone 8 FINGER.009,
+// 	bone 9 FINGER.010,
+// 	bone 10 FINGER.011,
+// 	bone 11 FINGER.012,
+// 	bone 12 FINGER.013,
+// 	bone 13 FINGER.014,
+// 	bone 14 FINGER.015,
+// 	bone 15 FINGER.016,
+// 	bone 16 FINGER.017,
+// 	bone 17 SHOULDER.002,
+// 	bone 18 ARM.002,
+// 	bone 19 FOREARM.002,
+// 	bone 20 WRIST.002,
+// 	bone 21 FINGER.018,
+// 	bone 22 FINGER.019,
+// 	bone 23 FINGER.020,
+// 	bone 24 FINGER.021,
+// 	bone 25 FINGER.022,
+// 	bone 26 FINGER.023,
+// 	bone 27 FINGER.024,
+// 	bone 28 FINGER.025,
+// 	bone 29 FINGER.026,
+// 	bone 30 HIP,
+// 	bone 31 THIGH R,
+// 	bone 32 SHIN R,
+// 	bone 33 THIGH L,
+// 	bone 34 SHIN L,
+// 	bone 35 WIRE BASE,
+// 	bone 36 LEG R,
+// 	bone 37 KNEE,
+// 	bone 38 LEG. L,
+// 	bone 39 KNEE.001
