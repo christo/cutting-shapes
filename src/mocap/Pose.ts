@@ -10,7 +10,7 @@ export type PoseSupplier = () => Pose[];
 export class Pose {
   skeletalRotation: SkeletalRotation;
 
-  // TODO integrate foot position for ground anchor
+  // TODO integrate positional reference anchor in view
 
   constructor(skeletalRotation: SkeletalRotation) {
     this.skeletalRotation = skeletalRotation;
