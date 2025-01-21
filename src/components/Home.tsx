@@ -27,8 +27,8 @@ const Home = ({ config }: { config: Config; }) => {
   };
   return (
     <Box className="App-body" sx={{position: "absolute", alignContent: "center", justifyItems: "center", top: 0, left: 0, width: "100%", height: "100%"}}>
-      <Splash showSplash={showSplash} />
-      {config.perf && <PerfPanel poseSystem={poseSystem} />}
+      <Splash visible={showSplash} />
+      {config.diag && <PerfPanel poseSystem={poseSystem} />}
       <canvas ref={stickFigureCanvas} id="main_view"
               style={{ position: 'absolute', left: 0, top: 0, width: '50%', height: '50%' }}></canvas>
       <Box sx={{
@@ -37,6 +37,7 @@ const Home = ({ config }: { config: Config; }) => {
         bottom: 0,
         width: '50%',
         height: '50%',
+        maxWidth: "50%",
         zIndex: 50,
         visibility: config.camera ? 'visible' : 'hidden',
       }}>
