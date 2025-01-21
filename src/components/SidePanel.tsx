@@ -38,6 +38,7 @@ const SettingsPanel = ({ setConfig, config }: CommonProps) => {
                                  onChange={event => setConfig({ ...config, smoothing: event.target.checked })}
                                  inputProps={{ 'aria-label': 'controlled' }} />;
 
+  // TODO use video sources
   const gotRecording = false;
   if (!gotRecording && !config.live) {
     console.log("Not configured for live but no recording available, resetting to live.");
@@ -74,7 +75,7 @@ const SettingsPanel = ({ setConfig, config }: CommonProps) => {
       </FormControl>
     </Box>
     <FormControlLabel control={debugCheckbox} label="Debug" />
-    <FormControlLabel control={perfCheckbox} label="Perf Stats" />
+    <FormControlLabel control={perfCheckbox} label="Diagnostics" />
     <FormControlLabel control={cameraCheckbox} label="Camera" />
     {/* TODO slider for how much smoothing */}
     <FormControlLabel control={smoothingCheckbox} label="Motion Smoothing" />

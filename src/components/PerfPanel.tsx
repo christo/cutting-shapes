@@ -1,5 +1,7 @@
-import { CircularProgress, Stack, Typography } from '@mui/material';
+import { Box, CircularProgress, Stack, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { PerfTime } from '../mocap/PerfTime.ts';
+import { PoseSystem } from '../mocap/PoseSystem.ts';
 
 const PerfDetail = ({ perfTime }: { perfTime: PerfTime }) => {
   const formatNumber = (value: number) => {
@@ -27,19 +29,38 @@ const PerfDetail = ({ perfTime }: { perfTime: PerfTime }) => {
       x-form</Typography>
   </>;
 };
-export const PerfPanel = ({ perfTime }: { perfTime: PerfTime }) => {
+export const PerfPanel = ({ poseSystem }: { poseSystem: PoseSystem }) => {
+  const [perfTime, setPerfTime] = useState<PerfTime>(PerfTime.NULL);
+  useEffect(() => {
+    console.log("setup stats updater");
+    let animationFrameId: number;
+    const updateStats = () => {
+      setPerfTime(poseSystem.calcPerfTime());
+      animationFrameId = requestAnimationFrame(updateStats);
+    };
+    updateStats();
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, []);
   const perfDetail = perfTime.ready() ? <PerfDetail perfTime={perfTime} /> :
-    <CircularProgress sx={{ m: 4 }} color="error" size={88} />;
+    <CircularProgress sx={{ m: 4 }} color="error" size={60} />;
 
   return <Stack sx={{
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     color: 'red',
     display: 'flex', alignItems: 'end',
     padding: 3,
+    gap: 1,
     margin: 2,
-    border: 'red dashed thin',
+    border: 'red dashed',
     position: 'absolute', right: 0, top: 0, zIndex: 500,
   }}>
-    {perfDetail}
+    <Box>
+      {perfDetail}
+    </Box>
+    <Box>
+     <Typography>TODO skeletal diagnostics</Typography>
+    </Box>
   </Stack>;
 };
