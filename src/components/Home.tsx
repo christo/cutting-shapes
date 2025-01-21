@@ -76,7 +76,7 @@ const Home = ({ config }: HomeProps) => {
   poseSystem.setConfig(config);
   const [perfTime, setPerfTime] = useState<PerfTime>(PerfTime.NULL);
   useEffect(() => {
-    console.log("effect: setup updatestats");
+    console.log("setup stats updater");
     let animationFrameId: number;
     const updateStats = () => {
       setPerfTime(poseSystem.calcPerfTime());
