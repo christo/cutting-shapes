@@ -1,20 +1,26 @@
-import { Box, Chip, Grid2, Stack, Typography } from '@mui/material';
+import { Box, Grid2, Stack, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { Pose } from '../mocap/Pose.ts';
 import { PoseSystem } from '../mocap/PoseSystem.ts';
 import { Rot } from '../mocap/SkeletalRotation.ts';
 
 function Pyr({ part, rot }: { part: string, rot: Rot }) {
-  const panelSx = { textAlign: 'end', backgroundColor: 'rgba(255, 80, 80, 0.05)', p: 1.2, maxWidth: '6rem' };
+  const panelSx = {
+    textAlign: 'end',
+    backgroundColor: 'rgba(255, 80, 80, 0.05)',
+    p: 1.2,
+    maxWidth: '6rem',
+    fontSize: 'smaller'
+  };
   const stat = (val: number, label: string) => (
     <><Grid2 size={6} sx={{ textAlign: 'end' }}>{deg(val)}°</Grid2>
       <Grid2 size={6} sx={{ textAlign: 'end' }}>
-        <Chip color="error" label={label} size="small" variant="outlined" />
+        <Typography>{label}</Typography>
       </Grid2>
     </>
   );
   return <Grid2 container spacing={0.2} sx={panelSx}>
-    <Grid2 size={12} sx={{ textAlign: 'center'}}>{part}</Grid2>
+    <Grid2 size={12} sx={{ textAlign: 'end'}}>{part}</Grid2>
     {stat(rot.pitch, 'P')}
     {stat(rot.yaw, 'Y')}
     {stat(rot.roll, 'R')}
