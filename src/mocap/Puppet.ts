@@ -1,4 +1,4 @@
-import { Axis, ISceneLoaderAsyncResult, Vector3 } from '@babylonjs/core';
+import { ISceneLoaderAsyncResult, Vector3 } from '@babylonjs/core';
 import { License } from './License.ts';
 import { RiggedModel } from './RiggedModel.tsx';
 
@@ -37,32 +37,40 @@ const lpp = (name: string, path: string) => {
   return new Puppet(name, `${name} from Low Poly People by David Jalbert`,
     MIT, 'https://davidjalbert.itch.io/low-poly-people', path, 2, 1);
 };
+
+const fatManA = lpp('Fat Man A', '/3d/lpp/fat-man-a.glb');
+
+const toonTrooper = new Puppet('Toon Trooper', 'Toon Trooper by Blender Zone', CG_RF_NOAI,
+  'https://www.cgtrader.com/free-3d-models/character/sci-fi-character/toon-trooper-rigged', '/3d/TROOPER.glb',
+  3, 0, (r) => {
+    r.meshes[0].scaling = new Vector3(0.2, 0.2, 0.2);
+    // remove gun
+    const gunIdx = 11;
+    r.meshes[gunIdx].isVisible = false;
+  });
+
+// not working yet:
+const astronautPolygonal = new Puppet('Astronaut', 'Astronaut by Polygonal Mind', CC_BY,
+  'https://poly.pizza/m/dLHpzNdygsg', '/3d/Astronaut.glb', 0, 0);
+
+const skatergirl = new Puppet('SkaterGirl', 'Female Skater by Kenney', CC0,
+  'https://market.pmnd.rs/model/skater-female',
+  '/3d/skatergirl.gltf', 25, 1);
+
 export const PUPPETS = [
+  fatManA,
+  skatergirl,
 
-  new Puppet('Toon Trooper', 'Toon Trooper by Blender Zone', CG_RF_NOAI,
-    'https://www.cgtrader.com/free-3d-models/character/sci-fi-character/toon-trooper-rigged', '/3d/TROOPER.glb',
-    3, 0, (r) => {
-      r.meshes[0].scaling = new Vector3(0.2, 0.2, 0.2);
-      r.meshes[0].rotate(Axis.Y, Math.PI);
-      // remove gun
-      const gunIdx = 11;
-      r.meshes[gunIdx].isVisible = false;
-    }),
-
-  new Puppet('Astronaut', 'Astronaut by Polygonal Mind', CC_BY,
-    'https://poly.pizza/m/dLHpzNdygsg', '/3d/Astronaut.glb', 0, 0),
+  toonTrooper,
+  astronautPolygonal,
 
   // did not appear although model data could be logged (blender export probably done wrong):
   new Puppet('Astronaut Orange Trim', 'Astronaut free VR / AR / low-poly 3d model', CG_RF_NOAI,
     'https://www.cgtrader.com/free-3d-models/character/sci-fi-character/astronaut-d481bc2e-fbf7-4512-93de-f1a6f429c7a6',
     '/3d/astronaut-orange-trim_4882913_Astronaut_1.glb', 3, 1),
-  new Puppet('SkaterGirl', 'Female Skater by Kenney', CC0,
-    'https://market.pmnd.rs/model/skater-female',
-    '/3d/skatergirl.gltf', 25, 1),
   new Puppet('SkaterBoy', 'Male Skater by Kenney', CC0,
     'https://market.pmnd.rs/model/skater-male',
     '/3d/skaterboy.gltf', 25, 1),
-  lpp('Fat Man A', '/3d/lpp/fat-man-a.glb'),
   new Puppet('Wren', 'Wren, the thief by Thomas de Rivaz [CC-BY] via Poly Pizza',
     CC_BY, 'https://poly.pizza/m/3YwDWHEtFid',
     '/3d/Wren the thief.glb', 0, 0),

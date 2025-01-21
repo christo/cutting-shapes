@@ -1,4 +1,5 @@
 import {
+  Axis,
   Color3,
   Engine,
   FreeCamera,
@@ -21,21 +22,27 @@ import { Puppet, PUPPETS } from './Puppet.ts';
 
 let punterIndex = 0;
 
-async function loadPunter(scene: Scene, model: Puppet, poses: () => Pose[]) {
+async function loadPunter(scene: Scene, model: Puppet, poseSupplier: () => Pose[]) {
   console.log('loading puppet');
   const result: ISceneLoaderAsyncResult = await SceneLoader.ImportMeshAsync(null, model.filepath, undefined, scene);
   // console.log(puppet.name);
   dumpMeshes(result.meshes);
-  const puppet = result.meshes[0];
+  const mesh = result.meshes[model.charMeshIdx];
+  mesh.position.x = 0;
+  mesh.position.y = 0;
+  mesh.position.z = 0;
+  mesh.rotate(Axis.Y, Math.PI);
   model.postLoad(result);
-  puppet.showBoundingBox = true;
-  puppet.position.x = 0;
-  puppet.position.y = 0;
-  puppet.position.z = 0;
+
   console.log(`${result.skeletons.length} skeletons`);
   dumpSkeletons(result.skeletons);
-  const skeleton = result.skeletons[0];
-  skeleton.returnToRest();
+
+  const skeleton = (result.skeletons.length === 0) ?
+    result.meshes[model.charMeshIdx].skeleton :
+    result.skeletons[0];
+  if (skeleton) {
+    skeleton.returnToRest();
+  }
   // stop default animation (0) if it exists
   if (result.animationGroups.length > 0) {
     result.animationGroups[0].stop();
@@ -48,13 +55,15 @@ async function loadPunter(scene: Scene, model: Puppet, poses: () => Pose[]) {
     if (tn) {
       scene.registerBeforeRender(function() {
 
-        const poses1 = poses();
-        if (poses1.length > 0) {
-          const pose = poses1[0];
-          const headRot = pose.skeletalRotation.head;
+        const poses = poseSupplier();
+        if (poses.length > 0) {
+          const pose = poses[0];
+          // TODO clarify head vs neck rotation
+          const headRot = pose.skeletalRotation.neck;
           // note rotation is ignored if rotationQuaternion is set
           // TODO confirm chirality, may need per-model sign flips in Puppet
           tn.rotation = new Vector3(headRot.pitch, headRot.yaw, headRot.roll);
+          // tn.rotation = new Vector3(0, headRot.yaw, 0);
         }
       });
     } else {
