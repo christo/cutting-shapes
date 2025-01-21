@@ -59,7 +59,7 @@ async function loadPuppet(scene: Scene, puppet: Puppet, poseSupplier: () => Pose
         if (poses.length > 0) {
           const pose = poses[0];
           // TODO clarify head vs neck rotation
-          const headRot = pose.skeletalRotation.neck;
+          const headRot = pose.skeletalRotation.head;
           // note rotation is ignored if rotationQuaternion is set
           // TODO confirm chirality, may need per-model sign flips in Puppet
           tn.rotation = new Vector3(headRot.pitch, headRot.yaw, headRot.roll);
