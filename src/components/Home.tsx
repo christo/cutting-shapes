@@ -3,7 +3,7 @@ import { useRef, useState } from 'react';
 import { Config } from '../Config.ts';
 import { PoseSystem } from '../mocap/PoseSystem.ts';
 import { Render3D } from '../mocap/Render3D.tsx';
-import { VideoCamera, VideoConsumer } from '../mocap/VideoCamera.tsx';
+import { VideoCamera, VideoConsumer } from './VideoCamera.tsx';
 import { PerfPanel } from './PerfPanel.tsx';
 import { Splash } from './Splash.tsx';
 
