@@ -91,8 +91,8 @@ export function drawCustomStickFigure(landmarks: NormalizedLandmark[][], ctx: Ca
       ctx.fillText(`person ${pi + 1}`, 20, (pi + 2) * 20);
     }
 
-    const canvasPoint = (part: Body): NormalizedLandmark => {
-      return canvasmirror(ls[part.valueOf()]);
+    const canvasPoint = (part: number): NormalizedLandmark => {
+      return canvasmirror(ls[part]);
     };
     // draw all points
     ls.filter(l => l.visibility > 0.8).map(canvasmirror).forEach((l, i) => {

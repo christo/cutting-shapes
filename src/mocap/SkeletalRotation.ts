@@ -1,17 +1,37 @@
 import { Vector3 } from '@babylonjs/core';
 import { NormalizedLandmark } from '@mediapipe/tasks-vision';
 import { Body } from './Body.ts';
+import { Rot, ROT_UNIT, ROT_ZERO } from './geometry/la.ts';
 
-export interface Rot {
-  yaw: number;
-  pitch: number;
-  roll: number;
-}
+// TODO implement max rotation extents per joint
 
+const REST_HEAD_OFFSET: Rot = {
+  pitch: -Math.PI / 3,
+  yaw: -Math.PI / 12,
+  roll: -1.1,
+  // roll: -Math.PI / 2,
+};
+
+const REST_HEAD_SCALE: Rot = {
+  pitch: 1,
+  yaw: 1,
+  roll: -1,
+};
+
+/**
+ * Holds 3-axis rotations angles in radians for pairs of possibly
+ * virtual bones. The angle is that formed from the reference bone
+ * to the target bone.
+ *
+ *
+ * foot/knee/hip/spine/neck/head
+ * foot/knee/hip/spine/uparm/forearm/hand
+ *
+ */
 export interface SkeletalRotation {
 
   /**
-   * Bone from centre of head to nose.
+   * Joint angle formed from neck to head.
    */
   head: Rot;
 
@@ -46,8 +66,6 @@ function v3(landmark: NormalizedLandmark): Vector3 {
   return new Vector3(landmark.x, landmark.y, landmark.z);
 }
 
-const UNIT_V3 = new Vector3(1, 1, 1);
-
 
 /**
  * Calculates the 3d rotation of a subject bone with respect to a connected reference bone.
@@ -55,16 +73,16 @@ const UNIT_V3 = new Vector3(1, 1, 1);
  * @param startJoint start of reference bone
  * @param midJoint end of reference bone, start of subject bone
  * @param endJoint end of subject bone
- * @param scale optional scaling factor applied to result
- * @param offset optional constant offset applied to result after scaling
+ * @param offset optional constant offset Yaw,Pitch,Roll applied component-wise before scaling
+ * @param scale optional scaling factor Yaw,Pitch,Roll applied component-wise after offset
  */
 function calcBone(
   startJoint: Vector3,
   midJoint: Vector3,
   endJoint: Vector3,
-  scale: Vector3 = UNIT_V3,
-  offset: Vector3 = Vector3.Zero()
-  ): Rot {
+  offset: Rot = ROT_ZERO,
+  scale: Rot = ROT_UNIT,
+): Rot {
   const refBone = midJoint.subtract(startJoint).normalize();
   const target = endJoint.subtract(midJoint).normalize();
 
@@ -82,9 +100,9 @@ function calcBone(
   const roll = Math.atan2(cross.length(), dot);
 
   return {
-    yaw: yaw * scale.x + offset.x,
-    pitch: pitch * scale.y + offset.y,
-    roll: roll * scale.z + offset.z
+    yaw: (yaw + offset.yaw) * scale.yaw,
+    pitch: (pitch + offset.pitch) * scale.pitch,
+    roll: (roll + offset.roll) * scale.roll,
   };
 }
 
@@ -92,11 +110,11 @@ function calculateSpineRotation(
   leftHip: Vector3,
   rightHip: Vector3,
   leftShoulder: Vector3,
-  rightShoulder: Vector3
+  rightShoulder: Vector3,
 ): Rot {
-  // Calculate hip and shoulder centers
-  const hipCenter = Vector3.Center(leftHip, rightHip);
-  const shoulderCenter = Vector3.Center(leftShoulder, rightShoulder);
+  // Calculate hip and shoulder centres
+  const hipCentre = Vector3.Center(leftHip, rightHip);
+  const shoulderCentre = Vector3.Center(leftShoulder, rightShoulder);
 
   // Get hip orientation (cross product of hip line and up vector gives forward direction)
   const hipRight = rightHip.subtract(leftHip).normalize();
@@ -104,7 +122,7 @@ function calculateSpineRotation(
   const hipForward = Vector3.Cross(hipRight, up).normalize();
 
   // Calculate spine direction
-  const spineDir = shoulderCenter.subtract(hipCenter).normalize();
+  const spineDir = shoulderCentre.subtract(hipCentre).normalize();
 
   // Project spine onto hip-relative planes for rotation calculations
   const spineHorizontal = new Vector3(spineDir.x, 0, spineDir.z).normalize();
@@ -123,7 +141,7 @@ function calculateSpineRotation(
   const roll = Math.atan2(projectedShoulderRight.z, projectedShoulderRight.x) -
     Math.atan2(hipRight.z, hipRight.x);
 
-  return { yaw, pitch, roll };
+  return { yaw, pitch: pitch + Math.PI / 2.8, roll };
 }
 
 export function skeletalRotations(ls: NormalizedLandmark[]): SkeletalRotation {
@@ -131,10 +149,6 @@ export function skeletalRotations(ls: NormalizedLandmark[]): SkeletalRotation {
   const nose = v3(ls[Body.nose]);
   const leftEar = v3(ls[Body.left_ear]);
   const rightEar = v3(ls[Body.right_ear]);
-  // @ts-ignore
-  const leftOuterEye = v3(ls[Body.left_eye_outer]);
-  // @ts-ignore
-  const rightOuterEye = v3(ls[Body.right_eye_outer]);
   const leftShoulder = v3(ls[Body.left_shoulder]);
   const rightShoulder = v3(ls[Body.right_shoulder]);
   const leftElbow = v3(ls[Body.left_elbow]);
@@ -171,7 +185,7 @@ export function skeletalRotations(ls: NormalizedLandmark[]): SkeletalRotation {
     neck: calcBone(midHip, midShoulder, midEar),
 
     // t-pose has a ~90 degree pitch offset
-    head: calcBone(midShoulder, midEar, nose),
+    head: calcBone(midShoulder, midEar, nose, REST_HEAD_OFFSET, REST_HEAD_SCALE),
 
     // probably should be called upper arm
     leftShoulder: calcBone(midShoulder, leftShoulder, leftElbow),

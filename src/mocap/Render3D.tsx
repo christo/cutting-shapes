@@ -48,27 +48,29 @@ async function loadPuppet(scene: Scene, puppet: Puppet, poseSupplier: () => Pose
     result.animationGroups[0].stop();
   }
   if (skeleton) {
-    let bone = skeleton.bones[puppet.headIdx];
-    // depending on the mesh/skeleton, need to use TransformNode
-    // TODO figure out determinant - when/if/always etc.
-    const tn = bone.getTransformNode();
-    if (tn) {
+    let headBone = skeleton.bones[skeleton.getBoneIndexByName(puppet.boneMap.head)];
+    let spineBone = skeleton.bones[skeleton.getBoneIndexByName(puppet.boneMap.spine)];
+    const xHead = headBone.getTransformNode();
+    const xSpine = spineBone.getTransformNode();
+    if (xHead && xSpine) {
       scene.registerBeforeRender(function() {
 
         const poses = poseSupplier();
         if (poses.length > 0) {
+          // TODO handle all poses with additional puppets
           const pose = poses[0];
-          // TODO clarify head vs neck rotation
           const headRot = pose.skeletalRotation.head;
+          const spineRot = pose.skeletalRotation.spine;
           // note rotation is ignored if rotationQuaternion is set
-          // TODO confirm chirality, may need per-model sign flips in Puppet
-          tn.rotation = new Vector3(headRot.pitch, headRot.yaw, headRot.roll);
+          // TODO confirm chirality, may need per-puppet sign flips
+          xHead.rotation = new Vector3(headRot.pitch, headRot.yaw, headRot.roll);
+          xSpine.rotation = new Vector3(spineRot.pitch, spineRot.yaw, spineRot.roll);
           // tn.rotation = new Vector3(0, headRot.yaw, 0);
         }
       });
     } else {
       // TODO maybe rotate the bone directly if there's no TransformNode?
-      console.warn(`no transform node on bone ${bone.name}`);
+      console.warn(`missing bone transform node(s): ${headBone.name} or ${spineBone.name}`);
     }
 
   }

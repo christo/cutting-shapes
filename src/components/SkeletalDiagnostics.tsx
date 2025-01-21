@@ -1,8 +1,8 @@
 import { Box, Grid2, Stack, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { Rot } from '../mocap/geometry/la.ts';
 import { Pose } from '../mocap/Pose.ts';
 import { PoseSystem } from '../mocap/PoseSystem.ts';
-import { Rot } from '../mocap/SkeletalRotation.ts';
 
 function Pyr({ part, rot }: { part: string, rot: Rot }) {
   const panelSx = {
