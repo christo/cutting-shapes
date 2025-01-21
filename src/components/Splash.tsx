@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import { Titles } from './Titles.tsx';
 
-export function Splash({ showSplash }: { showSplash: boolean }) {
+export function Splash({ visible }: { visible: boolean }) {
   return <Box sx={{
     display: 'flex',
     flexDirection: 'column',
@@ -11,7 +11,7 @@ export function Splash({ showSplash }: { showSplash: boolean }) {
     height: '50%',
     border: 'pink dotted thick',
     zIndex: 500,
-    visibility: showSplash ? 'visible' : 'hidden',
+    visibility: visible ? 'visible' : 'hidden',
   }}>
     <Titles titleFontSize={80} authorFontSize={44} />
   </Box>;
