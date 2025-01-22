@@ -37,7 +37,7 @@ const Home = ({ config }: { config: Config; }) => {
         bottom: 0,
         width: '50%',
         height: '50%',
-        maxWidth: "50%",
+        maxHeight: "50%",
         zIndex: 50,
         visibility: config.camera ? 'visible' : 'hidden',
       }}>
