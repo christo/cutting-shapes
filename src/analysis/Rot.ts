@@ -1,6 +1,6 @@
 export interface Rot {
-  yaw: number;
   pitch: number;
+  yaw: number;
   roll: number;
 }
 

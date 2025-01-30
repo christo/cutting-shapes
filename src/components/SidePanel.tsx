@@ -15,7 +15,7 @@ import {
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Bg, BgValues, Config } from '../Config';
-import { StateSetter } from '../Util.ts';
+import { StateSetter } from '../StateSetter.ts';
 import { Titles } from './Titles.tsx';
 
 interface CommonProps {
