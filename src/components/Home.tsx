@@ -43,7 +43,11 @@ const Home = ({ config }: { config: Config; }) => {
       }}>
         <VideoCamera consumers={[vc]} />
       </Box>
-      <Render3D sx={{position: 'absolute', left: 0, bottom: 0, width: '50%', height: '50%'}} poseSupplier={poseSystem.subscribe}/>
+      <Render3D
+        sx={{position: 'absolute', left: 0, bottom: 0, width: '50%', height: '50%'}}
+        poseSupplier={poseSystem.subscribe}
+        config={config}
+      />
     </Box>
   );
 };
