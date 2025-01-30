@@ -1,6 +1,6 @@
 import { ISceneLoaderAsyncResult, Vector3 } from '@babylonjs/core';
 import { CC0, CG_RF_NOAI, License, MIT } from './License.ts';
-import { BoneMap } from './RiggedModel.ts';
+import { BoneMap, BoneSpec } from './RiggedModel.ts';
 import { RiggedModel } from './RiggedModel.tsx';
 
 // @ts-ignore
@@ -39,12 +39,12 @@ export class Puppet implements RiggedModel {
  */
 const lpp = (name: string, path: string) => {
   const bm = {
-    head: "Head", // 2 parent: Chest
-    spine: "Chest", // parent: Stomach
-    left_shoulder: "Shoulder.L", // parent: Chest
-    right_shoulder: "Shoulder.R", // parent: Chest
-    left_hip: "Hip.L", // parent: Stomach
-    right_hip: "Hip.R", // parent: Stomach
+    head: new BoneSpec("Head"), // 2 parent: Chest
+    spine: new BoneSpec("Chest"), // parent: Stomach
+    left_shoulder: new BoneSpec("Shoulder.L"), // parent: Chest
+    right_shoulder: new BoneSpec("Shoulder.R"), // parent: Chest
+    left_hip: new BoneSpec("Hip.L"), // parent: Stomach
+    right_hip: new BoneSpec("Hip.R"), // parent: Stomach
   };
   return new Puppet(name, `${name} from Low Poly People by David Jalbert`,
     MIT, 'https://davidjalbert.itch.io/low-poly-people', path, bm, 1);
@@ -60,7 +60,7 @@ const fatManA = lpp('Fat Man A', '/3d/lpp/fat-man-a.glb');
  */
 const toonTrooper = new Puppet('Toon Trooper', 'Toon Trooper by Blender Zone', CG_RF_NOAI,
   'https://www.cgtrader.com/free-3d-models/character/sci-fi-character/toon-trooper-rigged', '/3d/TROOPER.glb',
-  {head: "HEAD", spine: "CHEST"}, 0, (r) => {
+  {head: new BoneSpec("HEAD"), spine: new BoneSpec("CHEST")}, 0, (r) => {
     r.meshes[0].scaling = new Vector3(0.2, 0.2, 0.2);
     // remove gun
     const gunIdx = 11;
@@ -68,8 +68,8 @@ const toonTrooper = new Puppet('Toon Trooper', 'Toon Trooper by Blender Zone', C
   });
 
 const skaterBoneMap = {
-  head: "Head",
-  spine: "Spine",
+  head: new BoneSpec("Head"),
+  spine: new BoneSpec("Spine"),
 };
 
 /**
@@ -84,8 +84,8 @@ const skaterboy = new Puppet('SkaterBoy', 'Male Skater by Kenney',
   '/3d/skaterboy.gltf', skaterBoneMap, 1);
 
 export const PUPPETS = [
-  toonTrooper,
   fatManA,
+  toonTrooper,
   skaterboy,
   skatergirl,
 /*

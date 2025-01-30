@@ -37,4 +37,9 @@ export class Config {
    * Whether or not to do motion smoothing.
    */
   smoothing: boolean = false;
+
+  /**
+   * Whether or not to show the ground in the puppet renderer.
+   */
+  ground: boolean = false;
 }

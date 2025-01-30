@@ -15,6 +15,7 @@ import {
 import { Box } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 import '@babylonjs/loaders';
+import { Config } from '../Config.ts';
 import { dumpMeshes, dumpSkeletons } from './ModelDebug.ts';
 import { Pose, PoseSupplier } from './Pose.ts';
 import { Puppet, PUPPETS } from './Puppet.ts';
@@ -47,8 +48,8 @@ async function loadPuppet(scene: Scene, puppet: Puppet, poseSupplier: () => Pose
     result.animationGroups[0].stop();
   }
   if (skeleton) {
-    let headBone = skeleton.bones[skeleton.getBoneIndexByName(puppet.boneMap.head)];
-    let spineBone = skeleton.bones[skeleton.getBoneIndexByName(puppet.boneMap.spine)];
+    let headBone = skeleton.bones[skeleton.getBoneIndexByName(puppet.boneMap.head.name)];
+    let spineBone = skeleton.bones[skeleton.getBoneIndexByName(puppet.boneMap.spine.name)];
     const xHead = headBone.getTransformNode();
     const xSpine = spineBone.getTransformNode();
     if (xHead && xSpine) {
@@ -79,6 +80,7 @@ async function loadPuppet(scene: Scene, puppet: Puppet, poseSupplier: () => Pose
 interface Render3DProps {
   sx: any; // TODO what type should this be to pass to mui component?
   poseSupplier: PoseSupplier;
+  config: Config;
 }
 
 /**
@@ -86,7 +88,7 @@ interface Render3DProps {
  * @param sx
  * @constructor
  */
-export function Render3D({ sx, poseSupplier }: Render3DProps) {
+export function Render3D({ sx, poseSupplier, config }: Render3DProps) {
 
   const renderCanvas = useRef<HTMLCanvasElement | null>(null);
   const [scene, setScene] = useState<Scene | null>(null);
@@ -100,12 +102,15 @@ export function Render3D({ sx, poseSupplier }: Render3DProps) {
         const camera = new FreeCamera('camera1', new Vector3(0, 1.3, -4), scene);
         camera.setTarget(new Vector3(0, 1, 0));
         camera.attachControl(canvas, true);
-        const light = new HemisphericLight('light', new Vector3(0, 1, 0), scene);
-        light.intensity = 0.7;
-        const ground = MeshBuilder.CreateGround('ground', { width: 8, height: 8 }, scene);
-        const groundMaterial = new StandardMaterial('Ground Material', scene);
-        groundMaterial.diffuseColor = Color3.Purple();
-        ground.material = groundMaterial;
+        const light = new HemisphericLight('light', new Vector3(0, 2, -2), scene);
+        light.intensity = 0.6;
+
+        if (config.ground) {
+          const ground = MeshBuilder.CreateGround('ground', { width: 8, height: 8 }, scene);
+          const groundMaterial = new StandardMaterial('Ground Material', scene);
+          groundMaterial.diffuseColor = Color3.Purple();
+          ground.material = groundMaterial;
+        }
         // TODO keep return value in state so puppets can be disposed and swapped
         await loadPuppet(scene, PUPPETS[puppetIdx], poseSupplier);
         return scene;

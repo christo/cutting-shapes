@@ -37,6 +37,9 @@ const SettingsPanel = ({ setConfig, config }: CommonProps) => {
   const smoothingCheckbox = <Switch checked={config.smoothing}
                                  onChange={event => setConfig({ ...config, smoothing: event.target.checked })}
                                  inputProps={{ 'aria-label': 'controlled' }} />;
+  const groundCheckbox = <Switch checked={config.ground}
+                                 onChange={event => setConfig({ ...config, ground: event.target.checked })}
+                                 inputProps={{ 'aria-label': 'controlled' }} />;
 
   // TODO use video file sources
   const gotRecording = false;
@@ -77,6 +80,7 @@ const SettingsPanel = ({ setConfig, config }: CommonProps) => {
     <FormControlLabel control={debugCheckbox} label="Debug" />
     <FormControlLabel control={perfCheckbox} label="Diagnostics" />
     <FormControlLabel control={cameraCheckbox} label="Camera" />
+    <FormControlLabel control={groundCheckbox} label="Show Ground" />
     {/* TODO slider for how much smoothing */}
     <FormControlLabel control={smoothingCheckbox} label="Motion Smoothing" />
     {/* TODO record, stop modal control */}
