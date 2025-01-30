@@ -12,7 +12,7 @@ function App() {
 
   let cfg = new Config();
   cfg.diag = true;
-  cfg.camera = false;
+  cfg.camera = true;
   cfg.smoothing = true;
   cfg.debug = true;
   const [config, setConfig] = useState(cfg);
