@@ -1,6 +1,6 @@
 
 /**
- * Map of model bone names
+ * Map of model bone specifications.
  */
 export type BoneMap = {
   head: BoneSpec,
