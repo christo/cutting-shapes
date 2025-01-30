@@ -1,6 +1,6 @@
 import { Box, CircularProgress, Stack, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { PerfTime } from '../mocap/PerfTime.ts';
+import { PerfTime } from '../PerfTime.ts';
 import { PoseSystem } from '../mocap/PoseSystem.ts';
 import { SkeletalDiagnostics } from './SkeletalDiagnostics.tsx';
 

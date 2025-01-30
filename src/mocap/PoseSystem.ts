@@ -8,9 +8,9 @@ import {
 import { Config } from '../Config.ts';
 import { Body } from './Body.ts';
 import { midPoint } from './Draw.ts';
-import { PerfTime } from './PerfTime.ts';
+import { PerfTime } from '../PerfTime.ts';
 import { Pose } from './Pose.ts';
-import { RingStat } from './RingStat.ts';
+import { RingStat } from '../RingStat.ts';
 import { skeletalRotations } from './SkeletalRotation.ts';
 import { drawCustomStickFigure } from './StickFigure.ts';
 

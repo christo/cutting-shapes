@@ -1,5 +1,5 @@
 import { ISceneLoaderAsyncResult, Vector3 } from '@babylonjs/core';
-import { CC0, CG_RF_NOAI, License, MIT } from './License.ts';
+import { CC0, CG_RF_NOAI, License, MIT } from '../License.ts';
 import { BoneMap, BoneSpec } from './RiggedModel.ts';
 import { RiggedModel } from './RiggedModel.tsx';
 
