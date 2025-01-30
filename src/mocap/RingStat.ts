@@ -1,3 +1,6 @@
+/**
+ * Ringbuffer that provides numeric aggregate functions.
+ */
 export class RingStat {
   private index: number;
   private readonly list: number[];
