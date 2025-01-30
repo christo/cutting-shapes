@@ -26,4 +26,18 @@ export class RingStat {
     }
     return sum / this.list.length;
   }
+
+  max() {
+    if (this.empty()) {
+      return NaN;
+    }
+    return Math.max(...this.list)
+  }
+
+  min() {
+    if (this.empty()) {
+      return NaN;
+    }
+    return Math.min(...this.list)
+  }
 }
