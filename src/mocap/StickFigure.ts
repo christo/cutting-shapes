@@ -94,7 +94,7 @@ export function drawCustomStickFigure(landmarks: NormalizedLandmark[][], ctx: Ca
     const canvasPoint = (part: number): NormalizedLandmark => {
       return canvasmirror(ls[part]);
     };
-    // draw all points
+    // draw all sufficiently visible points
     ls.filter(l => l.visibility > 0.8).map(canvasmirror).forEach((l, i) => {
 
       const x = l.x;
