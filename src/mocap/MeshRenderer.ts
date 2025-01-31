@@ -21,10 +21,14 @@ export type SceneLoaded = {
   loaderResult: ISceneLoaderAsyncResult
 }
 
-export async function loadPuppet(scene: Scene, puppet: Puppet, poseSupplier: () => Pose[]): Promise<ISceneLoaderAsyncResult> {
-  console.log('loading puppet');
+export async function loadPuppet(
+  scene: Scene,
+  puppet: Puppet,
+  poseSupplier: () => Pose[],
+  _config: Config): Promise<ISceneLoaderAsyncResult> {
+
+  console.log(`loading puppet ${puppet.name}`);
   const result: ISceneLoaderAsyncResult = await SceneLoader.ImportMeshAsync(null, puppet.filepath, undefined, scene);
-  // console.log(puppet.name);
   dumpMeshes(result.meshes);
   const mesh = result.meshes[puppet.charMeshIdx];
   mesh.position.x = 0;
@@ -68,7 +72,7 @@ export async function loadPuppet(scene: Scene, puppet: Puppet, poseSupplier: () 
       });
     } else {
       // TODO maybe rotate the bone directly if there's no TransformNode?
-      console.warn(`missing bone transform node(s)`);
+      console.error(`missing bone transform node(s), no rotations applied`);
     }
 
   }
@@ -88,7 +92,13 @@ function babylonBgColor(config: Config) {
   }
 }
 
-export const createScene = async function(engine: Engine, canvas: HTMLCanvasElement, poseSupplier: PoseSupplier, config: Config): Promise<SceneLoaded> {
+export const createScene = async function(
+  engine: Engine,
+  canvas: HTMLCanvasElement,
+  poseSupplier: PoseSupplier,
+  config: Config
+): Promise<SceneLoaded> {
+
   const scene = new Scene(engine);
 
   scene.clearColor = babylonBgColor(config);
@@ -106,6 +116,6 @@ export const createScene = async function(engine: Engine, canvas: HTMLCanvasElem
   }
   return {
     scene: scene,
-    loaderResult: await loadPuppet(scene, PUPPETS[config.puppetIdx], poseSupplier),
+    loaderResult: await loadPuppet(scene, PUPPETS[config.puppetIdx], poseSupplier, config),
   };
 };
