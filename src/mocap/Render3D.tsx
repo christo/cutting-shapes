@@ -31,7 +31,7 @@ export function Render3D({ sx, poseSupplier, config }: Render3DProps) {
     if (renderCanvas.current) {
       console.log('renderCanvas is good, creating 3d scene');
       const canvas = renderCanvas.current;
-π      const engine = new Engine(canvas, true);
+      const engine = new Engine(canvas, true);
       if (!scene) {
         createScene(engine, canvas, poseSupplier, config).then(sceneLoaded => {
           const scene = sceneLoaded.scene;
@@ -44,7 +44,7 @@ export function Render3D({ sx, poseSupplier, config }: Render3DProps) {
         window.addEventListener('resize', () => {
           // assumes scene canvas is proportional to window
           engine.resize();
-        });π
+        });
       }
     }
   }, []);
