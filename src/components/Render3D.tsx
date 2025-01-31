@@ -4,8 +4,8 @@ import { Box } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 import '@babylonjs/loaders';
 import { Config } from '../Config.ts';
-import { createScene } from './Bab3dRenderer.ts';
-import { PoseSupplier } from './Pose.ts';
+import { createScene } from '../mocap/Bab3dRenderer.ts';
+import { PoseSupplier } from '../mocap/Pose.ts';
 
 
 interface Render3DProps {
