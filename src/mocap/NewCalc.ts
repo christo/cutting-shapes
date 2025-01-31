@@ -26,8 +26,16 @@ export function calcSpine(leftHip: Vector3, rightHip: Vector3, leftShoulder: Vec
   const yaw = Math.atan2(shoulderFlat.z, shoulderFlat.x) - Math.atan2(hipFlat.z, hipFlat.x);
 
   // Calculate roll (rotation around z-axis)
-  // This would require looking at the vertical components relative to spine orientation
-  const roll = 0; // TODO: implement correct roll calculation
+  // Project shoulder vector onto plane perpendicular to spine
+  // and measure its angle from horizontal
+  const verticalDiff = rightShoulder.y - leftShoulder.y;
+  const horizontalDist = new Vector3(
+    rightShoulder.x - leftShoulder.x,
+    0,
+    rightShoulder.z - leftShoulder.z
+  ).length();
+
+  const roll = Math.atan2(verticalDiff, horizontalDist);
 
   return {
     pitch,
