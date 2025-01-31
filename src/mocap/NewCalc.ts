@@ -1,10 +1,6 @@
 import { Vector3 } from '@babylonjs/core';
+import { Rot } from '../analysis/Rot.ts';
 
-type Rot = {
-  pitch: number,
-  yaw: number,
-  roll: number
-}
 
 export function calcSpine(leftHip: Vector3, rightHip: Vector3, leftShoulder: Vector3, rightShoulder: Vector3): Rot {
   // Get hip and shoulder lines (from left to right)
@@ -35,7 +31,7 @@ export function calcSpine(leftHip: Vector3, rightHip: Vector3, leftShoulder: Vec
     rightShoulder.z - leftShoulder.z
   ).length();
 
-  const roll = Math.atan2(verticalDiff, horizontalDist);
+  const roll = -Math.atan2(verticalDiff, horizontalDist);
 
   return {
     pitch,

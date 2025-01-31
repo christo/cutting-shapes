@@ -1,7 +1,8 @@
 import { Vector3 } from '@babylonjs/core';
 import { NormalizedLandmark } from '@mediapipe/tasks-vision';
+import { DebugRot, Rot, ROT_UNIT, ROT_ZERO } from '../analysis/Rot.ts';
 import { Body } from './Body.ts';
-import { Rot, ROT_UNIT, ROT_ZERO } from '../analysis/Rot.ts';
+import { calcSpine } from './NewCalc.ts';
 
 // TODO implement max rotation extents per joint
 
@@ -38,7 +39,7 @@ export interface SkeletalRotation {
   /**
    * Bone from mid hips to mid shoulders.
    */
-  spine: Rot;
+  spine: DebugRot;
 
   /**
    * Bone from mid shoulders to mid head.
@@ -114,23 +115,38 @@ const v3f2 = (v3: Vector3): string => {
   return `x:${v3.x.toFixed(2)}, y:${v3.y.toFixed(2)}, z:${v3.z.toFixed(2)}`;
 };
 
-function calcSpine(
+export function calcSpineOld(
   leftHip: Vector3,
   rightHip: Vector3,
   leftShoulder: Vector3,
   rightShoulder: Vector3,
-): Rot {
+): DebugRot {
+  // TODO carefully analyse this maths
+  const debugs: string[] = [];
   // Calculate hip and shoulder centres
   const hipCentre = Vector3.Center(leftHip, rightHip);
   const shoulderCentre = Vector3.Center(leftShoulder, rightShoulder);
 
   // Get hip orientation (cross product of hip line and up vector gives forward direction)
   const hipRight = rightHip.subtract(leftHip).normalize();
+  // @ts-ignore
+  const hipLeft = leftHip.subtract(rightHip).normalize();
   const up = new Vector3(0, 1, 0);
+  // @ts-ignore
+  const down = new Vector3(0, -1, 0);
   const hipForward = Vector3.Cross(hipRight, up).normalize();
+  //console.log(hipForward);
+  // t-pose: x 0, y 0, z -1
+  // negative z is towards camera
+  // positive y is up
 
   // Calculate spine direction
-  const spineDir = shoulderCentre.subtract(hipCentre).normalize();
+  let spineDirX = shoulderCentre.subtract(hipCentre);
+  const spineDir = spineDirX.normalize();
+  // in t-pose spineDir should be up?
+  debugs.push(`sh0 ${v3f2(shoulderCentre)}`);
+  debugs.push(`h0 ${v3f2(hipCentre)}`);
+  debugs.push(`dir.y ${spineDirX.y.toFixed(2)}`);
 
   // Project spine onto hip-relative planes for rotation calculations
   const spineHorizontal = new Vector3(spineDir.x, 0, spineDir.z).normalize();
@@ -149,7 +165,8 @@ function calcSpine(
   const roll = Math.atan2(projectedShoulderRight.z, projectedShoulderRight.x) -
     Math.atan2(hipRight.z, hipRight.x);
 
-  return { yaw, pitch: pitch + Math.PI / 2.8, roll };
+  const rot = { yaw, pitch: pitch + Math.PI / 2.8, roll };
+  return { ...rot, debug: debugs };
 }
 
 export function skeletalRotations(ls: NormalizedLandmark[]): SkeletalRotation {
@@ -187,7 +204,7 @@ export function skeletalRotations(ls: NormalizedLandmark[]): SkeletalRotation {
   // TODO need to define joint rotation rest positions for t-pose
   return {
     // t-pose colinear
-    spine: calcSpine(leftHip, rightHip, leftShoulder, rightShoulder),
+    spine: {...calcSpine(leftHip, rightHip, leftShoulder, rightShoulder), debug: []},
 
     // t-pose: colinear
     neck: calcBone(midHip, midShoulder, midEar),
