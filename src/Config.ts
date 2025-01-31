@@ -44,4 +44,20 @@ export class Config {
    * Whether or not to show the ground in the puppet renderer.
    */
   ground: boolean = false;
+
+  /**
+   * Whether to use inverse kinematics (true) or skeletal rotation calculations for 3d pose.
+   */
+  ik: boolean = false;
+
+  /**
+   * Whether to render the 3d mesh puppet.
+   */
+  mesh: boolean = true;
+
+  /**
+   * Whether to show the hand-rendered figure
+   */
+  bespoke = true;
+
 }

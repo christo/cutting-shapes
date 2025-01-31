@@ -40,6 +40,15 @@ const SettingsPanel = ({ setConfig, config }: CommonProps) => {
   const groundCheckbox = <Switch checked={config.ground}
                                  onChange={event => setConfig({ ...config, ground: event.target.checked })}
                                  inputProps={{ 'aria-label': 'controlled' }} />;
+  const ikCheckbox = <Switch checked={config.ik}
+                                 onChange={event => setConfig({ ...config, ik: event.target.checked })}
+                                 inputProps={{ 'aria-label': 'controlled' }} />;
+  const meshCheckbox = <Switch checked={config.mesh}
+                                 onChange={event => setConfig({ ...config, mesh: event.target.checked })}
+                                 inputProps={{ 'aria-label': 'controlled' }} />;
+  const bespokeCheckbox = <Switch checked={config.bespoke}
+                                 onChange={event => setConfig({ ...config, bespoke: event.target.checked })}
+                                 inputProps={{ 'aria-label': 'controlled' }} />;
 
   // TODO use video file sources
   const gotRecording = false;
@@ -80,6 +89,9 @@ const SettingsPanel = ({ setConfig, config }: CommonProps) => {
     <FormControlLabel control={debugCheckbox} label="Debug" />
     <FormControlLabel control={perfCheckbox} label="Diagnostics" />
     <FormControlLabel control={cameraCheckbox} label="Camera" />
+    <FormControlLabel control={bespokeCheckbox} label="Bespoke Renderer" />
+    <FormControlLabel control={meshCheckbox} label="Mesh Renderer" />
+    <FormControlLabel control={ikCheckbox} label="Inverse Kinematics" />
     <FormControlLabel control={groundCheckbox} label="Show Ground" />
     {/* TODO slider for how much smoothing */}
     <FormControlLabel control={smoothingCheckbox} label="Motion Smoothing" />

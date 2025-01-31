@@ -29,16 +29,16 @@ function App() {
     cfg = defaultConfig();
     Persist.store(KEY_CONFIG, cfg);
   } else {
-    console.log("loaded config");
+    // console.log("loaded config");
     console.dir(cfg);
   }
   const [config, setConfig] = useState(cfg);
   const persistentSetConfig: StateSetter<Config> = value => {
     if (typeof value == "function") {
-      console.log("set config via function");
+      // console.log("set config via function");
       Persist.store(KEY_CONFIG, value(config));
     } else {
-      console.log("set config via value");
+      // console.log("set config via value");
       Persist.store(KEY_CONFIG, value); // TODO confirm we will get new config here
     }
     setConfig(value);
