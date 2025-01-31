@@ -1,6 +1,7 @@
 import {
   Axis,
   Color3,
+  Color4,
   Engine,
   FreeCamera,
   HemisphericLight,
@@ -76,22 +77,36 @@ export async function loadPuppet(scene: Scene, puppet: Puppet, poseSupplier: () 
   return result;
 }
 
+function babylonBgColor(config: Config) {
+  if (config.bg == "Black") {
+    return new Color4(0, 0, 0, 1);
+  } else if (config.bg == "Green") {
+    return new Color4(0, 1, 0, 1);
+  } else if (config.bg == "Blue") {
+    return new Color4(0, 0, 1, 1);
+  } else {
+    return new Color4(0, 0, 0, 0);
+  }
+}
+
 export const createScene = async function(engine: Engine, canvas: HTMLCanvasElement, poseSupplier: PoseSupplier, config: Config): Promise<SceneLoaded> {
-  const newScene = new Scene(engine);
-  const camera = new FreeCamera('camera1', new Vector3(0, 1.3, -4), newScene);
+  const scene = new Scene(engine);
+
+  scene.clearColor = babylonBgColor(config);
+  const camera = new FreeCamera('camera1', new Vector3(0, 1.3, -4), scene);
   camera.setTarget(new Vector3(0, 1, 0));
   camera.attachControl(canvas, true);
-  const light = new HemisphericLight('light', new Vector3(0, 2, -2), newScene);
+  const light = new HemisphericLight('light', new Vector3(0, 2, -2), scene);
   light.intensity = 0.6;
 
   if (config.ground) {
-    const ground = MeshBuilder.CreateGround('ground', { width: 8, height: 8 }, newScene);
-    const groundMaterial = new StandardMaterial('Ground Material', newScene);
+    const ground = MeshBuilder.CreateGround('ground', { width: 8, height: 8 }, scene);
+    const groundMaterial = new StandardMaterial('Ground Material', scene);
     groundMaterial.diffuseColor = Color3.Green();
     ground.material = groundMaterial;
   }
   return {
-    scene: newScene,
-    loaderResult: await loadPuppet(newScene, PUPPETS[config.puppetIdx], poseSupplier)
+    scene: scene,
+    loaderResult: await loadPuppet(scene, PUPPETS[config.puppetIdx], poseSupplier),
   };
 };
