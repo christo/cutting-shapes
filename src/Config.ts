@@ -7,6 +7,8 @@ export const BgValues: Bg[] = ["Black", "Green", "Blue", "Ghost"];
  */
 export class Config {
 
+  puppetIdx: number = 0;
+
   /**
    * Whether to show debug info.
    */

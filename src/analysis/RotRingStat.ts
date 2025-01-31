@@ -1,9 +1,11 @@
 import { Rot } from './Rot.ts';
 import { RingStat } from './RingStat.ts';
 
+// noinspection JSUnusedLocalSymbols
 /**
  * Ring buffer of {@link Rot} with aggregate functions.
  */
+// @ts-ignore TODO temporary
 class RotRingStat {
   private pitch: RingStat;
   private yaw: RingStat;
