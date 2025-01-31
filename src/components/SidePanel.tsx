@@ -95,8 +95,6 @@ const SettingsPanel = ({ setConfig, config }: CommonProps) => {
       <Typography >Live</Typography>
 
     </Stack>
-
-
   </Stack>;
 };
 
