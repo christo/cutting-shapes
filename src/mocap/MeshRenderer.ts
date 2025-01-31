@@ -1,5 +1,4 @@
 import {
-  Axis,
   Color3,
   Color4,
   Engine,
@@ -31,7 +30,6 @@ export async function loadPuppet(scene: Scene, puppet: Puppet, poseSupplier: () 
   mesh.position.x = 0;
   mesh.position.y = 0;
   mesh.position.z = 0;
-  mesh.rotate(Axis.Y, Math.PI); // face camera
   puppet.postLoad(result);
 
   console.log(`${result.skeletons.length} skeletons`);
@@ -94,10 +92,10 @@ export const createScene = async function(engine: Engine, canvas: HTMLCanvasElem
   const scene = new Scene(engine);
 
   scene.clearColor = babylonBgColor(config);
-  const camera = new FreeCamera('camera1', new Vector3(0, 1.3, -4), scene);
+  const camera = new FreeCamera('camera1', new Vector3(0, 1.3, 4), scene);
   camera.setTarget(new Vector3(0, 1, 0));
   camera.attachControl(canvas, true);
-  const light = new HemisphericLight('light', new Vector3(0, 2, -2), scene);
+  const light = new HemisphericLight('light', new Vector3(0, 2, 2), scene);
   light.intensity = 0.6;
 
   if (config.ground) {
