@@ -9,6 +9,7 @@ import { Splash } from './Splash.tsx';
 
 const Z_INDEX_CAMERA = 100;
 const Z_INDEX_BESPOKE = 50;
+export const Z_INDEX_SPLASH = 500;
 
 const poseSystem = new PoseSystem();
 
