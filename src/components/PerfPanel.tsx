@@ -2,6 +2,7 @@ import { Box, CircularProgress, Stack, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { PerfTime } from '../analysis/PerfTime.ts';
 import { PoseSystem } from '../mocap/PoseSystem.ts';
+import { DATA_STYLE } from './Home.tsx';
 import { SkeletalDiagnostics } from './SkeletalDiagnostics.tsx';
 
 const PerfDetail = ({ perfTime }: { perfTime: PerfTime }) => {
@@ -13,12 +14,10 @@ const PerfDetail = ({ perfTime }: { perfTime: PerfTime }) => {
     }
   };
   const sx = {
-    fontFamily: '"Kode Mono", monospace',
+    ...DATA_STYLE,
     fontSize: '18px',
     fontWeight: 400,
     fontStyle: 'normal',
-    color: 'rgba(255, 80, 80, 1)',
-    textShadow: '0 0 5px rgba(255, 50, 50, 0.7), 0 0 8px rgba(255, 50, 50, 0.4)',
     minWidth: '19rem',
     textAlign: 'right',
   };
