@@ -4,7 +4,7 @@ import { Box } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 import '@babylonjs/loaders';
 import { Config } from '../Config.ts';
-import { createScene } from '../mocap/Bab3dRenderer.ts';
+import { createScene } from '../mocap/MeshRenderer.ts';
 import { PoseSupplier } from '../mocap/Pose.ts';
 
 interface Render3DProps {
@@ -20,7 +20,7 @@ interface Render3DProps {
  * @param config sets options
  * @constructor
  */
-export function Render3D({ sx, poseSupplier, config }: Render3DProps) {
+export function MeshView({ sx, poseSupplier, config }: Render3DProps) {
 
   const renderCanvas = useRef<HTMLCanvasElement | null>(null);
   const [scene, setScene] = useState<Scene | null>(null);

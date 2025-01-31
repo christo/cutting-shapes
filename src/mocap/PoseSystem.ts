@@ -12,7 +12,7 @@ import { PerfTime } from '../analysis/PerfTime.ts';
 import { Pose } from './Pose.ts';
 import { RingStat } from '../analysis/RingStat.ts';
 import { skeletalRotations } from './SkeletalRotation.ts';
-import { drawCustomStickFigure } from './StickFigure.ts';
+import { drawCustomStickFigure } from './BespokeRenderer.ts';
 
 type RunningMode = 'IMAGE' | 'VIDEO';
 

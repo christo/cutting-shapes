@@ -2,12 +2,17 @@ import { Box } from '@mui/material';
 import { useRef, useState } from 'react';
 import { Config } from '../Config.ts';
 import { PoseSystem } from '../mocap/PoseSystem.ts';
-import { Render3D } from '../mocap/Render3D.tsx';
+import { MeshView } from './MeshView.tsx';
 import { VideoCamera, VideoConsumer } from './VideoCamera.tsx';
 import { PerfPanel } from './PerfPanel.tsx';
 import { Splash } from './Splash.tsx';
 
+const Z_INDEX_CAMERA = 100;
+const Z_INDEX_BESPOKE = 50;
+
 const poseSystem = new PoseSystem();
+
+
 
 const Home = ({ config }: { config: Config; }) => {
   const [showSplash, setShowSplash] = useState(true);
@@ -20,7 +25,7 @@ const Home = ({ config }: { config: Config; }) => {
         if (showSplash) {
           setShowSplash(false);
         }
-        poseSystem.justDraw(stickFigureCanvas.current, 50);
+        poseSystem.justDraw(stickFigureCanvas.current, Z_INDEX_BESPOKE);
       }
       await poseSystem.detect(video, startTimeMs);
     }
@@ -43,12 +48,12 @@ const Home = ({ config }: { config: Config; }) => {
         width: '50%',
         height: '50%',
         maxHeight: "50%",
-        zIndex: 50,
+        zIndex: Z_INDEX_CAMERA,
         visibility: config.camera ? 'visible' : 'hidden',
       }}>
         <VideoCamera consumers={[vc]} />
       </Box>
-      {config.mesh && <Render3D
+      {config.mesh && <MeshView
         sx={{position: 'absolute', left: 0, bottom: 0, width: meshScale, height: meshScale}}
         poseSupplier={poseSystem.subscribe}
         config={config}
