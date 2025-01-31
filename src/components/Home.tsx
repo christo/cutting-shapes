@@ -20,17 +20,22 @@ const Home = ({ config }: { config: Config; }) => {
         if (showSplash) {
           setShowSplash(false);
         }
-        await poseSystem.detect(video, startTimeMs);
         poseSystem.justDraw(stickFigureCanvas.current, 50);
       }
+      await poseSystem.detect(video, startTimeMs);
     }
   };
+  const bespokeScale = config.mesh ? '50%' : '100%';
+  const meshScale = config.bespoke ? '50%' : '100%';
+  if (!config.bespoke && stickFigureCanvas.current) {
+    poseSystem.resetCanvas();
+  }
   return (
     <Box className="App-body" sx={{position: "absolute", alignContent: "center", justifyItems: "center", top: 0, left: 0, width: "100%", height: "100%"}}>
       <Splash visible={showSplash} />
       {config.diag && <PerfPanel poseSystem={poseSystem} />}
-      <canvas ref={stickFigureCanvas} id="main_view"
-              style={{ position: 'absolute', left: 0, top: 0, width: '50%', height: '50%' }}></canvas>
+      {config.bespoke && <canvas ref={stickFigureCanvas} id="main_view"
+              style={{ position: 'absolute', left: 0, top: 0, width: bespokeScale, height: bespokeScale }}></canvas>}
       <Box sx={{
         position: 'absolute',
         right: 0,
@@ -43,11 +48,11 @@ const Home = ({ config }: { config: Config; }) => {
       }}>
         <VideoCamera consumers={[vc]} />
       </Box>
-      <Render3D
-        sx={{position: 'absolute', left: 0, bottom: 0, width: '50%', height: '50%'}}
+      {config.mesh && <Render3D
+        sx={{position: 'absolute', left: 0, bottom: 0, width: meshScale, height: meshScale}}
         poseSupplier={poseSystem.subscribe}
         config={config}
-      />
+      />}
     </Box>
   );
 };
