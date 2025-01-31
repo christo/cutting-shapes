@@ -7,7 +7,6 @@ import { Config } from '../Config.ts';
 import { createScene } from '../mocap/Bab3dRenderer.ts';
 import { PoseSupplier } from '../mocap/Pose.ts';
 
-
 interface Render3DProps {
   sx: any; // TODO what type should this be to pass to mui component?
   poseSupplier: PoseSupplier;
