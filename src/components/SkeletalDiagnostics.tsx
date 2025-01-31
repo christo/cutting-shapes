@@ -57,9 +57,10 @@ function SkeletalDiagnostics({ poseSystem }: { poseSystem: PoseSystem }) {
       <Stack>
         {poses.map((p: Pose, pi: number) => {
           const sr = p.skeletalRotation;
+          // one person pose per row
           return <Stack direction="row" key={`sd_${pi}`}>
             <Box sx={{mr: 1}}>
-              <Typography sx={{fontWeight: 'bold', fontSize: "large"}}>
+              <Typography sx={{fontWeight: 'bold', fontSize: "3rem"}}>
                 {pi + 1}
               </Typography>
             </Box>
