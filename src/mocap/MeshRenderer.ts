@@ -78,13 +78,14 @@ export async function loadPuppet(scene: Scene, puppet: Puppet, poseSupplier: () 
 }
 
 function babylonBgColor(config: Config) {
-  if (config.bg == "Black") {
+  if (config.bg === "Black") {
     return new Color4(0, 0, 0, 1);
-  } else if (config.bg == "Green") {
+  } else if (config.bg === "Green") {
     return new Color4(0, 1, 0, 1);
-  } else if (config.bg == "Blue") {
+  } else if (config.bg === "Blue") {
     return new Color4(0, 0, 1, 1);
   } else {
+    // "Ghost" is transparent for this renderer
     return new Color4(0, 0, 0, 0);
   }
 }
