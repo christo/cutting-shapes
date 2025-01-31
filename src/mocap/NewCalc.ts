@@ -7,45 +7,27 @@ type Rot = {
 }
 
 export function calcSpine(leftHip: Vector3, rightHip: Vector3, leftShoulder: Vector3, rightShoulder: Vector3): Rot {
-  // Calculate shoulder and hip vectors (from left to right)
-  const shoulderVector = rightShoulder.subtract(leftShoulder).normalize();
-  const hipVector = rightHip.subtract(leftHip).normalize();
+  // Get hip and shoulder lines (from left to right)
+  const hipLine = rightHip.subtract(leftHip).normalize();
+  const shoulderLine = rightShoulder.subtract(leftShoulder).normalize();
 
   // Calculate spine vector (from hip center to shoulder center)
   const hipCenter = leftHip.add(rightHip).scale(0.5);
   const shoulderCenter = leftShoulder.add(rightShoulder).scale(0.5);
   const spineVector = shoulderCenter.subtract(hipCenter).normalize();
 
-  // Calculate pitch (forward/backward tilt)
+  // Calculate pitch (rotation around x-axis)
   const pitch = Math.asin(-spineVector.z);
 
-  // Calculate yaw (rotation around vertical axis)
-  // Project both vectors onto horizontal (x-z) plane
-  const shoulderVectorFlat = new Vector3(shoulderVector.x, 0, shoulderVector.z).normalize();
-  const hipVectorFlat = new Vector3(hipVector.x, 0, hipVector.z).normalize();
+  // Calculate yaw (rotation around y-axis / spine)
+  // Project both vectors onto horizontal (x-z) plane and find angle
+  const shoulderFlat = new Vector3(shoulderLine.x, 0, shoulderLine.z).normalize();
+  const hipFlat = new Vector3(hipLine.x, 0, hipLine.z).normalize();
+  const yaw = Math.atan2(shoulderFlat.z, shoulderFlat.x) - Math.atan2(hipFlat.z, hipFlat.x);
 
-  const yaw = Math.atan2(
-    Vector3.Dot(Vector3.Cross(hipVectorFlat, shoulderVectorFlat), Vector3.Up()),
-    Vector3.Dot(hipVectorFlat, shoulderVectorFlat)
-  );
-
-  // Calculate roll (twist around spine axis)
-  // Project both shoulder and hip vectors onto plane perpendicular to spine
-  const spineProjection = Vector3.Dot(shoulderVector, spineVector);
-  const projectedShoulderVector = shoulderVector
-    .subtract(spineVector.scale(spineProjection))
-    .normalize();
-
-  const hipProjection = Vector3.Dot(hipVector, spineVector);
-  const projectedHipVector = hipVector
-    .subtract(spineVector.scale(hipProjection))
-    .normalize();
-
-  // Calculate roll as angle between projected vectors
-  const roll = Math.atan2(
-    Vector3.Dot(Vector3.Cross(projectedHipVector, projectedShoulderVector), spineVector),
-    Vector3.Dot(projectedHipVector, projectedShoulderVector)
-  );
+  // Calculate roll (rotation around z-axis)
+  // This would require looking at the vertical components relative to spine orientation
+  const roll = 0; // TODO: implement correct roll calculation
 
   return {
     pitch,
