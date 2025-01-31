@@ -109,14 +109,16 @@ class PoseSystem {
    */
   processLandmarks(nlss: NormalizedLandmark[][]): NormalizedLandmark[][] {
     // TODO multi-person logic needs serious review
-    if (this.prevLandmarks.length > 0 && this.config.smoothing) {
+    if (this.prevLandmarks.length > 0 && this.config.smoothing > 0) {
       // TODO if the number of landmarks in a single pose is previously smaller, just clone the new one
       // currently smooth by averaging last two landmark points by finding the
       // midpoint between previous and next
       return this.prevLandmarks.map((nls: NormalizedLandmark[], nlsIdx: number) => {
         return nls.map((nl: NormalizedLandmark, nlIdx: number) => {
           if (nlss.length > nlsIdx && nlss[nlsIdx].length > nlIdx) {
-            return midPoint(nl, nlss[nlsIdx][nlIdx]);
+            // maximum smoothing biases strongly to prev landmark
+            return lerp(this.config.smoothing, nlss[nlsIdx][nlIdx], nl);
+            // return midPoint(nl, nlss[nlsIdx][nlIdx]);
           } else {
             // new corresponding landmark is missing, return prev instead
             return nl;

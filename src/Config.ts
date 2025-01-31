@@ -6,6 +6,7 @@ export const BgValues: Bg[] = ["Black", "Green", "Blue", "Ghost"];
  * Primary application configuration struct.
  */
 export class Config {
+  static MAX_SMOOTHING: number = 0.999;
 
   puppetIdx: number = 0;
 
@@ -36,9 +37,9 @@ export class Config {
   live: boolean = true;
 
   /**
-   * Whether or not to do motion smoothing.
+   * How much motion smoothing - coefficient between 0 (no smoothing) and 1 (max smoothing).
    */
-  smoothing: boolean = false;
+  smoothing: number = 0;
 
   /**
    * Whether or not to show the ground in the puppet renderer.

@@ -1,11 +1,10 @@
-import {useState} from "react";
-import {SidePanel} from './components/SidePanel.tsx';
-import './App.css';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './components/Home';
-import Contact from './components/Contact';
+import { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import About from './components/About';
-import {Config} from "./Config.ts";
+import Home from './components/Home';
+import { SidePanel } from './components/SidePanel.tsx';
+import './App.css';
+import { Config } from './Config.ts';
 import { PUPPETS } from './mocap/Puppet.ts';
 import { Persist } from './Persist.ts';
 import { StateSetter } from './StateSetter.ts';
@@ -16,7 +15,7 @@ function defaultConfig() {
   let cfg = new Config();
   cfg.diag = true;
   cfg.camera = true;
-  cfg.smoothing = true;
+  cfg.smoothing = 0.5;
   cfg.debug = true;
   return cfg;
 }
@@ -30,17 +29,25 @@ function App() {
     Persist.store(KEY_CONFIG, cfg);
   } else {
     // console.log("loaded config");
-    console.dir(cfg);
+    // console.dir(cfg);
   }
   const [config, setConfig] = useState(cfg);
-  const persistentSetConfig: StateSetter<Config> = value => {
-    if (typeof value == "function") {
-      // console.log("set config via function");
-      Persist.store(KEY_CONFIG, value(config));
-    } else {
-      // console.log("set config via value");
-      Persist.store(KEY_CONFIG, value); // TODO confirm we will get new config here
+  // limit update frequency
+  const MIN_UPDATE_MS = 300;
+  let timeout: number | null = null;
+  const safeStoreConfig = (cfg: Config): void => {
+    if (timeout) {
+      window.clearTimeout(timeout);
+      timeout = null;
     }
+    timeout = window.setTimeout(() => {
+      // console.log("persisting config");
+      Persist.store(KEY_CONFIG, cfg);
+    }, MIN_UPDATE_MS);
+  }
+  const persistentSetConfig: StateSetter<Config> = value => {
+    let v = (typeof value == "function") ? value(config) : value;
+    safeStoreConfig(v);
     setConfig(value);
   }
   return (
@@ -51,7 +58,6 @@ function App() {
       <Routes>
         <Route path="/" element={<Home config={config} />} />
         <Route path="/about" element={<About puppets={PUPPETS}/>} />
-        <Route path="/contact" element={<Contact />} />
       </Routes>
     </Router>
   );
