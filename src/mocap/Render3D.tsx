@@ -96,27 +96,28 @@ export function Render3D({ sx, poseSupplier, config }: Render3DProps) {
     if (renderCanvas.current) {
       console.log('renderCanvas is good, creating 3d scene');
       const canvas = renderCanvas.current;
+
       const engine = new Engine(canvas, true);
-      const createScene = async function() {
-        const scene = new Scene(engine);
-        const camera = new FreeCamera('camera1', new Vector3(0, 1.3, -4), scene);
+      const createScene = async function(puppet: Puppet) {
+        const newScene = new Scene(engine);
+        const camera = new FreeCamera('camera1', new Vector3(0, 1.3, -4), newScene);
         camera.setTarget(new Vector3(0, 1, 0));
         camera.attachControl(canvas, true);
-        const light = new HemisphericLight('light', new Vector3(0, 2, -2), scene);
+        const light = new HemisphericLight('light', new Vector3(0, 2, -2), newScene);
         light.intensity = 0.6;
 
         if (config.ground) {
-          const ground = MeshBuilder.CreateGround('ground', { width: 8, height: 8 }, scene);
-          const groundMaterial = new StandardMaterial('Ground Material', scene);
+          const ground = MeshBuilder.CreateGround('ground', { width: 8, height: 8 }, newScene);
+          const groundMaterial = new StandardMaterial('Ground Material', newScene);
           groundMaterial.diffuseColor = Color3.Purple();
           ground.material = groundMaterial;
         }
         // TODO keep return value in state so puppets can be disposed and swapped
-        await loadPuppet(scene, PUPPETS[puppetIdx], poseSupplier);
-        return scene;
+        await loadPuppet(newScene, puppet, poseSupplier);
+        return newScene;
       };
       if (!scene) {
-        createScene().then(scene => {
+        createScene(PUPPETS[puppetIdx]).then(scene => {
           setScene(scene);
           engine.runRenderLoop(() => {
             scene.render();
