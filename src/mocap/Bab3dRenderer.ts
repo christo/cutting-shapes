@@ -1,7 +1,25 @@
-import { Axis, ISceneLoaderAsyncResult, Scene, SceneLoader, Vector3 } from '@babylonjs/core';
+import {
+  Axis,
+  Color3,
+  Engine,
+  FreeCamera,
+  HemisphericLight,
+  ISceneLoaderAsyncResult,
+  MeshBuilder,
+  Scene,
+  SceneLoader,
+  StandardMaterial,
+  Vector3,
+} from '@babylonjs/core';
+import { Config } from '../Config.ts';
 import { dumpMeshes, dumpSkeletons } from './ModelDebug.ts';
-import { Pose } from './Pose.ts';
-import { Puppet } from './Puppet.ts';
+import { Pose, PoseSupplier } from './Pose.ts';
+import { Puppet, PUPPETS } from './Puppet.ts';
+
+export type SceneLoaded = {
+  scene: Scene,
+  loaderResult: ISceneLoaderAsyncResult
+}
 
 export async function loadPuppet(scene: Scene, puppet: Puppet, poseSupplier: () => Pose[]): Promise<ISceneLoaderAsyncResult> {
   console.log('loading puppet');
@@ -57,3 +75,23 @@ export async function loadPuppet(scene: Scene, puppet: Puppet, poseSupplier: () 
   }
   return result;
 }
+
+export const createScene = async function(engine: Engine, canvas: HTMLCanvasElement, poseSupplier: PoseSupplier, config: Config): Promise<SceneLoaded> {
+  const newScene = new Scene(engine);
+  const camera = new FreeCamera('camera1', new Vector3(0, 1.3, -4), newScene);
+  camera.setTarget(new Vector3(0, 1, 0));
+  camera.attachControl(canvas, true);
+  const light = new HemisphericLight('light', new Vector3(0, 2, -2), newScene);
+  light.intensity = 0.6;
+
+  if (config.ground) {
+    const ground = MeshBuilder.CreateGround('ground', { width: 8, height: 8 }, newScene);
+    const groundMaterial = new StandardMaterial('Ground Material', newScene);
+    groundMaterial.diffuseColor = Color3.Green();
+    ground.material = groundMaterial;
+  }
+  return {
+    scene: newScene,
+    loaderResult: await loadPuppet(newScene, PUPPETS[config.puppetIdx], poseSupplier)
+  };
+};
