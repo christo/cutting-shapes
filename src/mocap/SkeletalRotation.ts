@@ -106,6 +106,14 @@ function calcBone(
   };
 }
 
+/**
+ * Format a Vector3 with components of 2 decimal places
+ * @param v3
+ */
+const v3f2 = (v3: Vector3): string => {
+  return `x:${v3.x.toFixed(2)}, y:${v3.y.toFixed(2)}, z:${v3.z.toFixed(2)}`;
+};
+
 function calcSpine(
   leftHip: Vector3,
   rightHip: Vector3,
