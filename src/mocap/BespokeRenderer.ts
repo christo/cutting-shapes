@@ -75,6 +75,10 @@ export function drawCustomStickFigure(landmarks: NormalizedLandmark[][], ctx: Ca
     ctx.arc(centerX, centerY, radius, startAngle, endAngle);
     ctx.stroke();
   };
+  /**
+   * Return coordinates flipped over y axis scaled to canvas.
+   * @param l the landmark to transform
+   */
   const canvasmirror = (l: NormalizedLandmark) => {
     return {
       x: ctx.canvas.width - (l.x * ctx.canvas.width),
@@ -88,7 +92,7 @@ export function drawCustomStickFigure(landmarks: NormalizedLandmark[][], ctx: Ca
     if (debugMode) {
       ctx.font = '28px Arial';
       ctx.fillStyle = 'white';
-      ctx.fillText(`person ${pi + 1}`, 20, (pi + 2) * 20);
+      ctx.fillText(`human ${pi + 1}`, 20, (pi + 2) * 20);
     }
 
     const canvasPoint = (part: number): NormalizedLandmark => {
