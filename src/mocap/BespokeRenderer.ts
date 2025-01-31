@@ -58,13 +58,13 @@ export function drawCustomStickFigure(landmarks: NormalizedLandmark[][], ctx: Ca
 
   const arc = (startX: number, startY: number, endX: number, endY: number, radiusFactor: number) => {
 
-    // this is borked
+    // TODO this is borked
 
     const dx = endX - startX;
     const dy = endY - startY;
     const distance = Math.sqrt(dx * dx + dy * dy);
 
-    const radius = distance * radiusFactor;
+    const radius = distance * radiusFactor / 2;
     const centerX = (startX + endX) / 2;
     const centerY = (startY + endY) / 2;
 
