@@ -7,7 +7,7 @@ import {
 } from '@mediapipe/tasks-vision';
 import { Config } from '../Config.ts';
 import { Body } from './Body.ts';
-import { midPoint } from './Draw.ts';
+import { lerp } from '../analysis/Draw.ts';
 import { PerfTime } from '../analysis/PerfTime.ts';
 import { Pose } from './Pose.ts';
 import { RingStat } from '../analysis/RingStat.ts';
@@ -46,7 +46,8 @@ const compareNlss = (a: NormalizedLandmark[], b:NormalizedLandmark[]) => {
   // guessing most likely visible landmark is a shoulder
   // x position preferred in camera field because gravity
   // future: empirical evidence from reference video of most useful way to distinguish people
-  return a[Body.left_shoulder].x - b[Body.left_shoulder].x;
+  // leftmost shoulder
+  return Math.min(a[Body.left_shoulder].x, a[Body.right_shoulder].x) - Math.min(b[Body.left_shoulder].x, b[Body.right_shoulder].x);
 }
 
 /**
@@ -199,7 +200,7 @@ class PoseSystem {
    */
   async detect(source: TexImageSource, timestamp: number) {
     const startVision = performance.now();
-    const plm = await this.getLandmarker(2, 'VIDEO');
+    const plm = await this.getLandmarker(5, 'VIDEO');
     plm.detectForVideo(source, timestamp, (result: PoseLandmarkerResult) => {
       if (result.landmarks.length > 1) {
         sortPeople(result.landmarks); // TODO don't mutate result?
@@ -254,7 +255,7 @@ class PoseSystem {
    * @param numPoses the maximum number of people to detect
    * @param runningMode
    */
-  private async getLandmarker(numPoses: 1 | 2 = 1, runningMode: RunningMode = 'VIDEO'): Promise<PoseLandmarker> {
+  private async getLandmarker(numPoses: number = 1, runningMode: RunningMode = 'VIDEO'): Promise<PoseLandmarker> {
     if (!this.poseLandmarker) {
       console.log('creating pose landmarker');
       this.poseLandmarker = await PoseLandmarker.createFromOptions(await this.getVision(), {
