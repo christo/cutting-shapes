@@ -9,10 +9,13 @@ export type PoseSupplier = () => Pose[];
  */
 export class Pose {
   skeletalRotation: SkeletalRotation;
+  descriptor: string[];
 
   // TODO integrate positional reference anchor in view
 
-  constructor(skeletalRotation: SkeletalRotation) {
+  constructor(skeletalRotation: SkeletalRotation, descriptor: string[] = []) {
     this.skeletalRotation = skeletalRotation;
+    this.descriptor = descriptor;
   }
+
 }
