@@ -166,7 +166,7 @@ visual effects and interactive elements.
 
 * https://mediapipe-studio.webapps.google.com/demo/pose_landmarker
 * https://devpost.com/software/boxing-simulator
-* https://playground.babylonjs.com/#ZZUZEG
+* https://playground.babylonjs.com/#ZZUZEG detect poses and render key points in babylon
 * [ ] check phantom dev:
   * https://github.com/phantom-software-AZ
   * [ ] https://github.com/phantom-software-AZ/v3d-web?tab=readme-ov-file
