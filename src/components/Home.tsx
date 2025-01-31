@@ -36,13 +36,16 @@ const Home = ({ config }: { config: Config; }) => {
       await poseSystem.detect(video, startTimeMs);
     }
   };
+  // if the other is present, go half size
   const bespokeScale = config.mesh ? '50%' : '100%';
   const meshScale = config.bespoke ? '50%' : '100%';
   if (!config.bespoke && stickFigureCanvas.current) {
     poseSystem.resetCanvas();
   }
   return (
-    <Box className="App-body" sx={{position: "absolute", alignContent: "center", justifyItems: "center", top: 0, left: 0, width: "100%", height: "100%"}}>
+    <Box className="App-body" sx={{
+      position: "absolute", alignContent: "center", justifyItems: "center",
+      top: 0, left: 0, width: "100%", height: "100%"}}>
       <Splash visible={showSplash} />
       {config.diag && <PerfPanel poseSystem={poseSystem} />}
       {config.bespoke && <canvas ref={stickFigureCanvas} id="main_view"
