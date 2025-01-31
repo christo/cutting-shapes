@@ -48,6 +48,8 @@ const Home = ({ config }: { config: Config; }) => {
         width: '50%',
         height: '50%',
         maxHeight: "50%",
+        display: 'flex',
+        justifyContent: "end",
         zIndex: Z_INDEX_CAMERA,
         visibility: config.camera ? 'visible' : 'hidden',
       }}>
