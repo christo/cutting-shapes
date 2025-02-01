@@ -7,6 +7,10 @@ export type BoneMap = {
   spine: BoneSpec,
 };
 
+/**
+ * Mapping to enable named bones in a model to have offset and scaling applied
+ * after {@link SkeletalRotation} is calculated on the canonical skeleton.
+ */
 export class BoneSpec {
   name: string;
   offset: number;
