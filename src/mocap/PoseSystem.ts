@@ -5,14 +5,14 @@ import {
   PoseLandmarker,
   PoseLandmarkerResult,
 } from '@mediapipe/tasks-vision';
-import { Config } from '../Config.ts';
-import { Body } from './Body.ts';
 import { lerp } from '../analysis/Draw.ts';
 import { PerfTime } from '../analysis/PerfTime.ts';
-import { Pose } from './Pose.ts';
 import { RingStat } from '../analysis/RingStat.ts';
-import { skeletalRotations } from './SkeletalRotation.ts';
+import { Config } from '../Config.ts';
 import { drawCustomStickFigure } from './BespokeRenderer.ts';
+import { Body } from './Body.ts';
+import { Pose } from './Pose.ts';
+import { skeletalRotations } from './SkeletalRotation.ts';
 
 type RunningMode = 'IMAGE' | 'VIDEO';
 
@@ -237,9 +237,10 @@ class PoseSystem {
 
       const poses = [];
       for (let i = 0; i < lss.length; i++) {
-
         const ls = lss[i];
-        poses.push(new Pose(skeletalRotations(ls)));
+        const messages:string[] = [];
+        let skeletalRotation = skeletalRotations(ls, m => messages.push(m));
+        poses.push(new Pose(skeletalRotation, messages));
       }
       this.poseCacheDirty = false;
       this.poseCache = poses;

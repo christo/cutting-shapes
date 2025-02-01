@@ -1,6 +1,6 @@
 import { Vector3 } from '@babylonjs/core';
 import { NormalizedLandmark } from '@mediapipe/tasks-vision';
-import { DebugRot, Rot, ROT_UNIT, ROT_ZERO } from '../analysis/Rot.ts';
+import { Rot, ROT_UNIT, ROT_ZERO } from '../analysis/Rot.ts';
 import { Body } from './Body.ts';
 
 // TODO implement max rotation extents per joint
@@ -33,12 +33,12 @@ export interface SkeletalRotation {
   /**
    * Joint angle formed from neck to head.
    */
-  head: DebugRot;
+  head: Rot;
 
   /**
    * Bone from mid hips to mid shoulders.
    */
-  spine: DebugRot;
+  spine: Rot;
 
   /**
    * Bone from mid shoulders to mid head.
@@ -123,10 +123,13 @@ const v3f2 = (v3: Vector3): string => {
  * @param leftShoulder
  * @param rightShoulder
  */
-export function calcSpine(leftHip: Vector3, rightHip: Vector3, leftShoulder: Vector3, rightShoulder: Vector3): Rot {
+export function calcSpine(leftHip: Vector3, rightHip: Vector3, leftShoulder: Vector3, rightShoulder: Vector3, debug: (msg: string) => void = _ => {}): Rot {
   // Get hip and shoulder lines (from left to right)
   const hipLine = rightHip.subtract(leftHip).normalize();
   const shoulderLine = rightShoulder.subtract(leftShoulder).normalize();
+
+  debug(`hipLine: ${v3f2(hipLine)}`);
+  debug(`shoulderLine: ${v3f2(shoulderLine)}`);
 
   // Calculate spine vector (from hip center to shoulder center)
   const hipCenter = leftHip.add(rightHip).scale(0.5);
@@ -161,7 +164,7 @@ export function calcSpine(leftHip: Vector3, rightHip: Vector3, leftShoulder: Vec
   };
 }
 
-export function skeletalRotations(ls: NormalizedLandmark[]): SkeletalRotation {
+export function skeletalRotations(ls: NormalizedLandmark[], debug: (msg: string) => void = () =>{}): SkeletalRotation {
   // Convert key landmarks to Vector3
   const nose = v3(ls[Body.nose]);
   const leftEar = v3(ls[Body.left_ear]);
@@ -196,13 +199,13 @@ export function skeletalRotations(ls: NormalizedLandmark[]): SkeletalRotation {
   // TODO need to define joint rotation rest positions for t-pose
   return {
     // t-pose colinear vertical
-    spine: {...calcSpine(leftHip, rightHip, leftShoulder, rightShoulder), debug: []},
+    spine: calcSpine(leftHip, rightHip, leftShoulder, rightShoulder, debug),
 
     // t-pose: colinear vertical
     neck: calcBone(midHip, midShoulder, midEar), // TODO decide if required, currently unused
 
     // t-pose has a ~90 degree pitch offset because bone projects forward from middle of head through nose
-    head: {...calcBone(midShoulder, midEar, nose, REST_HEAD_OFFSET, REST_HEAD_SCALE), debug: [`midear: ${v3f2(midEar)}`]},
+    head: calcBone(midShoulder, midEar, nose, REST_HEAD_OFFSET, REST_HEAD_SCALE),
 
     // probably should be called upper arm
     leftShoulder: calcBone(midShoulder, leftShoulder, leftElbow),

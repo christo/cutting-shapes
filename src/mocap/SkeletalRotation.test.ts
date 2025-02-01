@@ -18,8 +18,10 @@ const T_POSE = {
   rShoulder: new Vector3(1, 1, 0),
 };
 
+const debug = console.log;
+
 describe("Spine", () => {
-  const tSpine = calcSpine(T_POSE.lHip, T_POSE.rHip, T_POSE.lShoulder, T_POSE.rShoulder);
+  const tSpine = calcSpine(T_POSE.lHip, T_POSE.rHip, T_POSE.lShoulder, T_POSE.rShoulder, debug);
   it("t-pose pitch", () => {
     expectEpsilon(tSpine.pitch, 0, "t-pose spine should have zero pitch");
   });
@@ -34,7 +36,7 @@ describe("Spine", () => {
     const rShoulder = new Vector3(1, 1, -1); // right shoulder into screen
     // shoulder x-extent = z-extent = 2 with spine on y-axis
     // should mean PI/4 yaw but zero pitch and roll
-    const twistSpine = calcSpine(T_POSE.lHip, T_POSE.rHip, lShoulder, rShoulder);
+    const twistSpine = calcSpine(T_POSE.lHip, T_POSE.rHip, lShoulder, rShoulder, debug);
     it("twisted yaw", () => {
       expectEpsilon(twistSpine.yaw, -Math.PI/4, "should be 45 degree twist");
     });
@@ -51,7 +53,7 @@ describe("Spine", () => {
     const leftShoulder = new Vector3(-1, 0, 0);   // lowered shoulder
     const rightShoulder = new Vector3(1, 2, 0);   // raised shoulder
 
-    const rotation = calcSpine(leftHip, rightHip, leftShoulder, rightShoulder);
+    const rotation = calcSpine(leftHip, rightHip, leftShoulder, rightShoulder, debug);
 
     expect(Math.abs(rotation.roll)).to.be.approximately(Math.PI/4, 0.0001);
     expect(rotation.pitch).to.be.approximately(0, 0.0001);
@@ -66,7 +68,7 @@ describe('Spine Rotation Calculations', () => {
     const leftShoulder = new Vector3(-1, 1, 1);
     const rightShoulder = new Vector3(1, 1, -1);
 
-    const rotation = calcSpine(leftHip, rightHip, leftShoulder, rightShoulder);
+    const rotation = calcSpine(leftHip, rightHip, leftShoulder, rightShoulder, debug);
 
     // For this configuration, we expect:
     // - Yaw to be Math.PI/4 (or -Math.PI/4 depending on convention)
@@ -82,7 +84,7 @@ describe('Spine Rotation Calculations', () => {
     const leftShoulder = new Vector3(-1, 1, 0);
     const rightShoulder = new Vector3(1, 1, 0);
 
-    const rotation = calcSpine(leftHip, rightHip, leftShoulder, rightShoulder);
+    const rotation = calcSpine(leftHip, rightHip, leftShoulder, rightShoulder, debug);
 
     expect(rotation.yaw).to.be.approximately(0, 0.0001);
     expect(rotation.pitch).to.be.approximately(0, 0.0001);
