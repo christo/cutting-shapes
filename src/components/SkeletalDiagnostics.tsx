@@ -11,7 +11,7 @@ import { DATA_STYLE } from './Home.tsx';
  * @param rot the 3-axis rotation values to show.
  * @constructor
  */
-function Pyr({ title, rot}: { title: string, rot: Rot}) {
+function Pyr({ title, rot }: { title: string, rot: Rot }) {
   const panelSx = {
     textAlign: 'end',
     p: 1.2,
@@ -27,7 +27,7 @@ function Pyr({ title, rot}: { title: string, rot: Rot}) {
     </>
   );
   return <Grid2 container spacing={0.2} sx={panelSx}>
-    <Grid2 size={12} sx={{ textAlign: 'end'}}>{title}</Grid2>
+    <Grid2 size={12} sx={{ textAlign: 'end' }}>{title}</Grid2>
     {stat(rot.pitch, 'P')}
     {stat(rot.yaw, 'Y')}
     {stat(rot.roll, 'R')}
@@ -38,10 +38,10 @@ const deg = (rad: number) => {
   return (rad * 180 / Math.PI).toFixed(0);
 };
 
-function DebugMessages({msg}: {msg:string[]}) {
+function DebugMessages({ msg }: { msg: string[] }) {
   return <>{msg.map((m: string, i: number) => {
     return <Box key={`dmsg_${i}`}><Typography sx={DATA_STYLE}>{m}</Typography></Box>;
-  })}</>
+  })}</>;
 }
 
 function SkeletalDiagnostics({ poseSystem }: { poseSystem: PoseSystem }) {
@@ -66,15 +66,15 @@ function SkeletalDiagnostics({ poseSystem }: { poseSystem: PoseSystem }) {
           const sr = p.skeletalRotation;
           return <Stack>
             <Stack direction="row" key={`sd_${pi}`}>
-              <Box sx={{mr: 1}}>
-                <Typography sx={{fontWeight: 'bold', fontSize: "3rem"}}>
+              <Box sx={{ mr: 1 }}>
+                <Typography sx={{ fontWeight: 'bold', fontSize: '3rem' }}>
                   {pi + 1}
                 </Typography>
               </Box>
-              <Box sx={{ display: 'flex', flexFlow: 'row wrap', gap: 1 }} >
-                <Pyr title="HEAD" rot={sr.head}/>
-                <Pyr title="NECK" rot={sr.neck}/>
-                <Pyr title="SPINE" rot={sr.spine}/>
+              <Box sx={{ display: 'flex', flexFlow: 'row wrap', gap: 1 }}>
+                <Pyr title="HEAD" rot={sr.head} />
+                <Pyr title="NECK" rot={sr.neck} />
+                <Pyr title="SPINE" rot={sr.spine} />
                 {/*<Pyr title="ARM UL" rot={sr.leftArm} debug={[]}/>*/}
                 {/*<Pyr title="ARM UR" rot={sr.rightArm} debug={[]}/>*/}
                 {/*<Pyr title="ARM LL" rot={sr.leftForearm} debug={[]}/>*/}
