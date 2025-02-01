@@ -1,6 +1,6 @@
 import { Vector3 } from '@babylonjs/core';
 import { expect } from 'chai';
-import { calcSpine } from './NewCalc.ts';
+import { calcSpine } from './SkeletalRotation.ts';
 
 const EPSILON = 0.001;
 const expectEpsilon = (actual: number, expected: number, message: string) => {
