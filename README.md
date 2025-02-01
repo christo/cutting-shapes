@@ -5,6 +5,24 @@ Interactive art installation with motion capture. People moving in the camera
 field control humanoid figures on the projector screen which composites these with
 visual effects and interactive elements.
 
+## How to Run
+
+### Install dependencies
+`bun install`
+
+### Check Prettier
+`bun run prettier`
+
+### Format code using Prettier
+`bun run format-code`
+
+### Run Linter
+`bun run lint`
+
+### Start locally
+`bun run dev`
+* Open your browser and go to `http://localhost:5173` to see the application running
+
 ## TODO
 
 * [x] obs integration MVP to evaluate easy scene composition
@@ -174,20 +192,4 @@ visual effects and interactive elements.
   * [ ] https://www.phantom-dev.com/demo
 * 3d character sources [models.md](./models.md)
 
-## How to Run
 
-### Install dependencies
-`bun install`
-
-### Check Prettier
-`bun run prettier`
-
-### Format code using Prettier
-`bun run format-code`
-
-### Run Linter
-`bun run lint`
-
-### Start locally
-`bun run dev`
-* Open your browser and go to `http://localhost:5173` to see the application running
