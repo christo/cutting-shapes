@@ -27,6 +27,8 @@ visual effects and interactive elements.
 
 * [ ] obs integration MVP to evaluate easy scene composition
   * [ ] find previous OBS scenes
+  * obs scene rotation
+  * obs scene control integration
   * how does obs load interact with GPU for vision?
 * [ ] read https://temugeb.github.io/python/computer_vision/2021/09/14/bodypose3d.html
 * [x] multiple figures (1 or 2)
@@ -50,12 +52,12 @@ visual effects and interactive elements.
 * developer config
 * remote monitoring/config
 * automatic startup / shutdown
-* obs integration for compositing
-* formation figure replication (V shape)
-* motion echo
-* delay trail
+* OBS scenes
+  * formation figure replication (V shape)
+  * motion echo
+  * delay trail
+  * brady-bunch grid
 * scene definition
-* brady-bunch grid
 * figure rendering alternatives
 * camera test
   * logitech
@@ -71,14 +73,14 @@ visual effects and interactive elements.
 * gear checklist
   * black semi-transparent screen (from photosynthesiser)
   * white projection screen sheet
-  * projector (jasper? hire?)
+  * projector (borrow? hire?)
   * hdmi cables
   * screen poles
   * tie-down ropes/straps
   * heavy anchor pegs
-  * on-site repair hardware and tools
   * hdmi capture (2-computer setup) or network stream
   * wifi base station (for mobile web controller)
+  * on-site repair hardware and tools
   * rope lights
   * tape, clamps, pole stands, light guards, tarps, tent poles
   * road cases, bags
@@ -109,7 +111,7 @@ visual effects and interactive elements.
     * wind proofing
   * back of subject semi-transparent black screen to obscure crowd from camera field
   * subject lighting
-  * dance area should be robust against mud!
+  * dance floor should be robust against mud!
 * configuration
   * point of view translation
   * continuity loss smoothing
@@ -132,8 +134,6 @@ visual effects and interactive elements.
     * blobby costume
   * pulsing / morphing
   * plasma goo
-  * obs scene rotation
-  * obs scene control integration
   * physiological distortion transform
   * motion transform - amplification
   * translation detection - moonwalk, background tracking
