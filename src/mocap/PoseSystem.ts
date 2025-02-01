@@ -185,7 +185,7 @@ class PoseSystem {
       }
       ctx!.fillRect(0, 0, this.canvas.width, this.canvas.height);
       const startRender = performance.now();
-      drawCustomStickFigure(this.prevLandmarks, ctx, this.config.debug);
+      drawCustomStickFigure(this.prevLandmarks, ctx, this.config);
       this.msRenderTime.push(performance.now() - startRender);
     } else {
       console.warn('PoseSystem has no canvas?');
