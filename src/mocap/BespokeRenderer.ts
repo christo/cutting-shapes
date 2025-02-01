@@ -29,14 +29,26 @@ export function drawCustomStickFigure(landmarks: NormalizedLandmark[][], ctx: Ca
     [Body.right_hip, Body.right_knee],
     [Body.left_knee, Body.left_ankle],
     [Body.right_knee, Body.right_ankle],
+
+    // foot
     [Body.left_ankle, Body.left_heel],
     [Body.right_ankle, Body.right_heel],
     [Body.left_heel, Body.left_foot_index],
     [Body.right_heel, Body.right_foot_index],
+    [Body.left_ankle, Body.left_foot_index],
+    [Body.right_ankle, Body.right_foot_index],
 
     [Body.left_shoulder, Body.right_hip],
     [Body.right_shoulder, Body.left_hip],
     // additional sticks between derived points are below
+  ];
+  const ballJoints = [
+    Body.left_shoulder, Body.right_shoulder,
+    Body.left_elbow, Body.right_elbow,
+    Body.left_hip, Body.right_hip,
+    Body.left_knee, Body.right_knee,
+    Body.left_ankle, Body.right_ankle,
+    Body.left_wrist, Body.right_wrist,
   ];
 
   const line = (x1: number, y1: number, x2: number, y2: number) => {
@@ -136,6 +148,17 @@ export function drawCustomStickFigure(landmarks: NormalizedLandmark[][], ctx: Ca
       arc(mouthRight.x, mouthRight.y, mouthLeft.x, mouthLeft.y, 0.6);
       arc(mouthRight.x, mouthRight.y, mouthLeft.x, mouthLeft.y, 0.8);
     }
+    // construct implied joints
+    const leftShoulder = canvasPoint(Body.left_shoulder);
+    const rightShoulder = canvasPoint(Body.right_shoulder);
+    const leftHip = canvasPoint(Body.left_hip);
+    const rightHip = canvasPoint(Body.right_hip);
+    const neck = midPoint(leftShoulder, rightShoulder);
+    const sacrum = midPoint(leftHip, rightHip);
+    const leftEar = canvasPoint(Body.left_ear);
+    const rightEar = canvasPoint(Body.right_ear);
+    const midEar = midPoint(leftEar, rightEar);
+
 
     // draw stick figure
     ctx.lineWidth = 12;
@@ -145,25 +168,30 @@ export function drawCustomStickFigure(landmarks: NormalizedLandmark[][], ctx: Ca
       const p2 = canvasPoint(pair[1]);
       line(p1.x, p1.y, p2.x, p2.y);
     }
-    // draw spine special case by joining hip and shoulder midpoints
-    const leftShoulder = canvasPoint(Body.left_shoulder);
-    const rightShoulder = canvasPoint(Body.right_shoulder);
-    const leftHip = canvasPoint(Body.left_hip);
-    const rightHip = canvasPoint(Body.right_hip);
-    const neck = midPoint(leftShoulder, rightShoulder);
-    const sacrum = midPoint(leftHip, rightHip);
+    // neck
+    // TODO maybe extend by 50% and make fatter
+    line(neck.x, neck.y, midEar.x, midEar.y);
+
+    // draw ball joints
+    for (let i = 0; i < ballJoints.length; i++) {
+      const bj = canvasPoint(ballJoints[i]);
+      spot(bj.x, bj.y, 30);
+    }
+    spot(neck.x, neck.y, 30);
 
     if (debugMode) {
-      const leftEar = canvasPoint(Body.left_ear);
-      const rightEar = canvasPoint(Body.right_ear);
-      const midEar = midPoint(leftEar, rightEar);
+
       const nose = canvasPoint(Body.nose);
       // derived bones
       ctx.lineWidth = 2;
       ctx.strokeStyle = 'white';
+      // ears lateral
       line(leftEar.x, leftEar.y, rightEar.x, rightEar.y);
+      // spine
       line(neck.x, neck.y, sacrum.x, sacrum.y);
+      // neck
       line(neck.x, neck.y, midEar.x, midEar.y);
+      // head ventral
       line(midEar.x, midEar.y, nose.x, nose.y);
     }
   });
