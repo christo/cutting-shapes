@@ -1,6 +1,6 @@
 import { DrawingUtils, NormalizedLandmark } from '@mediapipe/tasks-vision';
-import { Body } from './Body.ts';
 import { midPoint } from '../analysis/Draw.ts';
+import { Body } from './Body.ts';
 
 export function drawCustomStickFigure(landmarks: NormalizedLandmark[][], ctx: CanvasRenderingContext2D, debugMode: boolean) {
   const noseIndex = Body.nose.valueOf();

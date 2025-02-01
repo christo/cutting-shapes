@@ -1,4 +1,3 @@
-
 /**
  * Map of model bone specifications.
  */

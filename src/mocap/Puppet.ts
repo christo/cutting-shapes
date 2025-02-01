@@ -39,12 +39,12 @@ export class Puppet implements RiggedModel {
  */
 const lpp = (name: string, path: string) => {
   const bm = {
-    head: new BoneSpec("Head"), // 2 parent: Chest
-    spine: new BoneSpec("Chest"), // parent: Stomach
-    left_shoulder: new BoneSpec("Shoulder.L"), // parent: Chest
-    right_shoulder: new BoneSpec("Shoulder.R"), // parent: Chest
-    left_hip: new BoneSpec("Hip.L"), // parent: Stomach
-    right_hip: new BoneSpec("Hip.R"), // parent: Stomach
+    head: new BoneSpec('Head'), // 2 parent: Chest
+    spine: new BoneSpec('Chest'), // parent: Stomach
+    left_shoulder: new BoneSpec('Shoulder.L'), // parent: Chest
+    right_shoulder: new BoneSpec('Shoulder.R'), // parent: Chest
+    left_hip: new BoneSpec('Hip.L'), // parent: Stomach
+    right_hip: new BoneSpec('Hip.R'), // parent: Stomach
   };
   return new Puppet(name, `${name} from Low Poly People by David Jalbert`,
     MIT, 'https://davidjalbert.itch.io/low-poly-people', path, bm, 1);
@@ -60,7 +60,7 @@ const fatManA = lpp('Fat Man A', '/3d/lpp/fat-man-a.glb');
  */
 const toonTrooper = new Puppet('Toon Trooper', 'Toon Trooper by Blender Zone', CG_RF_NOAI,
   'https://www.cgtrader.com/free-3d-models/character/sci-fi-character/toon-trooper-rigged', '/3d/TROOPER.glb',
-  {head: new BoneSpec("HEAD"), spine: new BoneSpec("CHEST")}, 0, (r) => {
+  { head: new BoneSpec('HEAD'), spine: new BoneSpec('CHEST') }, 0, (r) => {
     r.meshes[0].scaling = new Vector3(0.2, 0.2, 0.2);
     // remove gun
     const gunIdx = 11;
@@ -68,8 +68,8 @@ const toonTrooper = new Puppet('Toon Trooper', 'Toon Trooper by Blender Zone', C
   });
 
 const skaterBoneMap = {
-  head: new BoneSpec("Head"),
-  spine: new BoneSpec("Spine"),
+  head: new BoneSpec('Head'),
+  spine: new BoneSpec('Spine'),
 };
 
 /**
@@ -88,12 +88,12 @@ export const PUPPETS = [
   toonTrooper,
   skaterboy,
   skatergirl,
-/*
-  // did not appear although model data could be logged (blender export probably done wrong):
-  new Puppet('Astronaut Orange Trim', 'Astronaut free VR / AR / low-poly 3d model', CG_RF_NOAI,
-    'https://www.cgtrader.com/free-3d-models/character/sci-fi-character/astronaut-d481bc2e-fbf7-4512-93de-f1a6f429c7a6',
-    '/3d/astronaut-orange-trim_4882913_Astronaut_1.glb', {head: 3, spine: 0}, 1),
-*/
+  /*
+    // did not appear although model data could be logged (blender export probably done wrong):
+    new Puppet('Astronaut Orange Trim', 'Astronaut free VR / AR / low-poly 3d model', CG_RF_NOAI,
+      'https://www.cgtrader.com/free-3d-models/character/sci-fi-character/astronaut-d481bc2e-fbf7-4512-93de-f1a6f429c7a6',
+      '/3d/astronaut-orange-trim_4882913_Astronaut_1.glb', {head: 3, spine: 0}, 1),
+  */
 ];
 
 //low poly people (e.g. fat man a) bone dump:

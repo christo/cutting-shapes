@@ -164,7 +164,7 @@ export function calcSpine(leftHip: Vector3, rightHip: Vector3, leftShoulder: Vec
   };
 }
 
-export function skeletalRotations(ls: NormalizedLandmark[], debug: (msg: string) => void = () =>{}): SkeletalRotation {
+export function skeletalRotations(ls: NormalizedLandmark[], debug: (msg: string) => void = () => {}): SkeletalRotation {
   // Convert key landmarks to Vector3
   const nose = v3(ls[Body.nose]);
   const leftEar = v3(ls[Body.left_ear]);

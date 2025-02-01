@@ -42,20 +42,20 @@ function cloneLandmarks(nlss: NormalizedLandmark[][]): NormalizedLandmark[][] {
  * @param a
  * @param b
  */
-const compareNlss = (a: NormalizedLandmark[], b:NormalizedLandmark[]) => {
+const compareNlss = (a: NormalizedLandmark[], b: NormalizedLandmark[]) => {
   // guessing most likely visible landmark is a shoulder
   // x position preferred in camera field because gravity
   // future: empirical evidence from reference video of most useful way to distinguish people
   // leftmost shoulder
   return Math.min(a[Body.left_shoulder].x, a[Body.right_shoulder].x) - Math.min(b[Body.left_shoulder].x, b[Body.right_shoulder].x);
-}
+};
 
 /**
  * In place canonical reordering to impose inter-frame stability.
  * @param nlss
  */
 function sortPeople(nlss: NormalizedLandmark[][]) {
-  nlss.sort(compareNlss)
+  nlss.sort(compareNlss);
 }
 
 /**
@@ -238,7 +238,7 @@ class PoseSystem {
       const poses = [];
       for (let i = 0; i < lss.length; i++) {
         const ls = lss[i];
-        const messages:string[] = [];
+        const messages: string[] = [];
         let skeletalRotation = skeletalRotations(ls, m => messages.push(m));
         poses.push(new Pose(skeletalRotation, messages));
       }

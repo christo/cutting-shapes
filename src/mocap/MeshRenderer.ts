@@ -80,11 +80,11 @@ export async function loadPuppet(
 }
 
 function babylonBgColor(config: Config) {
-  if (config.bg === "Black") {
+  if (config.bg === 'Black') {
     return new Color4(0, 0, 0, 1);
-  } else if (config.bg === "Green") {
+  } else if (config.bg === 'Green') {
     return new Color4(0, 1, 0, 1);
-  } else if (config.bg === "Blue") {
+  } else if (config.bg === 'Blue') {
     return new Color4(0, 0, 1, 1);
   } else {
     // "Ghost" is transparent for this renderer
@@ -96,7 +96,7 @@ export const createScene = async function(
   engine: Engine,
   canvas: HTMLCanvasElement,
   poseSupplier: PoseSupplier,
-  config: Config
+  config: Config,
 ): Promise<SceneLoaded> {
 
   const scene = new Scene(engine);
