@@ -26,9 +26,8 @@ visual effects and interactive elements.
 ## TODO
 
 * [ ] obs integration MVP to evaluate easy scene composition
+  * [ ] find previous OBS scenes
   * how does obs load interact with GPU for vision?
-* [ ] https://github.com/SnowdenWintermute/babylonjs-modular-characters-proof-of-concept and
-      https://www.youtube.com/watch?v=bjBzns0KOws
 * [ ] read https://temugeb.github.io/python/computer_vision/2021/09/14/bodypose3d.html
 * [x] multiple figures (1 or 2)
 * figure out:
@@ -158,6 +157,8 @@ visual effects and interactive elements.
   * stats
   * performance
 * create redundancy checklist
+* [ ] https://github.com/SnowdenWintermute/babylonjs-modular-characters-proof-of-concept and
+    https://www.youtube.com/watch?v=bjBzns0KOws
 
 ## Scene Ideas
 
