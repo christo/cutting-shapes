@@ -1,5 +1,5 @@
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: Helvetica, Inter, system-ui, Avenir, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -14,13 +14,7 @@
 }
 
 a {
-  font-weight: 500;
-  color: #53e333;
   text-decoration: inherit;
-}
-
-a:hover {
-  color: #e2c42e;
 }
 
 i {
