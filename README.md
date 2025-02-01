@@ -12,7 +12,7 @@ visual effects and interactive elements.
 * [ ] https://github.com/SnowdenWintermute/babylonjs-modular-characters-proof-of-concept and
       https://www.youtube.com/watch?v=bjBzns0KOws
 * [ ] read https://temugeb.github.io/python/computer_vision/2021/09/14/bodypose3d.html
-* test different 3d model sources
+* [x] test different 3d model sources
   * VRM format is popular for V-tubers: https://sketchfab.com/search?q=tag%3Avrm&sort_by=-likeCount&type=models
     * https://doc.babylonjs.com/communityExtensions/Babylon.js+ExternalLibraries/BabylonJS_and_VRM/ https://github.com/virtual-cast/babylon-vrm-loader "supports .vrm and .vci file loading"
   * gltf (text) and glb (binary) are supported by babylonjs
