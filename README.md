@@ -25,7 +25,7 @@ visual effects and interactive elements.
 
 ## TODO
 
-* [x] obs integration MVP to evaluate easy scene composition
+* [ ] obs integration MVP to evaluate easy scene composition
   * how does obs load interact with GPU for vision?
 * [ ] https://github.com/SnowdenWintermute/babylonjs-modular-characters-proof-of-concept and
       https://www.youtube.com/watch?v=bjBzns0KOws
