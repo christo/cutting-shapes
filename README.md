@@ -7,8 +7,8 @@ visual effects and interactive elements.
 
 ## TODO
 
-* [ ] client storage for settings
-* [ ] show skeletal rotations in view when debugging
+* [x] client storage for settings
+* [x] show skeletal rotations in view when debugging
 * [ ] https://github.com/SnowdenWintermute/babylonjs-modular-characters-proof-of-concept and
       https://www.youtube.com/watch?v=bjBzns0KOws
 * [ ] read https://temugeb.github.io/python/computer_vision/2021/09/14/bodypose3d.html
