@@ -23,10 +23,17 @@ export class BoneSpec {
   }
 }
 
+/**
+ * Represents a loadable character model file that can be controlled by
+ * common skeletal manipulation. Per-model differences between model rigging and
+ * geometry live in this object graph.
+ */
 export type RiggedModel = {
-  // TODO need to store something like per-bone rotation scale and offset pairs
   filepath: string,
   boneMap: BoneMap,
 
+  /**
+   * The index of the main character mesh in the loaded file.
+   */
   charMeshIdx: number,
 }
