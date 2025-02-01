@@ -46,7 +46,6 @@ const Home = ({ config }: { config: Config; }) => {
     <Box className="App-body" sx={{
       position: "absolute", alignContent: "center", justifyItems: "center",
       top: 0, left: 0, width: "100%", height: "100%"}}>
-      <Splash visible={showSplash} />
       {config.diag && <PerfPanel poseSystem={poseSystem} />}
       {config.bespoke && <canvas ref={stickFigureCanvas} id="main_view"
               style={{ position: 'absolute', left: 0, top: 0, width: bespokeScale, height: bespokeScale }}></canvas>}
@@ -69,6 +68,7 @@ const Home = ({ config }: { config: Config; }) => {
         poseSupplier={poseSystem.subscribe}
         config={config}
       />}
+      <Splash visible={showSplash} />
     </Box>
   );
 };
