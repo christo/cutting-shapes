@@ -39,7 +39,9 @@ const deg = (rad: number) => {
 };
 
 function DebugMessages({msg}: {msg:string[]}) {
-  return <>{msg.map((m: string, i: number) => <Box key={`dmsg_${i}`}><Typography sx={DATA_STYLE}>{m}</Typography></Box>)}</>
+  return <>{msg.map((m: string, i: number) => {
+    return <Box key={`dmsg_${i}`}><Typography sx={DATA_STYLE}>{m}</Typography></Box>;
+  })}</>
 }
 
 function SkeletalDiagnostics({ poseSystem }: { poseSystem: PoseSystem }) {
