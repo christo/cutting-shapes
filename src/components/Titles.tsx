@@ -12,7 +12,7 @@ export function Titles({titleFontSize, authorFontSize}: {titleFontSize: number, 
       color: 'secondary.main',
     }}>Cutting Shapes</Typography>
     <Typography sx={{
-      fontFamily: "\"Playwrite AU QLD\", cursive", // TODO replace with fatter font like Lobster
+      fontFamily: "\"Londrina Solid\", sans-serif", // TODO replace
       textAlign: "center",
       fontWeight: 400,
       fontSize: authorFontSize,

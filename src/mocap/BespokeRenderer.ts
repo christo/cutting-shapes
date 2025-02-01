@@ -1,4 +1,4 @@
-import { DrawingUtils, NormalizedLandmark } from '@mediapipe/tasks-vision';
+import { NormalizedLandmark } from '@mediapipe/tasks-vision';
 import { midPoint } from '../analysis/Draw.ts';
 import { Config } from '../Config.ts';
 import { Body } from './Body.ts';
@@ -52,14 +52,17 @@ const ballJoints = [
 
 function bgColour(config: Config) {
   if (config.bg === 'Ghost') {
-    return 'transparent';
+    // return 'transparent';
+    return 'rgb(0, 0, 0)'; // internal ghost effect needs black for erasure
   } else if (config.bg === 'Green') {
     return 'rgb(0, 255, 0)';
   } else if (config.bg === 'Blue') {
     return 'rgb(0, 0, 255)';
   } else if (config.bg === 'Black') {
     return 'rgb(0, 0, 0)';
-  } else return config.bg; // shouldn't happen
+  } else {
+    return config.bg;
+  } // shouldn't happen
 }
 
 export function drawCustomStickFigure(landmarks: NormalizedLandmark[][], ctx: CanvasRenderingContext2D, config: Config) {
@@ -69,16 +72,18 @@ export function drawCustomStickFigure(landmarks: NormalizedLandmark[][], ctx: Ca
 
   const bg = bgColour(config);
 
-  const drawScale = (x:number ) => {
+  // maintains line drawing scale based on canvas width
+  const drawScale = (x: number) => {
     return Math.max(3, x * ctx.canvas.width / 4000);
-  }
+  };
 
   const boneWidth = drawScale(30);
   // @ts-ignore
   const neckWidth = drawScale(50);
   const glassesWidth = drawScale(70);
   const mouthWidth = drawScale(18);
-  const noseWidth = drawScale(18);
+  const noseWidth = drawScale(25);
+  const noseShadowWidth = drawScale(6);
   const debugLineWidth = drawScale(3);
   const jointRadius = drawScale(40);
   const boneStyle = 'rgb(255, 255, 255)';
@@ -155,39 +160,34 @@ export function drawCustomStickFigure(landmarks: NormalizedLandmark[][], ctx: Ca
     ctx.lineWidth = glassesWidth;
     ctx.strokeStyle = boneStyle;
     ctx.lineCap = 'square';
-    line(leftOuterEye.x, leftOuterEye.y, rightOuterEye.x, rightOuterEye.y),
+    line(leftOuterEye.x, leftOuterEye.y, rightOuterEye.x, rightOuterEye.y);
+    // glasses nose notch
+    ctx.lineCap = 'round';
     ctx.strokeStyle = bg;
     ctx.lineWidth = noseWidth;
-    // glasses notch
     line(nose.x, nose.y, midEye.x, midEye.y);
+    ctx.strokeStyle = boneStyle;
+    ctx.lineWidth = noseShadowWidth;
+    ctx.lineCap = 'butt';
+    line(nose.x, nose.y, nostrilBase.x, nostrilBase.y);
 
-    ctx.lineCap = 'round';
 
-    ls.filter(l => l.visibility > 0.8).map(canvasmirror).forEach((l, i) => {
+    if (config.debug) {
+      ls.filter(l => l.visibility > 0.8).map(canvasmirror).forEach((l, i) => {
 
-      const x = l.x;
-      const y = l.y;
-      ctx.lineWidth = 6;
+        const x = l.x;
+        const y = l.y;
+        ctx.lineWidth = 6;
 
-      switch (i) {
-        case Body.nose:
-
-          ctx.strokeStyle = boneStyle;
-          line(x, y, nostrilBase.x, nostrilBase.y);
-          //spot(x, y, DrawingUtils.lerp(l.z, -0.15, 0.1, 15, 1));
-          break;
-        default:
-          if (config.debug) {
-            ctx.strokeStyle = debugPointStyle;
-            ctx.lineWidth = debugLineWidth;
-            cross(x, y, 5);
-          }
-          break;
-      }
-    });
+        ctx.strokeStyle = debugPointStyle;
+        ctx.lineWidth = debugLineWidth;
+        cross(x, y, 5);
+      });
+    }
 
     ctx.strokeStyle = boneStyle;
-    // draw smiling mouth
+    ctx.lineCap = 'round';
+    // mouth
     if (mouthLeft.visibility > 0.6 && mouthRight.visibility > 0.6) {
       ctx.lineWidth = mouthWidth;
       line(mouthRight.x, mouthRight.y, mouthLeft.x, mouthLeft.y);

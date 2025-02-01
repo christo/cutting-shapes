@@ -115,13 +115,13 @@ const SettingsPanel = ({ setConfig, config }: CommonProps) => {
     setConfig({ ...config, live: true });
   }
   return <Stack sx={{ p: 2 }}>
-    <Titles titleFontSize={30} authorFontSize={12} />
+    <Titles titleFontSize={30} authorFontSize={18} />
 
     <Stack direction="row" sx={{ display: 'flex', justifyContent: 'space-around', mt: 1, mb: 1 }}>
-      <Link className="menu-item" to="/">
+      <Link color="warning" to="/">
         Home
       </Link>
-      <Link className="menu-item" to="/about">
+      <Link color="warning" to="/about">
         Credits
       </Link>
     </Stack>
