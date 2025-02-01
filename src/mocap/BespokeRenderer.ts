@@ -47,15 +47,19 @@ const ballJoints = [
   Body.left_hip, Body.right_hip,
   Body.left_knee, Body.right_knee,
   Body.left_ankle, Body.right_ankle,
-  Body.left_wrist, Body.right_wrist,
+  // Body.left_wrist, Body.right_wrist,
 ];
 
 function bgColour(config: Config) {
   if (config.bg === 'Ghost') {
     return 'transparent';
-  } else {
-    return config.bg.toLowerCase();
-  }
+  } else if (config.bg === 'Green') {
+    return 'rgb(0, 255, 0)';
+  } else if (config.bg === 'Blue') {
+    return 'rgb(0, 0, 255)';
+  } else if (config.bg === 'Black') {
+    return 'rgb(0, 0, 0)';
+  } else return config.bg; // shouldn't happen
 }
 
 export function drawCustomStickFigure(landmarks: NormalizedLandmark[][], ctx: CanvasRenderingContext2D, config: Config) {
@@ -66,17 +70,21 @@ export function drawCustomStickFigure(landmarks: NormalizedLandmark[][], ctx: Ca
   const bg = bgColour(config);
 
   const drawScale = (x:number ) => {
-    return Math.max(1, x * ctx.canvas.width / 4000);
+    return Math.max(3, x * ctx.canvas.width / 4000);
   }
 
-  const boneWidth = drawScale(20);
+  const boneWidth = drawScale(30);
   // @ts-ignore
   const neckWidth = drawScale(50);
   const glassesWidth = drawScale(70);
-  const mouthWidth = drawScale(9);
+  const mouthWidth = drawScale(18);
   const noseWidth = drawScale(18);
-  const debugLineWidth = drawScale(2);
+  const debugLineWidth = drawScale(3);
   const jointRadius = drawScale(40);
+  const boneStyle = 'rgb(255, 255, 255)';
+  const ballStyle = 'rgb(255, 255, 255)';
+  const debugLineStyle = 'white';
+  const debugPointStyle = 'blue';
 
   const line = (x1: number, y1: number, x2: number, y2: number) => {
     ctx.beginPath();
@@ -96,25 +104,6 @@ export function drawCustomStickFigure(landmarks: NormalizedLandmark[][], ctx: Ca
     line(x + size, y - size, x - size, y + size);
   };
 
-  const arc = (startX: number, startY: number, endX: number, endY: number, radiusFactor: number) => {
-
-    // TODO this is pretty borked
-
-    const dx = endX - startX;
-    const dy = endY - startY;
-    const distance = Math.sqrt(dx * dx + dy * dy);
-
-    const radius = distance * radiusFactor / 2;
-    const centerX = (startX + endX) / 2;
-    const centerY = (startY + endY) / 2;
-
-    const startAngle = Math.atan2(startY - centerY, startX - centerX);
-    const endAngle = Math.atan2(endY - centerY, endX - centerX);
-
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, radius, startAngle, endAngle);
-    ctx.stroke();
-  };
   /**
    * Return coordinates flipped over y axis scaled to canvas.
    * @param l the landmark to transform
@@ -132,7 +121,7 @@ export function drawCustomStickFigure(landmarks: NormalizedLandmark[][], ctx: Ca
 
     if (config.debug) {
       ctx.font = '28px Arial';
-      ctx.fillStyle = 'white';
+      ctx.fillStyle = debugLineStyle;
       ctx.fillText(`human ${pi + 1}`, 20, (pi + 2) * 20);
     }
 
@@ -162,10 +151,17 @@ export function drawCustomStickFigure(landmarks: NormalizedLandmark[][], ctx: Ca
     const noseBase = midPoint(midMouth, midEye);
     const nostrilBase = midPoint(noseBase, nose);
 
-    // experimental glasses:
-
+    // sunglasses:
     ctx.lineWidth = glassesWidth;
+    ctx.strokeStyle = boneStyle;
+    ctx.lineCap = 'square';
     line(leftOuterEye.x, leftOuterEye.y, rightOuterEye.x, rightOuterEye.y),
+    ctx.strokeStyle = bg;
+    ctx.lineWidth = noseWidth;
+    // glasses notch
+    line(nose.x, nose.y, midEye.x, midEye.y);
+
+    ctx.lineCap = 'round';
 
     ls.filter(l => l.visibility > 0.8).map(canvasmirror).forEach((l, i) => {
 
@@ -175,39 +171,27 @@ export function drawCustomStickFigure(landmarks: NormalizedLandmark[][], ctx: Ca
 
       switch (i) {
         case Body.nose:
-          ctx.strokeStyle = bg;
-          ctx.lineWidth = noseWidth;
-          line(x, y, midEye.x, midEye.y);
-          ctx.strokeStyle = 'red';
+
+          ctx.strokeStyle = boneStyle;
           line(x, y, nostrilBase.x, nostrilBase.y);
           //spot(x, y, DrawingUtils.lerp(l.z, -0.15, 0.1, 15, 1));
-
           break;
-/*
-        case Body.left_eye:
-          ctx.fillStyle = 'orange';
-          spot(x, y, 10);
-          break;
-        case Body.right_eye:
-          ctx.fillStyle = 'orange';
-          spot(x, y, 10);
-          break;
-*/
         default:
           if (config.debug) {
-            ctx.strokeStyle = 'blue';
+            ctx.strokeStyle = debugPointStyle;
+            ctx.lineWidth = debugLineWidth;
             cross(x, y, 5);
           }
           break;
       }
     });
 
-    ctx.strokeStyle = 'red';
+    ctx.strokeStyle = boneStyle;
     // draw smiling mouth
     if (mouthLeft.visibility > 0.6 && mouthRight.visibility > 0.6) {
       ctx.lineWidth = mouthWidth;
       line(mouthRight.x, mouthRight.y, mouthLeft.x, mouthLeft.y);
-      arc(mouthRight.x, mouthRight.y, mouthLeft.x, mouthLeft.y, 0.8);
+      // arc(mouthRight.x, mouthRight.y, mouthLeft.x, mouthLeft.y, 2.1);
     }
 
     // draw stick figure
@@ -225,19 +209,19 @@ export function drawCustomStickFigure(landmarks: NormalizedLandmark[][], ctx: Ca
     line(neck.x, neck.y, midEar.x, midEar.y);
 */
     // draw ball joints
-    ctx.fillStyle = 'orange';
+    ctx.fillStyle = ballStyle;
     for (let i = 0; i < ballJoints.length; i++) {
       const bj = canvasPoint(ballJoints[i]);
       spot(bj.x, bj.y, jointRadius);
     }
-    spot(neck.x, neck.y, jointRadius);
+    //spot(neck.x, neck.y, jointRadius);
 
     if (config.debug) {
 
       const nose = canvasPoint(Body.nose);
       // derived bones
       ctx.lineWidth = debugLineWidth;
-      ctx.strokeStyle = 'white';
+      ctx.strokeStyle = debugLineStyle;
       // ears lateral
       line(leftEar.x, leftEar.y, rightEar.x, rightEar.y);
       // spine
