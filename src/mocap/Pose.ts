@@ -17,5 +17,4 @@ export class Pose {
     this.skeletalRotation = skeletalRotation;
     this.descriptor = descriptor;
   }
-
 }
