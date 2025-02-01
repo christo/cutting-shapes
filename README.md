@@ -7,25 +7,17 @@ visual effects and interactive elements.
 
 ## TODO
 
-* [x] client storage for settings
-* [x] show skeletal rotations in view when debugging
+* [x] obs integration MVP to evaluate easy scene composition
+  * how does obs load interact with GPU for vision?
 * [ ] https://github.com/SnowdenWintermute/babylonjs-modular-characters-proof-of-concept and
       https://www.youtube.com/watch?v=bjBzns0KOws
 * [ ] read https://temugeb.github.io/python/computer_vision/2021/09/14/bodypose3d.html
-* [x] test different 3d model sources
-  * VRM format is popular for V-tubers: https://sketchfab.com/search?q=tag%3Avrm&sort_by=-likeCount&type=models
-    * https://doc.babylonjs.com/communityExtensions/Babylon.js+ExternalLibraries/BabylonJS_and_VRM/ https://github.com/virtual-cast/babylon-vrm-loader "supports .vrm and .vci file loading"
-  * gltf (text) and glb (binary) are supported by babylonjs
-  * fbx is a popular proprietary format not directly supported for loading at runtime. The editor supports loading it and it can be transformed with an npm module, blender or "Mixamo" according to this: https://doc.babylonjs.com/features/featuresDeepDive/animation/animatedCharacter/
-  * "MMD is a Japanese 3D animation creation software that has its own 3D model format, PMD/PMX, and motion formats, VPD and VMD." https://doc.babylonjs.com/communityExtensions/mmdLoader
 * [x] multiple figures (1 or 2)
 * figure out:
   * [ ] camera dimensions / aspect ratio
   * [ ] render canvas dimensions and aspect ratio
   * [ ] composited scene dimensions (can be larger)
   * [ ] how to do camera adjustment to ensure camera field is in desired hot box
-* obs integration MVP to evaluate easy scene composition
-  * how does obs load interact with GPU for vision?
 * [ ] test scene with more than two people (or more than max if max is greater than two):
   * [ ] how stable is the choice of which one or two people are tracked?
   * [ ] how to indicate that the person being tracked has changed
@@ -161,6 +153,15 @@ visual effects and interactive elements.
 * shrunken people on a desk
 * Lego Land
 * beach
+
+## Notes
+
+* 3d model formats
+  * VRM format is popular for V-tubers: https://sketchfab.com/search?q=tag%3Avrm&sort_by=-likeCount&type=models
+    * https://doc.babylonjs.com/communityExtensions/Babylon.js+ExternalLibraries/BabylonJS_and_VRM/ https://github.com/virtual-cast/babylon-vrm-loader "supports .vrm and .vci file loading"
+  * gltf (text) and glb (binary) are supported by babylonjs
+  * fbx is a popular proprietary format not directly supported for loading at runtime. The editor supports loading it and it can be transformed with an npm module, blender or "Mixamo" according to this: https://doc.babylonjs.com/features/featuresDeepDive/animation/animatedCharacter/
+  * "MMD is a Japanese 3D animation creation software that has its own 3D model format, PMD/PMX, and motion formats, VPD and VMD." https://doc.babylonjs.com/communityExtensions/mmdLoader
 
 ## References
 
