@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import About from './components/About';
 import Home from './components/Home';
 import { SidePanel } from './components/SidePanel.tsx';
-import './App.css';
 import { Config } from './Config.ts';
 import { PUPPETS } from './mocap/Puppet.ts';
 import { Persist } from './Persist.ts';
