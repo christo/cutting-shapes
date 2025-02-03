@@ -3,6 +3,10 @@ import { midPoint } from '../analysis/Draw.ts';
 import { Config } from '../Config.ts';
 import { Body } from './Body.ts';
 
+const DRAW_NECK = false;
+const DRAW_FACE_BG = false;
+
+
 const sticks = [
   [Body.left_shoulder, Body.right_shoulder],
 
@@ -77,6 +81,7 @@ export function drawCustomStickFigure(landmarks: NormalizedLandmark[][], ctx: Ca
     return Math.max(3, x * ctx.canvas.width / 4000);
   };
 
+  const faceLineWidth = drawScale(80);
   const boneWidth = drawScale(30);
   // @ts-ignore
   const neckWidth = drawScale(50);
@@ -88,8 +93,9 @@ export function drawCustomStickFigure(landmarks: NormalizedLandmark[][], ctx: Ca
   const jointRadius = drawScale(40);
   const boneStyle = 'rgb(255, 255, 255)';
   const ballStyle = 'rgb(255, 255, 255)';
+  const faceStyle = 'rgb(0, 0, 0)';
   const debugLineStyle = 'white';
-  const debugPointStyle = 'blue';
+  const debugPointStyle = 'red';
 
   const line = (x1: number, y1: number, x2: number, y2: number) => {
     ctx.beginPath();
@@ -156,34 +162,45 @@ export function drawCustomStickFigure(landmarks: NormalizedLandmark[][], ctx: Ca
     const noseBase = midPoint(midMouth, midEye);
     const nostrilBase = midPoint(noseBase, nose);
 
+
+
+    // neck
+    if (DRAW_NECK) {
+      ctx.lineWidth = neckWidth;
+      // TODO maybe extend neck by 50%
+      line(neck.x, neck.y, midEar.x, midEar.y);
+    }
+
+    // draw face
+
+    // face background
+    if (DRAW_FACE_BG) {
+      ctx.lineWidth = faceLineWidth;
+      ctx.strokeStyle = faceStyle;
+      ctx.lineCap = 'square'; // TODO check corners
+      ctx.lineJoin = 'miter';
+      ctx.beginPath();
+      // TODO stroke face polygon
+      // TODO fill polygon
+      ctx.closePath();
+    }
+
     // sunglasses:
     ctx.lineWidth = glassesWidth;
     ctx.strokeStyle = boneStyle;
     ctx.lineCap = 'square';
     line(leftOuterEye.x, leftOuterEye.y, rightOuterEye.x, rightOuterEye.y);
-    // glasses nose notch
+    // sunglasses nose notch
     ctx.lineCap = 'round';
     ctx.strokeStyle = bg;
     ctx.lineWidth = noseWidth;
     line(nose.x, nose.y, midEye.x, midEye.y);
+
+    // nose shadow line
     ctx.strokeStyle = boneStyle;
     ctx.lineWidth = noseShadowWidth;
     ctx.lineCap = 'butt';
     line(nose.x, nose.y, nostrilBase.x, nostrilBase.y);
-
-
-    if (config.debug) {
-      ls.filter(l => l.visibility > 0.8).map(canvasmirror).forEach((l, i) => {
-
-        const x = l.x;
-        const y = l.y;
-        ctx.lineWidth = 6;
-
-        ctx.strokeStyle = debugPointStyle;
-        ctx.lineWidth = debugLineWidth;
-        cross(x, y, 5);
-      });
-    }
 
     ctx.strokeStyle = boneStyle;
     ctx.lineCap = 'round';
@@ -194,7 +211,7 @@ export function drawCustomStickFigure(landmarks: NormalizedLandmark[][], ctx: Ca
       // arc(mouthRight.x, mouthRight.y, mouthLeft.x, mouthLeft.y, 2.1);
     }
 
-    // draw stick figure
+    // draw defined sticks
     ctx.lineWidth = boneWidth;
     for (let i = 0; i < sticks.length; i++) {
       const pair = sticks[i];
@@ -202,19 +219,14 @@ export function drawCustomStickFigure(landmarks: NormalizedLandmark[][], ctx: Ca
       const p2 = canvasPoint(pair[1]);
       line(p1.x, p1.y, p2.x, p2.y);
     }
-    // neck
-    /*
-    // TODO maybe extend by 50% and make fatter
-    ctx.lineWidth = neckWidth;
-    line(neck.x, neck.y, midEar.x, midEar.y);
-*/
+
     // draw ball joints
     ctx.fillStyle = ballStyle;
     for (let i = 0; i < ballJoints.length; i++) {
       const bj = canvasPoint(ballJoints[i]);
       spot(bj.x, bj.y, jointRadius);
     }
-    //spot(neck.x, neck.y, jointRadius);
+    //spot(neck.x, neck.y, jointRadius); // neck balljoint
 
     if (config.debug) {
 
@@ -228,8 +240,21 @@ export function drawCustomStickFigure(landmarks: NormalizedLandmark[][], ctx: Ca
       line(neck.x, neck.y, sacrum.x, sacrum.y);
       // neck
       line(neck.x, neck.y, midEar.x, midEar.y);
-      // head ventral
+      // head ventral (mid head to nose)
       line(midEar.x, midEar.y, nose.x, nose.y);
+
+      // draw debug points
+      ls.filter(l => l.visibility > 0.8).map(canvasmirror).forEach((l, i) => {
+
+        const x = l.x;
+        const y = l.y;
+        ctx.lineWidth = 6;
+
+        ctx.strokeStyle = debugPointStyle;
+        ctx.lineWidth = debugLineWidth;
+        cross(x, y, 5);
+      });
+
     }
   });
 }
