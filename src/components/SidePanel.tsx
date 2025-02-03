@@ -3,6 +3,10 @@ import { Box, IconButton, SwipeableDrawer } from '@mui/material';
 import { useEffect, useState } from 'react';
 import SettingsPanel, { CommonProps } from './SettingsPanel.tsx';
 
+const KEY_MENU = ' ';
+// const KEY_MENU = 'Escape';
+
+
 /**
  * Hideable sliding drawer with nav and settings panel.
  * Maintains drawer state, handles toggle keyboard shortcut.
@@ -12,8 +16,8 @@ import SettingsPanel, { CommonProps } from './SettingsPanel.tsx';
 export const SidePanel = ({ setConfig, config }: CommonProps) => {
   // ESC toggles drawer
   useEffect(() => {
-    let handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === KEY_MENU) {
         e.preventDefault(); // eat the key
         setDrawerOpen((o: boolean) => !o);
       }
