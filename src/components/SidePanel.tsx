@@ -6,7 +6,6 @@ import SettingsPanel, { CommonProps } from './SettingsPanel.tsx';
 const KEY_MENU = ' ';
 // const KEY_MENU = 'Escape';
 
-
 /**
  * Hideable sliding drawer with nav and settings panel.
  * Maintains drawer state, handles toggle keyboard shortcut.
