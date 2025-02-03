@@ -13,7 +13,7 @@ const KEY_MENU = ' ';
  * @param config    current config
  */
 export const SidePanel = ({ setConfig, config }: CommonProps) => {
-  // ESC toggles drawer
+  // toggle drawer
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === KEY_MENU) {
