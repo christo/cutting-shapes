@@ -25,6 +25,7 @@ visual effects and interactive elements.
 
 ## TODO
 
+* [ ] `bun test` on github
 * [ ] obs integration MVP to evaluate easy scene composition
   * [ ] find previous OBS scenes
   * obs scene rotation
