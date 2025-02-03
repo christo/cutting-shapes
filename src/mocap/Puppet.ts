@@ -3,8 +3,6 @@ import { CC0, CG_RF_NOAI, License, MIT } from '../License.ts';
 import { BoneMap, BoneSpec } from './RiggedModel.ts';
 import { RiggedModel } from './RiggedModel.tsx';
 
-// @ts-ignore
-
 type PostLoader = (r: ISceneLoaderAsyncResult) => void;
 
 export class Puppet implements RiggedModel {
