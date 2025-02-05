@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Config } from '../Config.ts';
 import { PoseSystem } from '../mocap/PoseSystem.ts';
 import { MeshView } from './MeshView.tsx';
@@ -23,26 +23,30 @@ export const DATA_STYLE = {
 const Home = ({ config }: { config: Config; }) => {
   const [showSplash, setShowSplash] = useState(true);
   const stickFigureCanvas = useRef<HTMLCanvasElement | null>(null);
-  poseSystem.setConfig(config);
-
-  const vc: VideoConsumer = {
-    video: async (video: HTMLVideoElement, startTimeMs: number, _deltaMs: number): Promise<void> => {
-      if (stickFigureCanvas.current) {
-        if (showSplash) {
-          // remove splash once we're live
-          setShowSplash(false);
-        }
-        poseSystem.justDraw(stickFigureCanvas.current, Z_INDEX_BESPOKE);
-      }
-      await poseSystem.detect(video, startTimeMs);
-    }
-  };
-  // if the other is present, go half size
   const bespokeScale = config.mesh ? '50%' : '100%';
   const meshScale = config.bespoke ? '50%' : '100%';
-  if (!config.bespoke && stickFigureCanvas.current) {
-    poseSystem.resetCanvas();
-  }
+  poseSystem.setConfig(config);
+  const vcs: VideoConsumer[] = [];
+  useEffect(() => {
+    vcs[0] = {
+      video: async (video: HTMLVideoElement, startTimeMs: number, _deltaMs: number): Promise<void> => {
+        if (stickFigureCanvas.current) {
+          if (showSplash) {
+            // remove splash once we're live
+            setShowSplash(false);
+          }
+          poseSystem.justDraw(stickFigureCanvas.current, Z_INDEX_BESPOKE);
+        }
+        await poseSystem.detect(video, startTimeMs);
+      }
+    };
+    // if the other is present, go half size
+
+    if (!config.bespoke && stickFigureCanvas.current) {
+      poseSystem.resetCanvas();
+    }
+  }, [config]);
+
   return (
     <Box className="App-body" sx={{
       position: "absolute", alignContent: "center", justifyItems: "center",
@@ -62,7 +66,7 @@ const Home = ({ config }: { config: Config; }) => {
         zIndex: Z_INDEX_CAMERA,
         visibility: config.camera ? 'visible' : 'hidden',
       }}>
-        <VideoCamera consumers={[vc]} />
+        <VideoCamera consumers={vcs} />
       </Box>
       {config.mesh && <MeshView
         sx={{position: 'absolute', left: 0, bottom: 0, width: meshScale, height: meshScale}}
