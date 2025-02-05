@@ -69,7 +69,7 @@ class PoseSystem {
 
   /**
    * Historic storage for subscribers and calculating smoothed motion.
-   * future: consider kalman filtering, prediction and configurable histeresis
+   * future: consider kalman filtering, prediction
    * @private
    */
   private prevLandmarks: NormalizedLandmark[][] = [];
