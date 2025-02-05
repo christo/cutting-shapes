@@ -84,6 +84,7 @@ export function drawCustomStickFigure(
   const bg = bgColour(config);
 
   // maintains line drawing scale based on canvas width
+  // currently, expected deployment resolution is 1920x1080
   const drawScale = (x: number) => {
     return Math.max(3, (x * ctx.canvas.width) / 4000);
   };
@@ -137,11 +138,7 @@ export function drawCustomStickFigure(
   };
 
   landmarks.forEach((ls, pi) => {
-    if (config.debug) {
-      ctx.font = '28px Arial';
-      ctx.fillStyle = debugLineStyle;
-      ctx.fillText(`human ${pi + 1}`, 20, (pi + 2) * 20);
-    }
+
 
     const canvasPoint = (part: number): NormalizedLandmark => {
       return canvasmirror(ls[part]);
@@ -175,7 +172,6 @@ export function drawCustomStickFigure(
       // TODO maybe extend neck by 50%
       line(neck.x, neck.y, midEar.x, midEar.y);
     }
-
 
     // draw defined sticks
     ctx.lineWidth = boneWidth;
@@ -283,6 +279,10 @@ export function drawCustomStickFigure(
 
     // draw debug overlay
     if (config.debug) {
+      ctx.font = '28px Arial';
+      ctx.fillStyle = debugLineStyle;
+      ctx.fillText(`human ${pi + 1}`, 20, (pi + 2) * 20);
+
       // derived bones
       ctx.lineWidth = debugLineWidth;
       ctx.strokeStyle = debugLineStyle;
