@@ -29,6 +29,7 @@ const Home = ({ config }: { config: Config; }) => {
     video: async (video: HTMLVideoElement, startTimeMs: number, _deltaMs: number): Promise<void> => {
       if (stickFigureCanvas.current) {
         if (showSplash) {
+          // remove splash once we're live
           setShowSplash(false);
         }
         poseSystem.justDraw(stickFigureCanvas.current, Z_INDEX_BESPOKE);
