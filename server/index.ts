@@ -37,7 +37,7 @@ app.get('/api/obs/scenes', async (req, res) => {
         const { scenes } = await obs.call('GetSceneList');
         res.json(scenes);
     } catch (error) {
-        res.status(500).json({ error: 'Failed to get scenes' });
+        //res.status(500).json({ error: `Failed to get scenes ${error}` });
     }
 });
 

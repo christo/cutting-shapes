@@ -138,171 +138,177 @@ export function drawCustomStickFigure(
   };
 
   landmarks.forEach((ls, pi) => {
+    try {
 
+      // TODO if we can't get all the parts, we probably can't draw this frame
 
-    const canvasPoint = (part: number): NormalizedLandmark => {
-      return canvasmirror(ls[part]);
-    };
+      const canvasPoint = (part: number): NormalizedLandmark => {
+        return canvasmirror(ls[part]);
+      };
 
-    // construct implied joints
-    const leftShoulder = canvasPoint(Body.left_shoulder);
-    const rightShoulder = canvasPoint(Body.right_shoulder);
-    const leftHip = canvasPoint(Body.left_hip);
-    const rightHip = canvasPoint(Body.right_hip);
-    const neck = midPoint(leftShoulder, rightShoulder);
-    const sacrum = midPoint(leftHip, rightHip);
-    const leftEar = canvasPoint(Body.left_ear);
-    const rightEar = canvasPoint(Body.right_ear);
-    const midEar = midPoint(leftEar, rightEar);
-    const leftEye = canvasPoint(Body.left_eye);
-    const rightEye = canvasPoint(Body.right_eye);
-    const midEye = midPoint(leftEye, rightEye);
-    const leftOuterEye = canvasPoint(Body.left_eye_outer);
-    const rightOuterEye = canvasPoint(Body.right_eye_outer);
-    const mouthLeft = canvasPoint(Body.mouth_left);
-    const mouthRight = canvasPoint(Body.mouth_right);
-    const nose = canvasPoint(Body.nose);
-    const midMouth = midPoint(mouthLeft, mouthRight);
-    const noseBase = midPoint(midMouth, midEye);
-    const nostrilBase = midPoint(noseBase, nose);
+      // construct implied joints
+      const leftShoulder = canvasPoint(Body.left_shoulder);
+      const rightShoulder = canvasPoint(Body.right_shoulder);
+      const leftHip = canvasPoint(Body.left_hip);
+      const rightHip = canvasPoint(Body.right_hip);
+      const neck = midPoint(leftShoulder, rightShoulder);
+      const sacrum = midPoint(leftHip, rightHip);
+      const leftEar = canvasPoint(Body.left_ear);
+      const rightEar = canvasPoint(Body.right_ear);
+      const midEar = midPoint(leftEar, rightEar);
+      const leftEye = canvasPoint(Body.left_eye);
+      const rightEye = canvasPoint(Body.right_eye);
+      const midEye = midPoint(leftEye, rightEye);
+      const leftOuterEye = canvasPoint(Body.left_eye_outer);
+      const rightOuterEye = canvasPoint(Body.right_eye_outer);
+      const mouthLeft = canvasPoint(Body.mouth_left);
+      const mouthRight = canvasPoint(Body.mouth_right);
+      const nose = canvasPoint(Body.nose);
+      const midMouth = midPoint(mouthLeft, mouthRight);
+      const noseBase = midPoint(midMouth, midEye);
+      const nostrilBase = midPoint(noseBase, nose);
 
-    // neck
-    if (DRAW_NECK) {
-      ctx.lineWidth = neckWidth;
-      // TODO maybe extend neck by 50%
-      line(neck.x, neck.y, midEar.x, midEar.y);
-    }
-
-    // draw defined sticks
-    ctx.lineWidth = boneWidth;
-    for (let i = 0; i < sticks.length; i++) {
-      const pair = sticks[i];
-      const p1 = canvasPoint(pair[0]);
-      const p2 = canvasPoint(pair[1]);
-      line(p1.x, p1.y, p2.x, p2.y);
-    }
-    // neck
-    if (DRAW_NECK) {
-      // TODO maybe extend by 50% and make fatter
-      ctx.lineWidth = neckWidth;
-      line(neck.x, neck.y, midEar.x, midEar.y);
-
-    }
-
-    // draw ball joints
-    ctx.fillStyle = ballStyle;
-    for (let i = 0; i < ballJoints.length; i++) {
-      const bj = canvasPoint(ballJoints[i]);
-      spot(bj.x, bj.y, jointRadius);
-    }
-    //spot(neck.x, neck.y, jointRadius); // neck balljoint
-
-
-    // draw face
-
-    // face background
-    if (DRAW_FACE_BG) {
-
-      ctx.lineWidth = faceLineWidth;
-      ctx.strokeStyle = faceStyle;
-      ctx.fillStyle = faceStyle;
-      ctx.lineCap = 'square'; // TODO check corners
-      ctx.lineJoin = 'round';
-
-      // eye/mouth mask
-      ctx.beginPath();
-      ctx.moveTo(leftOuterEye.x, leftOuterEye.y);
-      ctx.lineTo(rightOuterEye.x, rightOuterEye.y);
-      ctx.lineTo(mouthRight.x, mouthRight.y);
-      ctx.lineTo(mouthLeft.x, mouthLeft.y);
-      ctx.closePath();
-      ctx.fill();
-      ctx.stroke();
-
-      // ear/mouth mask
-      ctx.beginPath();
-      ctx.moveTo(leftEar.x, leftEar.y);
-      ctx.lineTo(rightEar.x, rightEar.y);
-      ctx.lineTo(mouthRight.x, mouthRight.y);
-      ctx.lineTo(mouthLeft.x, mouthLeft.y);
-      ctx.closePath();
-      ctx.fill();
-      ctx.stroke();
-      ctx.closePath();
-
-      // ear/eye mask
-      ctx.beginPath();
-      ctx.moveTo(leftEar.x, leftEar.y);
-      ctx.lineTo(rightEar.x, rightEar.y);
-      ctx.lineTo(rightOuterEye.x, rightOuterEye.y);
-      ctx.lineTo(leftOuterEye.x, leftOuterEye.y);
-      ctx.closePath();
-      ctx.fill();
-      ctx.stroke();
-      ctx.closePath();
-    }
-
-    // sunglasses:
-    ctx.lineWidth = glassesWidth;
-    ctx.strokeStyle = boneStyle;
-    ctx.lineCap = 'square';
-    line(leftOuterEye.x, leftOuterEye.y, rightOuterEye.x, rightOuterEye.y);
-    // sunglasses nose notch
-    ctx.lineCap = 'round';
-    ctx.strokeStyle = faceStyle;
-    ctx.lineWidth = noseWidth;
-    ctx.beginPath();
-    ctx.moveTo(nose.x, nose.y);
-    ctx.lineTo(midEye.x, midEye.y);
-    ctx.lineTo(noseBase.x, noseBase.y);
-    ctx.closePath();
-    ctx.fill();
-    ctx.stroke();
-    ctx.closePath();
-
-    line(nose.x, nose.y, midEye.x, midEye.y);
-
-    // nose shadow line
-    ctx.strokeStyle = boneStyle;
-    ctx.lineWidth = noseShadowWidth;
-    ctx.lineCap = 'butt';
-    line(nose.x, nose.y, nostrilBase.x, nostrilBase.y);
-
-    ctx.strokeStyle = boneStyle;
-    ctx.lineCap = 'round';
-    // mouth
-    if (mouthLeft.visibility > 0.6 && mouthRight.visibility > 0.6) {
-      ctx.lineWidth = mouthWidth;
-      line(mouthRight.x, mouthRight.y, mouthLeft.x, mouthLeft.y);
-      // arc(mouthRight.x, mouthRight.y, mouthLeft.x, mouthLeft.y, 2.1);
-    }
-
-    // draw debug overlay
-    if (config.debug) {
-      ctx.font = '28px Arial';
-      ctx.fillStyle = debugLineStyle;
-      ctx.fillText(`human ${pi + 1}`, 20, (pi + 2) * 20);
-
-      // derived bones
-      ctx.lineWidth = debugLineWidth;
-      ctx.strokeStyle = debugLineStyle;
-      // ears lateral
-      line(leftEar.x, leftEar.y, rightEar.x, rightEar.y);
-      // spine
-      line(neck.x, neck.y, sacrum.x, sacrum.y);
       // neck
-      line(neck.x, neck.y, midEar.x, midEar.y);
-      // head ventral (mid head to nose)
-      line(midEar.x, midEar.y, nose.x, nose.y);
-      
-      ctx.strokeStyle = debugPointStyle;
-      ctx.lineWidth = debugLineWidth;
-      for (let i = 0; i < ls.length; i++) {
-        if (ls[i].visibility > 0.8) {
-          const l = canvasmirror(ls[i]);
-          cross(l.x, l.y, debugPointCrossSize);
+      if (DRAW_NECK) {
+        ctx.lineWidth = neckWidth;
+        // TODO maybe extend neck by 50%
+        line(neck.x, neck.y, midEar.x, midEar.y);
+      }
+
+      // draw defined sticks
+      ctx.lineWidth = boneWidth;
+      for (let i = 0; i < sticks.length; i++) {
+        const pair = sticks[i];
+        const p1 = canvasPoint(pair[0]);
+        const p2 = canvasPoint(pair[1]);
+        line(p1.x, p1.y, p2.x, p2.y);
+      }
+      // neck
+      if (DRAW_NECK) {
+        // TODO maybe extend by 50% and make fatter
+        ctx.lineWidth = neckWidth;
+        line(neck.x, neck.y, midEar.x, midEar.y);
+
+      }
+
+      // draw ball joints
+      ctx.fillStyle = ballStyle;
+      for (let i = 0; i < ballJoints.length; i++) {
+        const bj = canvasPoint(ballJoints[i]);
+        spot(bj.x, bj.y, jointRadius);
+      }
+      //spot(neck.x, neck.y, jointRadius); // neck balljoint
+
+
+      // draw face
+
+      // face background
+      if (DRAW_FACE_BG) {
+
+        ctx.lineWidth = faceLineWidth;
+        ctx.strokeStyle = faceStyle;
+        ctx.fillStyle = faceStyle;
+        ctx.lineCap = 'square'; // TODO check corners
+        ctx.lineJoin = 'round';
+
+        // eye/mouth mask
+        ctx.beginPath();
+        ctx.moveTo(leftOuterEye.x, leftOuterEye.y);
+        ctx.lineTo(rightOuterEye.x, rightOuterEye.y);
+        ctx.lineTo(mouthRight.x, mouthRight.y);
+        ctx.lineTo(mouthLeft.x, mouthLeft.y);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+
+        // ear/mouth mask
+        ctx.beginPath();
+        ctx.moveTo(leftEar.x, leftEar.y);
+        ctx.lineTo(rightEar.x, rightEar.y);
+        ctx.lineTo(mouthRight.x, mouthRight.y);
+        ctx.lineTo(mouthLeft.x, mouthLeft.y);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+        ctx.closePath();
+
+        // ear/eye mask
+        ctx.beginPath();
+        ctx.moveTo(leftEar.x, leftEar.y);
+        ctx.lineTo(rightEar.x, rightEar.y);
+        ctx.lineTo(rightOuterEye.x, rightOuterEye.y);
+        ctx.lineTo(leftOuterEye.x, leftOuterEye.y);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+        ctx.closePath();
+      }
+
+      // sunglasses:
+      ctx.lineWidth = glassesWidth;
+      ctx.strokeStyle = boneStyle;
+      ctx.lineCap = 'square';
+      line(leftOuterEye.x, leftOuterEye.y, rightOuterEye.x, rightOuterEye.y);
+      // sunglasses nose notch
+      ctx.lineCap = 'round';
+      ctx.strokeStyle = faceStyle;
+      ctx.lineWidth = noseWidth;
+      ctx.beginPath();
+      ctx.moveTo(nose.x, nose.y);
+      ctx.lineTo(midEye.x, midEye.y);
+      ctx.lineTo(noseBase.x, noseBase.y);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+      ctx.closePath();
+
+      line(nose.x, nose.y, midEye.x, midEye.y);
+
+      // nose shadow line
+      ctx.strokeStyle = boneStyle;
+      ctx.lineWidth = noseShadowWidth;
+      ctx.lineCap = 'butt';
+      line(nose.x, nose.y, nostrilBase.x, nostrilBase.y);
+
+      ctx.strokeStyle = boneStyle;
+      ctx.lineCap = 'round';
+      // mouth
+      if (mouthLeft.visibility > 0.6 && mouthRight.visibility > 0.6) {
+        ctx.lineWidth = mouthWidth;
+        line(mouthRight.x, mouthRight.y, mouthLeft.x, mouthLeft.y);
+        // arc(mouthRight.x, mouthRight.y, mouthLeft.x, mouthLeft.y, 2.1);
+      }
+
+      // draw debug overlay
+      if (config.debug) {
+        ctx.font = '28px Arial';
+        ctx.fillStyle = debugLineStyle;
+        ctx.fillText(`human ${pi + 1}`, 20, (pi + 2) * 20);
+
+        // derived bones
+        ctx.lineWidth = debugLineWidth;
+        ctx.strokeStyle = debugLineStyle;
+        // ears lateral
+        line(leftEar.x, leftEar.y, rightEar.x, rightEar.y);
+        // spine
+        line(neck.x, neck.y, sacrum.x, sacrum.y);
+        // neck
+        line(neck.x, neck.y, midEar.x, midEar.y);
+        // head ventral (mid head to nose)
+        line(midEar.x, midEar.y, nose.x, nose.y);
+
+        ctx.strokeStyle = debugPointStyle;
+        ctx.lineWidth = debugLineWidth;
+        for (let i = 0; i < ls.length; i++) {
+          if (ls[i].visibility > 0.8) {
+            const l = canvasmirror(ls[i]);
+            cross(l.x, l.y, debugPointCrossSize);
+          }
         }
       }
+    } catch (e) {
+      console.log(`pose ${pi} asplode: ${e}`);
+      // any problem with a single pose means we do not render it
     }
   });
 }

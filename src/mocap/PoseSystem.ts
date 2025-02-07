@@ -110,11 +110,18 @@ class PoseSystem {
    */
   processLandmarks(nlss: NormalizedLandmark[][]): NormalizedLandmark[][] {
     // TODO multi-person logic needs serious review
-    if (this.prevLandmarks.length > 0 && this.config.smoothing > 0) {
-      // TODO if the number of landmarks in a single pose is previously smaller, just clone the new one
-      // currently smooth by averaging last two landmark points by finding the
-      // midpoint between previous and next
+    if (nlss.length === 0) {
+      // there are no current poses, return empty disregarding previous
+      return [[]];
+    }
+
+    const nPrev = this.prevLandmarks.length;
+    // same number of poses across two frames,
+    // smoothing is on and we do have a previousO
+    if (nPrev > 0 && this.config.smoothing > 0 && nPrev === nlss.length) {
+      // TODO if the number of landmarks in a single pose is previously smaller, just clone the new one?
       return this.prevLandmarks.map((nls: NormalizedLandmark[], nlsIdx: number) => {
+        // each nls is a complete previous pose
         return nls.map((nl: NormalizedLandmark, nlIdx: number) => {
           if (nlss.length > nlsIdx && nlss[nlsIdx].length > nlIdx) {
             // maximum smoothing biases strongly to prev landmark
