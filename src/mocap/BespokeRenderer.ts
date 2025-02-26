@@ -74,6 +74,12 @@ function bgColour(config: Config) {
   } // shouldn't happen
 }
 
+function timeHue(msPeriod: number): string {
+  const now = Date.now();
+  const hue = (now % msPeriod) / msPeriod * 360;
+  return `hsl(${hue}, 50%, 65%)`;
+}
+
 export function drawCustomStickFigure(
   landmarks: NormalizedLandmark[][],
   ctx: CanvasRenderingContext2D,
@@ -89,7 +95,7 @@ export function drawCustomStickFigure(
     return Math.max(3, (x * ctx.canvas.width) / 4000);
   };
 
-  const faceLineWidth = drawScale(90);
+  const faceLineWidth = drawScale(120);
   const boneWidth = drawScale(30);
   // noinspection JSUnusedLocalSymbols
   const neckWidth = drawScale(50);
@@ -99,8 +105,16 @@ export function drawCustomStickFigure(
   const noseShadowWidth = drawScale(6);
   const debugLineWidth = drawScale(3);
   const jointRadius = drawScale(40);
-  const boneStyle = 'rgb(255, 255, 255)';
-  const ballStyle = 'rgb(255, 255, 255)';
+
+  let boneStyle = 'rgb(255, 255, 255)';
+  const cycle = new Date().getMinutes() % 10;
+  if (cycle == 0) {
+    boneStyle = timeHue(500);
+  } else if (cycle > 3) {
+    boneStyle = `rgb(255, ${cycle*30}, 0)`;
+  }
+
+  const ballStyle = boneStyle;
   const faceStyle = 'rgb(0, 0, 0)';
   const debugLineStyle = 'white';
   const debugPointStyle = 'blue';
