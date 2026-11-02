@@ -19,7 +19,7 @@ export function Titles({titleFontSize, authorFontSize}: {titleFontSize: number, 
       color: 'primary.main',
       mt: 1,
       mb: 1
-    }}>Chris Mountford 2025</Typography>
+    }}>Chris Mountford 2026</Typography>
 
   </>
 }

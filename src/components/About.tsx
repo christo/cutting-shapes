@@ -8,7 +8,7 @@ const About = ({puppets}: {puppets: Puppet[]}) => {
       <Box sx={{m: 10}}>
         <h1>About Cutting Shapes</h1>
         <Box>
-          <i>Created by</i> <b>Chris Mountford</b> <i>January 2025</i>
+          <b>Chris Mountford</b> <i>February 2026</i>
         </Box>
         <h2>Acknowledgements</h2>
         <List>
