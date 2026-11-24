@@ -1,7 +1,5 @@
-import { Circle } from '@mui/icons-material';
 import {
   Box,
-  Button,
   FormControl,
   FormControlLabel,
   InputLabel,
@@ -23,7 +21,6 @@ export interface CommonProps {
   setConfig: StateSetter<Config>;
 }
 
-const showRec = 'foo'.length < 1;
 const SmoothingControl = ({ setConfig, config }: CommonProps) => {
   const marks = [
     {
@@ -71,26 +68,6 @@ const SmoothingControl = ({ setConfig, config }: CommonProps) => {
     </FormControl>
   );
 };
-
-function RecControls({ setConfig, config, gotRecording }: CommonProps & { gotRecording: boolean }) {
-  return (
-    <>
-      <Button sx={{ m: 2 }} variant="contained" color="error" startIcon={<Circle />}>
-        Record
-      </Button>
-      <Stack direction="row" spacing={2} sx={{ display: 'flex', alignItems: 'center' }}>
-        <Typography sx={{ opacity: !gotRecording ? 0.5 : 1.0 }}>Playback</Typography>
-        <Switch
-          checked={config.live}
-          disabled={!gotRecording}
-          onChange={(event) => setConfig({ ...config, live: event.target.checked })}
-          inputProps={{ 'aria-label': 'controlled' }}
-        />
-        <Typography>Live</Typography>
-      </Stack>
-    </>
-  );
-}
 
 const SettingsPanel = ({ setConfig, config }: CommonProps) => {
   const debugCheckbox = (
@@ -143,12 +120,6 @@ const SettingsPanel = ({ setConfig, config }: CommonProps) => {
     />
   );
 
-  // TODO use video file sources
-  const gotRecording = false;
-  if (!gotRecording && !config.live) {
-    console.log('Not configured for live but no recording available, resetting to live.');
-    setConfig({ ...config, live: true });
-  }
   return (
     <Stack sx={{ p: 2 }}>
       <Titles titleFontSize={30} authorFontSize={18} />
@@ -191,7 +162,6 @@ const SettingsPanel = ({ setConfig, config }: CommonProps) => {
       <FormControlLabel control={ikCheckbox} label="Inverse Kinematics" />
       <FormControlLabel control={groundCheckbox} label="Show Ground" />
       <SmoothingControl config={config} setConfig={setConfig} />
-      {showRec && <RecControls config={config} setConfig={setConfig} gotRecording={gotRecording} />}
     </Stack>
   );
 };

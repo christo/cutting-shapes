@@ -1,6 +1,6 @@
 import { describe, it } from 'bun:test';
 import { expect } from 'chai';
-import { keyToAction } from './Shortcuts.ts';
+import { keyLabels, keyToAction } from './Shortcuts.ts';
 
 describe('shortcuts', () => {
   it('maps letter keys case-insensitively', () => {
@@ -26,5 +26,11 @@ describe('shortcuts', () => {
     expect(keyToAction('r', 'liveIdle', true)).to.be.null;
     expect(keyToAction('x', 'liveIdle', false)).to.be.null;
     expect(keyToAction('Escape', 'liveIdle', false)).to.be.null;
+  });
+
+  it('labels keys for display', () => {
+    expect(keyLabels('record')).to.equal('R');
+    expect(keyLabels('play')).to.equal('Space, K');
+    expect(keyLabels('pause')).to.equal('Space, K');
   });
 });

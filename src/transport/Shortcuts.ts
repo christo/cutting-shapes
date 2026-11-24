@@ -30,3 +30,18 @@ export function keyToAction(key: string, mode: Mode, modified: boolean): Action 
   }
   return shortcut ?? null;
 }
+
+const KEY_LABELS: Record<string, string> = { ' ': 'Space' };
+
+/**
+ * Single-key shortcuts for an action as displayed to users, e.g. "Space, K" for play.
+ */
+export function keyLabels(action: Action): string {
+  return Object.entries(SHORTCUTS)
+    .filter(
+      ([key, s]) =>
+        key.length === 1 && (s === action || (s === PLAY_PAUSE && (action === 'play' || action === 'pause'))),
+    )
+    .map(([key]) => KEY_LABELS[key] ?? key.toUpperCase())
+    .join(', ');
+}

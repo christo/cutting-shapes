@@ -8,10 +8,14 @@ import { PerfPanel } from './PerfPanel.tsx';
 import { Splash } from './Splash.tsx';
 import { RecordingBrowser } from './RecordingBrowser.tsx';
 import { useTransport } from '../transport/useTransport.ts';
+import { RecordingDot, TransportControls } from './TransportControls.tsx';
+import { useIdleVisible } from './useIdleVisible.ts';
 
 const Z_INDEX_CAMERA = 100;
 const Z_INDEX_BESPOKE = 50;
 export const Z_INDEX_SPLASH = 500;
+const Z_INDEX_CONTROLS = 600;
+const CONTROLS_IDLE_HIDE_MS = 3000;
 
 const poseSystem = new PoseSystem();
 
@@ -22,6 +26,9 @@ const Home = ({ config }: { config: Config }) => {
   const meshScale = config.bespoke ? '50%' : '100%';
   poseSystem.setConfig(config);
   const transport = useTransport();
+  const controls = useIdleVisible(CONTROLS_IDLE_HIDE_MS, transport.browsing);
+  // without a camera no frame arrives to clear the splash, so clear it to reveal the controls
+  const splashVisible = showSplash && transport.mode !== 'noCamera';
   const vcs = useRef<VideoConsumer[]>([]);
   useEffect(() => {
     vcs.current[0] = {
@@ -90,7 +97,18 @@ const Home = ({ config }: { config: Config }) => {
           config={config}
         />
       )}
-      <Splash visible={showSplash} />
+      <Splash visible={splashVisible} />
+      {!splashVisible && (
+        <TransportControls
+          mode={transport.mode}
+          recordingStartMs={transport.recordingStartMs}
+          act={transport.act}
+          visible={controls.visible}
+          hoverProps={controls.hoverProps}
+          zIndex={Z_INDEX_CONTROLS}
+        />
+      )}
+      {transport.mode === 'liveRecording' && !controls.visible && <RecordingDot zIndex={Z_INDEX_CONTROLS} />}
       <RecordingBrowser open={transport.browsing} onClose={transport.closeBrowser} onSelect={transport.selectFile} />
     </Box>
   );

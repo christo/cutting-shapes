@@ -30,3 +30,20 @@ export async function uploadRecording(blob: Blob, startMs: number, fetchFn: type
   const { name } = await res.json();
   return name;
 }
+
+const MS_PER_SECOND = 1000;
+const SECONDS_PER_MINUTE = 60;
+const MINUTES_PER_HOUR = 60;
+
+/**
+ * Elapsed time as m:ss, or h:mm:ss from one hour.
+ */
+export function formatElapsed(ms: number): string {
+  const totalSeconds = Math.floor(Math.max(0, ms) / MS_PER_SECOND);
+  const seconds = totalSeconds % SECONDS_PER_MINUTE;
+  const totalMinutes = Math.floor(totalSeconds / SECONDS_PER_MINUTE);
+  const minutes = totalMinutes % MINUTES_PER_HOUR;
+  const hours = Math.floor(totalMinutes / MINUTES_PER_HOUR);
+  const pad = (n: number) => String(n).padStart(2, '0');
+  return hours > 0 ? `${hours}:${pad(minutes)}:${pad(seconds)}` : `${minutes}:${pad(seconds)}`;
+}

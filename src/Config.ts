@@ -31,12 +31,6 @@ export class Config {
   camera: boolean = false;
 
   /**
-   * Input source: true = live camera, false = video playback.
-   * Input source drives motion capture.
-   */
-  live: boolean = true;
-
-  /**
    * How much motion smoothing - coefficient between 0 (no smoothing) and 1 (max smoothing).
    */
   smoothing: number = 0;

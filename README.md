@@ -48,7 +48,7 @@ visual effects and interactive elements.
   * [ ] how to indicate that the person being tracked has changed
   * [ ] how to smooth transition between vastly different poses?
     * e.g. puff of smoke, disappear/reappear, zoom in etc.
-* [ ] transport controls: live, browse (server-side videos), record, play, pause, stop
+* [x] transport controls: live, browse (server-side videos), record, play, pause, stop
   * [x] record only on live source; no pause on live; source locked while recording; all disabled while saving
   * [x] file playback loops
   * [x] mode -> enabled buttons defined in one colocated table in code
@@ -56,8 +56,8 @@ visual effects and interactive elements.
     * [x] move side panel key from Space to backtick
     * Esc kept free to exit fullscreen
     * avoid keys planned for composition view shortcuts
-  * [ ] show on mouse move, hide after idle timeout (not while hovered / browsing); hide cursor too
-  * [ ] recording indicator: controls hidden = small red dot in corner; shown = red record symbol + elapsed timer
+  * [x] show on mouse move, hide after idle timeout (not while hovered / browsing); hide cursor too
+  * [x] recording indicator: controls hidden = small red dot in corner; shown = red record symbol + elapsed timer
 * [ ] fullscreen, no scrollbars; F toggles fullscreen
 * [ ] video recording: record raw camera input, save to configured recordings folder on server
   * [x] `RECORDINGS_DIR` in `server/.env` (`dev:server` loads it); commit `server/.env.example`

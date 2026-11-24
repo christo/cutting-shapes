@@ -1,7 +1,7 @@
 import { describe, it } from 'bun:test';
 import { expect } from 'chai';
 import { ENDPOINTS, HTTP_STATUS, PARAM_RECORDING_START } from '../Api.ts';
-import { MIME_TYPES, pickMimeType, uploadRecording, uploadUrl } from './Recording.ts';
+import { formatElapsed, MIME_TYPES, pickMimeType, uploadRecording, uploadUrl } from './Recording.ts';
 
 const START_MS = 1764000000000;
 const NAME = '2026-11-24T14-03-22.webm';
@@ -40,5 +40,14 @@ describe('recording', () => {
       error = e;
     }
     expect(String(error)).to.contain(String(HTTP_STATUS.CONFLICT));
+  });
+
+  it('formats elapsed time', () => {
+    expect(formatElapsed(0)).to.equal('0:00');
+    expect(formatElapsed(999)).to.equal('0:00');
+    expect(formatElapsed(61_000)).to.equal('1:01');
+    expect(formatElapsed(3_599_000)).to.equal('59:59');
+    expect(formatElapsed(3_600_000)).to.equal('1:00:00');
+    expect(formatElapsed(-5)).to.equal('0:00');
   });
 });
