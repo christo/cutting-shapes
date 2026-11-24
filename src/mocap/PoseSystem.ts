@@ -67,6 +67,7 @@ class PoseSystem {
   private msVisionTime: RingStat = new RingStat(100);
   private msRenderTime: RingStat = new RingStat(100);
   private msTransformTime: RingStat = new RingStat(100);
+  private renderErrors = 0;
 
   /**
    * Historic storage for subscribers and calculating smoothed motion.
@@ -140,7 +141,12 @@ class PoseSystem {
   }
 
   calcPerfTime = () => {
-    return new PerfTime(this.msVisionTime.mean(), this.msRenderTime.mean(), this.msTransformTime.mean());
+    return new PerfTime(
+      this.msVisionTime.mean(),
+      this.msRenderTime.mean(),
+      this.msTransformTime.mean(),
+      this.renderErrors,
+    );
   };
 
   /**
@@ -184,7 +190,7 @@ class PoseSystem {
       }
       ctx!.fillRect(0, 0, this.canvas.width, this.canvas.height);
       const startRender = performance.now();
-      drawCustomStickFigure(this.prevLandmarks, ctx, this.config);
+      this.renderErrors += drawCustomStickFigure(this.prevLandmarks, ctx, this.config);
       this.msRenderTime.push(performance.now() - startRender);
     } else {
       console.warn('PoseSystem has no canvas?');

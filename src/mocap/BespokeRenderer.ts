@@ -65,11 +65,14 @@ function timeHue(msPeriod: number): string {
   return `hsl(${hue}, 50%, 65%)`;
 }
 
+/**
+ * @returns number of poses that failed to render
+ */
 export function drawCustomStickFigure(
   landmarks: NormalizedLandmark[][],
   ctx: CanvasRenderingContext2D,
   config: Config,
-) {
+): number {
   // TODO z-scaling with lerp
 
   // maintains line drawing scale based on canvas width
@@ -134,6 +137,7 @@ export function drawCustomStickFigure(
     };
   };
 
+  let failedPoses = 0;
   landmarks.forEach((ls, pi) => {
     try {
       // TODO if we can't get all the parts, we probably can't draw this frame
@@ -302,6 +306,8 @@ export function drawCustomStickFigure(
     } catch (e) {
       //console.log(`pose ${pi} asplode: ${e}`);
       // any problem with a single pose means we do not render it
+      failedPoses++;
     }
   });
+  return failedPoses;
 }

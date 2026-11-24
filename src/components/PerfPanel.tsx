@@ -33,6 +33,7 @@ const PerfDetail = ({ perfTime }: { perfTime: PerfTime }) => {
       <Typography sx={sx}>
         {formatNumber(1000 / perfTime.msTransformTime)} Hz {formatNumber(perfTime.msTransformTime)} ms x-form
       </Typography>
+      <Typography sx={sx}>{perfTime.renderErrors} render errors</Typography>
     </>
   );
 };

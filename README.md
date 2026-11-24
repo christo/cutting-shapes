@@ -26,6 +26,10 @@ visual effects and interactive elements.
 ## TODO
 
 * [x] `bun test` on github
+* [ ] faster on-screen composition control (switches for each view already in the space-bar side panel)
+  * [ ] single-key shortcuts per view: bespoke, camera, diagnostics text, mesh
+  * [ ] minimalist on-screen buttons, hidden in show mode
+  * [ ] presets, e.g. show (bespoke only) and dev (everything)
 * [ ] obs integration MVP to evaluate easy scene composition
   * [ ] find previous OBS scenes
   * obs scene rotation
