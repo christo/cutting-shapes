@@ -53,7 +53,7 @@ visual effects and interactive elements.
   * [ ] file playback loops
   * [ ] mode -> enabled buttons defined in one colocated table in code
   * [ ] keyboard shortcuts: L live, O browse, R record, Space / K play/pause, S stop; also hardware media keys
-    * [ ] move side panel key from Space to backtick
+    * [x] move side panel key from Space to backtick
     * Esc kept free to exit fullscreen
     * avoid keys planned for composition view shortcuts
 * [ ] fullscreen, no scrollbars; F toggles fullscreen
@@ -68,8 +68,8 @@ visual effects and interactive elements.
   * [ ] mute button, when recording UI is designed
   * [ ] playback muted by default (autoplay policy)
   * [x] server remuxes webm (`ffmpeg -c copy`) so it is seekable
-* [ ] video playback: video file as input source (see SettingsPanel TODO)
-  * [ ] same `<video>` element via `src` instead of `srcObject`, rest of pipeline unchanged
+* [x] video playback: video file as input source (see SettingsPanel TODO)
+  * [x] same `<video>` element via `src` instead of `srcObject`, rest of pipeline unchanged
 * [ ] motion recording and playback: joint positions per frame
   * [ ] replay recorded joint positions in tests through `PoseSystem` / `BespokeRenderer` (coverage, swallowed pose bug)
 * [ ] deployment perf benchmark: find cheapest viable install hardware (raspi, old laptop, passive intel box)

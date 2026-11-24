@@ -3,8 +3,7 @@ import { Box, IconButton, SwipeableDrawer } from '@mui/material';
 import { useEffect, useState } from 'react';
 import SettingsPanel, { CommonProps } from './SettingsPanel.tsx';
 
-const KEY_MENU = ' ';
-// const KEY_MENU = 'Escape';
+const KEY_MENU = '`';
 
 /**
  * Hideable sliding drawer with nav and settings panel.

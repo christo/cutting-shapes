@@ -6,6 +6,8 @@ import { MeshView } from './MeshView.tsx';
 import { VideoCamera, VideoConsumer } from './VideoCamera.tsx';
 import { PerfPanel } from './PerfPanel.tsx';
 import { Splash } from './Splash.tsx';
+import { RecordingBrowser } from './RecordingBrowser.tsx';
+import { useTransport } from '../transport/useTransport.ts';
 
 const Z_INDEX_CAMERA = 100;
 const Z_INDEX_BESPOKE = 50;
@@ -19,6 +21,7 @@ const Home = ({ config }: { config: Config }) => {
   const bespokeScale = config.mesh ? '50%' : '100%';
   const meshScale = config.bespoke ? '50%' : '100%';
   poseSystem.setConfig(config);
+  const transport = useTransport();
   const vcs = useRef<VideoConsumer[]>([]);
   useEffect(() => {
     vcs.current[0] = {
@@ -73,7 +76,12 @@ const Home = ({ config }: { config: Config }) => {
           visibility: config.camera ? 'visible' : 'hidden',
         }}
       >
-        <VideoCamera consumers={vcs.current} />
+        <VideoCamera
+          consumers={vcs.current}
+          source={transport.source}
+          videoRef={transport.videoRef}
+          onError={transport.onVideoError}
+        />
       </Box>
       {config.mesh && (
         <MeshView
@@ -83,6 +91,7 @@ const Home = ({ config }: { config: Config }) => {
         />
       )}
       <Splash visible={showSplash} />
+      <RecordingBrowser open={transport.browsing} onClose={transport.closeBrowser} onSelect={transport.selectFile} />
     </Box>
   );
 };
