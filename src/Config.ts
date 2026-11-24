@@ -54,7 +54,7 @@ export class Config {
   /**
    * Whether to render the 3d mesh puppet.
    */
-  mesh: boolean = true;
+  mesh: boolean = false;
 
   /**
    * Whether to show the hand-rendered figure
