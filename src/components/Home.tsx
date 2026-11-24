@@ -13,27 +13,19 @@ export const Z_INDEX_SPLASH = 500;
 
 const poseSystem = new PoseSystem();
 
-export const DATA_STYLE = {
-  fontFamily: '"Kode Mono", monospace',
-  color: 'rgba(255, 80, 80, 1)',
-  textShadow: '0 0 5px rgba(255, 50, 50, 0.7), 0 0 8px rgba(255, 50, 50, 0.4)',
-};
-
 const Home = ({ config }: { config: Config }) => {
   const [showSplash, setShowSplash] = useState(true);
   const stickFigureCanvas = useRef<HTMLCanvasElement | null>(null);
   const bespokeScale = config.mesh ? '50%' : '100%';
   const meshScale = config.bespoke ? '50%' : '100%';
   poseSystem.setConfig(config);
-  const vcs: VideoConsumer[] = [];
+  const vcs = useRef<VideoConsumer[]>([]);
   useEffect(() => {
-    vcs[0] = {
+    vcs.current[0] = {
       video: async (video: HTMLVideoElement, startTimeMs: number, _deltaMs: number): Promise<void> => {
         if (stickFigureCanvas.current) {
-          if (showSplash) {
-            // remove splash once we're live
-            setShowSplash(false);
-          }
+          // remove splash once we're live; no re-render once already false
+          setShowSplash(false);
           poseSystem.justDraw(stickFigureCanvas.current, Z_INDEX_BESPOKE);
         }
         await poseSystem.detect(video, startTimeMs);
@@ -81,7 +73,7 @@ const Home = ({ config }: { config: Config }) => {
           visibility: config.camera ? 'visible' : 'hidden',
         }}
       >
-        <VideoCamera consumers={vcs} />
+        <VideoCamera consumers={vcs.current} />
       </Box>
       {config.mesh && (
         <MeshView

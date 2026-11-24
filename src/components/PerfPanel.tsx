@@ -2,7 +2,7 @@ import { Box, CircularProgress, Stack, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { PerfTime } from '../analysis/PerfTime.ts';
 import { PoseSystem } from '../mocap/PoseSystem.ts';
-import { DATA_STYLE } from './Home.tsx';
+import { DATA_STYLE } from './Style.ts';
 import { SkeletalDiagnostics } from './SkeletalDiagnostics.tsx';
 
 const PerfDetail = ({ perfTime }: { perfTime: PerfTime }) => {
@@ -49,7 +49,7 @@ export const PerfPanel = ({ poseSystem }: { poseSystem: PoseSystem }) => {
     return () => {
       cancelAnimationFrame(animationFrameId);
     };
-  }, []);
+  }, [poseSystem]);
   const perfDetail = perfTime.ready() ? (
     <PerfDetail perfTime={perfTime} />
   ) : (

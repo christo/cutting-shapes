@@ -59,21 +59,6 @@ const ballJoints = [
   // Body.left_wrist, Body.right_wrist,
 ];
 
-function bgColour(config: Config) {
-  if (config.bg === 'Ghost') {
-    // return 'transparent';
-    return 'rgb(0, 0, 0)'; // internal ghost effect needs black for erasure
-  } else if (config.bg === 'Green') {
-    return 'rgb(0, 255, 0)';
-  } else if (config.bg === 'Blue') {
-    return 'rgb(0, 0, 255)';
-  } else if (config.bg === 'Black') {
-    return 'rgb(0, 0, 0)';
-  } else {
-    return config.bg;
-  } // shouldn't happen
-}
-
 function timeHue(msPeriod: number): string {
   const now = Date.now();
   const hue = ((now % msPeriod) / msPeriod) * 360;
@@ -86,8 +71,6 @@ export function drawCustomStickFigure(
   config: Config,
 ) {
   // TODO z-scaling with lerp
-
-  const bg = bgColour(config);
 
   // maintains line drawing scale based on canvas width
   // currently, expected deployment resolution is 1920x1080

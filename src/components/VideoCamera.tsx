@@ -15,8 +15,7 @@ function VideoCamera({ consumers }: { consumers: VideoConsumer[] }) {
   const lastVideoTimeRef = useRef(-1);
   const lastFrameStartMsRef = useRef(performance.now());
 
-  // captured once: Home rebuilds its consumer array each render and only populates the first one
-  // TODO: give Home a stable consumer list so this can follow updates
+  // the camera loop starts once, so it reads consumers through a ref; callers must pass a stable list
   const consumersRef = useRef(consumers);
 
   useEffect(() => {

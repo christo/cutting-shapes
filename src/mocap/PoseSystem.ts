@@ -16,8 +16,7 @@ import { skeletalRotations } from './SkeletalRotation.ts';
 
 type RunningMode = 'IMAGE' | 'VIDEO';
 
-// @ts-ignore
-function drawDefaultLandmarkers(result: PoseLandmarkerResult, ctx: CanvasRenderingContext2D) {
+export function drawDefaultLandmarkers(result: PoseLandmarkerResult, ctx: CanvasRenderingContext2D) {
   const drawingUtils = new DrawingUtils(ctx);
   for (const landmark of result.landmarks) {
     drawingUtils.drawLandmarks(landmark, {
@@ -91,7 +90,7 @@ class PoseSystem {
   /**
    * WasmFileset that holds GPU or CPU inference bundle. Accessed through {@link #getVision()}
    */
-  private vision: any;
+  private vision: Awaited<ReturnType<typeof FilesetResolver.forVisionTasks>> | null = null;
   private canvas: HTMLCanvasElement | null = null;
 
   /**
@@ -238,7 +237,7 @@ class PoseSystem {
       for (let i = 0; i < lss.length; i++) {
         const ls = lss[i];
         const messages: string[] = [];
-        let skeletalRotation = skeletalRotations(ls, (m) => messages.push(m));
+        const skeletalRotation = skeletalRotations(ls, (m) => messages.push(m));
         poses.push(new Pose(skeletalRotation, messages));
       }
       this.poseCacheDirty = false;

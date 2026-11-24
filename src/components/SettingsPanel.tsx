@@ -40,7 +40,7 @@ const SmoothingControl = ({ setConfig, config }: CommonProps) => {
     },
   ];
 
-  let handleChange = (_event: Event, newValue: number | number[]) => {
+  const handleChange = (_event: Event, newValue: number | number[]) => {
     setConfig({
       ...config,
       smoothing: Math.max(0, Math.min(newValue as number, Config.MAX_SMOOTHING)),

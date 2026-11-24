@@ -1,6 +1,6 @@
 import { Engine, ISceneLoaderAsyncResult, Scene } from '@babylonjs/core';
 
-import { Box } from '@mui/material';
+import { Box, SxProps, Theme } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 import '@babylonjs/loaders';
 import { Config } from '../Config.ts';
@@ -8,7 +8,7 @@ import { createScene } from '../mocap/MeshRenderer.ts';
 import { PoseSupplier } from '../mocap/Pose.ts';
 
 interface Render3DProps {
-  sx: any; // TODO what type should this be to pass to mui component?
+  sx: SxProps<Theme>;
   poseSupplier: PoseSupplier;
   config: Config;
 }
@@ -23,8 +23,8 @@ interface Render3DProps {
 export function MeshView({ sx, poseSupplier, config }: Render3DProps) {
   const renderCanvas = useRef<HTMLCanvasElement | null>(null);
   const [scene, setScene] = useState<Scene | null>(null);
-  // @ts-ignore TODO use loader result so puppets can be disposed and swapped dynamically
-  const [loaderResult, setLoaderResult] = useState<ISceneLoaderAsyncResult | null>(null);
+  // TODO use loader result so puppets can be disposed and swapped dynamically
+  const [_loaderResult, setLoaderResult] = useState<ISceneLoaderAsyncResult | null>(null);
   useEffect(() => {
     if (renderCanvas.current) {
       console.log('renderCanvas is good, creating 3d scene');
@@ -45,6 +45,7 @@ export function MeshView({ sx, poseSupplier, config }: Render3DProps) {
         });
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- create the 3D engine once
   }, []);
 
   return (

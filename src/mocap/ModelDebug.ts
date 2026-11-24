@@ -3,14 +3,12 @@ import { AbstractMesh, Axis, Bone, Scene, SceneLoader, Skeleton, Vector3 } from 
 // code for testing and debugging models
 
 // noinspection JSUnusedLocalSymbols
-// @ts-ignore
 export async function loadTestModel(scene: Scene, position: Vector3, rotation: Vector3, scale: number) {
   console.log('loading puppet');
   const strData = JSON.stringify(testModelData);
   const result = await SceneLoader.ImportMeshAsync(null, `data:${strData}`, undefined, scene);
 
   const skeleton = result.skeletons[0];
-  // @ts-ignore
   const mesh = result.meshes[0];
   mesh.position = position;
   mesh.rotation = rotation;

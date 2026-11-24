@@ -48,8 +48,8 @@ export async function loadPuppet(
     result.animationGroups[0].stop();
   }
   if (skeleton) {
-    let headBone = skeleton.bones[skeleton.getBoneIndexByName(puppet.boneMap.head.name)];
-    let spineBone = skeleton.bones[skeleton.getBoneIndexByName(puppet.boneMap.spine.name)];
+    const headBone = skeleton.bones[skeleton.getBoneIndexByName(puppet.boneMap.head.name)];
+    const spineBone = skeleton.bones[skeleton.getBoneIndexByName(puppet.boneMap.spine.name)];
     const xHead = headBone.getTransformNode();
     const xSpine = spineBone.getTransformNode();
     if (xHead && xSpine) {

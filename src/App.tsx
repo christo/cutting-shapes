@@ -11,7 +11,7 @@ import { StateSetter } from './StateSetter.ts';
 const KEY_CONFIG = 'cs-config';
 
 function defaultConfig() {
-  let cfg = new Config();
+  const cfg = new Config();
   cfg.diag = true;
   cfg.camera = true;
   cfg.smoothing = 0.5;
@@ -44,7 +44,7 @@ function App() {
     }, MIN_UPDATE_MS);
   };
   const persistentSetConfig: StateSetter<Config> = (value) => {
-    let v = typeof value == 'function' ? value(config) : value;
+    const v = typeof value == 'function' ? value(config) : value;
     safeStoreConfig(v);
     setConfig(value);
   };

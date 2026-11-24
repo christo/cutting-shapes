@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { Rot } from '../analysis/Rot.ts';
 import { Pose } from '../mocap/Pose.ts';
 import { PoseSystem } from '../mocap/PoseSystem.ts';
-import { DATA_STYLE } from './Home.tsx';
+import { DATA_STYLE } from './Style.ts';
 
 /**
  * Show Pitch, Roll and Yaw values with the given title.
@@ -72,7 +72,7 @@ function SkeletalDiagnostics({ poseSystem }: { poseSystem: PoseSystem }) {
     return () => {
       cancelAnimationFrame(animationFrameId);
     };
-  }, []);
+  }, [poseSystem]);
 
   return (
     <Box>

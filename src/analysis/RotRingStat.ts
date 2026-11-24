@@ -5,8 +5,7 @@ import { RingStat } from './RingStat.ts';
 /**
  * Ring buffer of {@link Rot} with aggregate functions.
  */
-// @ts-ignore TODO temporary
-class RotRingStat {
+export class RotRingStat {
   private pitch: RingStat;
   private yaw: RingStat;
   private roll: RingStat;
