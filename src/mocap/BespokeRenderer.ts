@@ -106,7 +106,7 @@ export function drawCustomStickFigure(
   const debugLineWidth = drawScale(3);
   const jointRadius = drawScale(40);
 
-  let boneStyle = 'rgb(255, 255, 255)';
+  let boneStyle = 'rgb(200, 20, 128)';
   const cycle = new Date().getMinutes() % 10;
   if (cycle == 0) {
     boneStyle = timeHue(500);
@@ -321,7 +321,7 @@ export function drawCustomStickFigure(
         }
       }
     } catch (e) {
-      console.log(`pose ${pi} asplode: ${e}`);
+      //console.log(`pose ${pi} asplode: ${e}`);
       // any problem with a single pose means we do not render it
     }
   });
