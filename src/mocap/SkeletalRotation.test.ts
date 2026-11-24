@@ -1,3 +1,4 @@
+import { describe, it } from 'bun:test';
 import { Vector3 } from '@babylonjs/core';
 import { expect } from 'chai';
 import { calcSpine } from './SkeletalRotation.ts';

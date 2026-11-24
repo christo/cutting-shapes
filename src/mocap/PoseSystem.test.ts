@@ -1,3 +1,4 @@
+import { describe, it } from 'bun:test';
 import { NormalizedLandmark } from '@mediapipe/tasks-vision';
 import { expect } from 'chai';
 import { Config } from '../Config.ts';
