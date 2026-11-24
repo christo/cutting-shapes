@@ -112,25 +112,20 @@ class PoseSystem {
     // TODO multi-person logic needs serious review
     if (nlss.length === 0) {
       // there are no current poses, return empty disregarding previous
-      return [[]];
+      return [];
     }
 
     const nPrev = this.prevLandmarks.length;
     // same number of poses across two frames,
-    // smoothing is on and we do have a previousO
+    // smoothing is on and we do have a previous
     if (nPrev > 0 && this.config.smoothing > 0 && nPrev === nlss.length) {
-      // TODO if the number of landmarks in a single pose is previously smaller, just clone the new one?
-      return this.prevLandmarks.map((nls: NormalizedLandmark[], nlsIdx: number) => {
-        // each nls is a complete previous pose
+      // shape follows the current detection so missing previous landmarks can't drop current ones
+      return nlss.map((nls: NormalizedLandmark[], nlsIdx: number) => {
+        const prevNls = this.prevLandmarks[nlsIdx];
         return nls.map((nl: NormalizedLandmark, nlIdx: number) => {
-          if (nlss.length > nlsIdx && nlss[nlsIdx].length > nlIdx) {
-            // maximum smoothing biases strongly to prev landmark
-            return lerp(this.config.smoothing, nlss[nlsIdx][nlIdx], nl);
-            // return midPoint(nl, nlss[nlsIdx][nlIdx]);
-          } else {
-            // new corresponding landmark is missing, return prev instead
-            return nl;
-          }
+          const prev = prevNls[nlIdx];
+          // maximum smoothing biases strongly to prev landmark
+          return prev ? lerp(this.config.smoothing, nl, prev) : { ...nl };
         });
       });
     } else {

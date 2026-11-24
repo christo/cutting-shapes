@@ -13,8 +13,8 @@ export class RingStat {
   }
 
   push(x: number) {
-    this.index = (this.index + 1) % this.size;
     this.list[this.index] = x;
+    this.index = (this.index + 1) % this.size;
   }
 
   empty = () => this.list.length === 0;
