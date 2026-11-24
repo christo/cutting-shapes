@@ -36,3 +36,4 @@ dist-ssr
 
 # server recordings (default RECORDINGS_DIR)
 server/recordings
+/recordings

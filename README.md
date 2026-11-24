@@ -49,25 +49,26 @@ visual effects and interactive elements.
   * [ ] how to smooth transition between vastly different poses?
     * e.g. puff of smoke, disappear/reappear, zoom in etc.
 * [ ] transport controls: live, browse (server-side videos), record, play, pause, stop
-  * [ ] record only on live source; no pause on live; source locked while recording; all disabled while saving
-  * [ ] file playback loops
-  * [ ] mode -> enabled buttons defined in one colocated table in code
-  * [ ] keyboard shortcuts: L live, O browse, R record, Space / K play/pause, S stop; also hardware media keys
+  * [x] record only on live source; no pause on live; source locked while recording; all disabled while saving
+  * [x] file playback loops
+  * [x] mode -> enabled buttons defined in one colocated table in code
+  * [x] keyboard shortcuts: L live, O browse, R record, Space / K play/pause, S stop; also hardware media keys
     * [x] move side panel key from Space to backtick
     * Esc kept free to exit fullscreen
     * avoid keys planned for composition view shortcuts
-* [ ] fullscreen, no scrollbars; F toggles fullscreen
   * [ ] show on mouse move, hide after idle timeout (not while hovered / browsing); hide cursor too
   * [ ] recording indicator: controls hidden = small red dot in corner; shown = red record symbol + elapsed timer
+* [ ] fullscreen, no scrollbars; F toggles fullscreen
 * [ ] video recording: record raw camera input, save to configured recordings folder on server
-  * [x] `RECORDINGS_DIR` in `server/.env` (bun auto-loads); commit `server/.env.example`
+  * [x] `RECORDINGS_DIR` in `server/.env` (`dev:server` loads it); commit `server/.env.example`
   * [x] timestamp filenames, e.g. `2026-11-24T14-03-22.webm`
-* [ ] upload video files from client to recordings folder
-  * [ ] `MediaRecorder` on camera stream, high bitrate, camera's negotiated res/fps
-  * [ ] audio (incidental testimonial commentary): request mic separately so camera still works if mic denied/absent
+  * [x] `MediaRecorder` on camera stream, high bitrate, camera's negotiated res/fps
+  * [x] audio (incidental testimonial commentary): request mic separately so camera still works if mic denied/absent
   * [ ] mute button, when recording UI is designed
-  * [ ] playback muted by default (autoplay policy)
+  * [x] playback muted by default (autoplay policy)
   * [x] server remuxes webm (`ffmpeg -c copy`) so it is seekable
+  * [ ] stream upload while recording; currently whole recording buffered in browser memory until stop (~1 GB per 17 min)
+* [ ] upload video files from client to recordings folder
 * [x] video playback: video file as input source (see SettingsPanel TODO)
   * [x] same `<video>` element via `src` instead of `srcObject`, rest of pipeline unchanged
 * [ ] motion recording and playback: joint positions per frame
