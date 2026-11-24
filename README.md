@@ -47,13 +47,57 @@ visual effects and interactive elements.
   * [ ] how to indicate that the person being tracked has changed
   * [ ] how to smooth transition between vastly different poses?
     * e.g. puff of smoke, disappear/reappear, zoom in etc.
+* [ ] video recording: record raw camera input in-app (record toggle), save to server
+  * [ ] `MediaRecorder` on camera stream, high bitrate, camera's negotiated res/fps
+  * [ ] audio (incidental testimonial commentary): request mic separately so camera still works if mic denied/absent
+  * [ ] mute button, when recording UI is designed
+  * [ ] playback muted by default (autoplay policy)
+  * [ ] server remuxes webm (`ffmpeg -c copy`) so it is seekable
+* [ ] video playback: video file as input source (see SettingsPanel TODO)
+  * [ ] same `<video>` element via `src` instead of `srcObject`, rest of pipeline unchanged
+* [ ] motion recording and playback: joint positions per frame
+* [ ] deployment perf benchmark: find cheapest viable install hardware (raspi, old laptop, passive intel box)
+  * [ ] prerequisites: video recording + playback, motion recording, above
+  * [ ] capture test videos with video recording: 0, 1, 2, 3+ people; known person count per segment; one still-pose clip
+  * [ ] benchmark mode: play test video set, auto-log
+    * [ ] 1 warm-up pass per video x model (discarded: model load, shader compile, JIT, GPU clock ramp), then 5 recorded runs; report median + spread across runs; add runs if spread is wide
+    * [ ] accuracy (frame-stepped) runs: 2 per combo, 2nd confirms determinism
+    * [ ] soak run: 1 x 60 min loop per machine, heaviest viable combo (thermal throttling, leaks)
+    * [ ] matrix: each video x each model variant (lite, full, heavy)
+  * [ ] live mode: log same stats from camera input during normal running
+  * [ ] bucket all stats by detected skeleton count
+  * [ ] metrics
+    * [ ] latency: frame capture to drawn, via `requestVideoFrameCallback` metadata
+    * [ ] glass-to-glass latency (camera mode only): film LED + screen with phone slow-mo
+    * [ ] vision / transform / render ms (existing `PerfTime`)
+    * [ ] p50 / p95 / p99 / max + jitter, not just mean
+    * [ ] vision Hz vs camera fps vs display refresh; dropped/duplicate frames
+    * [ ] long tasks (`PerformanceObserver` `longtask`)
+    * [ ] JS heap over time (leak check, multi-hour runs)
+    * [ ] render errors (swallowed pose bug)
+    * [ ] CPU %, RAM, CPU/GPU temp, clock throttling over long run (passive cooling)
+    * [ ] power draw (external meter)
+    * [ ] startup: time to first pose (model load)
+  * [ ] accuracy (per model variant, test videos only)
+    * [ ] frame-stepped mode: process every video frame, not realtime, so all machines/models see the same frames
+    * [ ] save per-frame landmarks to server, compute accuracy offline (reuse motion recording format)
+    * [ ] skeleton count vs known count; dropouts (frames with person missing)
+    * [ ] ID swaps
+    * [ ] jitter: landmark movement on still-pose clip
+    * [ ] heavy model on fast machine as reference: per-joint error vs reference, normalised by torso length (PCK)
+    * [ ] later, if needed: hand-annotate sample frames as true ground truth (e.g. CVAT)
+  * [ ] context logged per run: client + server stats both, together = full perf profile (usually same machine)
+    * [ ] front end: UA, browser version, WebGL renderer string, MediaPipe delegate (GPU/CPU), model variant, numPoses, `hardwareConcurrency`, `deviceMemory`, screen res / DPR / refresh, canvas size
+    * [ ] camera: device label, negotiated res/fps (`track.getSettings()`)
+    * [ ] back end (bun server): CPU model/cores, RAM, GPU, OS/kernel, power mode, git commit
+  * [ ] client POSTs results, server saves them (JSONL per run)
+* [ ] collect perf results across machines into comparison table
 * deployment test on candidate installation machines
   * external camera
   * raspi 4 test
   * low-end box with integrated gpu
   * computer must fit in protective housing with thermal exhaust and weather protection
     although this may not be the same box as the camera
-* motion recording and playback
 * developer config
 * remote monitoring/config
 * automatic startup / shutdown
