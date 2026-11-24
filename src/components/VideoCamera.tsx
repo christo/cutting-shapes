@@ -1,4 +1,4 @@
-import { MutableRefObject, useEffect, useRef, useState } from 'react';
+import { MutableRefObject, useEffect, useRef } from 'react';
 
 interface VideoConsumer {
   video: (video: HTMLVideoElement, startTimeMs: number, deltaMs: number) => Promise<void>,
@@ -12,33 +12,39 @@ interface VideoConsumer {
  */
 function VideoCamera({ consumers }: { consumers: VideoConsumer[] }) {
   const camRef: MutableRefObject<HTMLVideoElement | null> = useRef(null);
-  const [lastVideoTime, setLastVideoTime] = useState(-1);
+  const lastVideoTimeRef = useRef(-1);
+  const lastFrameStartMsRef = useRef(performance.now());
+
+  // captured once: Home rebuilds its consumer array each render and only populates the first one
+  // TODO: give Home a stable consumer list so this can follow updates
+  const consumersRef = useRef(consumers);
 
   useEffect(() => {
-    if (camRef.current !== null) {
-      camRef.current.volume = 0;
-
-      async function readVideoFrame() {
-        let startTimeMs = performance.now();
-        if (camRef.current!.currentTime !== lastVideoTime) {
-          setLastVideoTime(camRef.current!.currentTime);
-          await Promise.all(consumers.map(c => c.video(camRef.current!, startTimeMs, startTimeMs - lastVideoTime)));
-        }
-        window.requestAnimationFrame(readVideoFrame);
-      }
-
-      navigator.mediaDevices.getUserMedia({ video: true, audio: false })
-        .then(function(stream) {
-          if (camRef.current) {
-            camRef.current.srcObject = stream;
-            camRef.current.addEventListener('loadeddata', readVideoFrame);
-          }
-        })
-        .catch((err) => {
-          // camRef will simply not be set
-          console.error(`webcam error: `, err);
-        });
+    const cam = camRef.current;
+    if (cam === null) {
+      return;
     }
+    cam.volume = 0;
+
+    async function readVideoFrame() {
+      const startTimeMs = performance.now();
+      if (cam!.currentTime !== lastVideoTimeRef.current) {
+        lastVideoTimeRef.current = cam!.currentTime;
+        const deltaMs = startTimeMs - lastFrameStartMsRef.current;
+        lastFrameStartMsRef.current = startTimeMs;
+        await Promise.all(consumersRef.current.map(c => c.video(cam!, startTimeMs, deltaMs)));
+      }
+      window.requestAnimationFrame(readVideoFrame);
+    }
+
+    navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+      .then(function(stream) {
+        cam.srcObject = stream;
+        cam.addEventListener('loadeddata', readVideoFrame);
+      })
+      .catch((err) => {
+        console.error(`webcam error: `, err);
+      });
   }, []);
   // we seemingly need to attach camera video stream to an on-page html element probably so it binds to gpu context
   // enabling gpu ai model direct access to the video frame, it can be hidden:
