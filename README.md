@@ -59,6 +59,9 @@ visual effects and interactive elements.
   * [ ] show on mouse move, hide after idle timeout (not while hovered / browsing); hide cursor too
   * [ ] recording indicator: controls hidden = small red dot in corner; shown = red record symbol + elapsed timer
 * [ ] video recording: record raw camera input, save to configured recordings folder on server
+  * [ ] `RECORDINGS_DIR` in `server/.env` (bun auto-loads); commit `server/.env.example`
+  * [ ] timestamp filenames, e.g. `2026-11-24T14-03-22.webm`
+* [ ] upload video files from client to recordings folder
   * [ ] `MediaRecorder` on camera stream, high bitrate, camera's negotiated res/fps
   * [ ] audio (incidental testimonial commentary): request mic separately so camera still works if mic denied/absent
   * [ ] mute button, when recording UI is designed
@@ -67,6 +70,7 @@ visual effects and interactive elements.
 * [ ] video playback: video file as input source (see SettingsPanel TODO)
   * [ ] same `<video>` element via `src` instead of `srcObject`, rest of pipeline unchanged
 * [ ] motion recording and playback: joint positions per frame
+  * [ ] replay recorded joint positions in tests through `PoseSystem` / `BespokeRenderer` (coverage, swallowed pose bug)
 * [ ] deployment perf benchmark: find cheapest viable install hardware (raspi, old laptop, passive intel box)
   * [ ] prerequisites: video recording + playback, motion recording, above
   * [ ] capture test videos with video recording: 0, 1, 2, 3+ people; known person count per segment; one still-pose clip
