@@ -1,6 +1,6 @@
-export type Bg = "Black" | "Green" | "Blue" | "Ghost";
+export type Bg = 'Black' | 'Green' | 'Blue' | 'Ghost';
 
-export const BgValues: Bg[] = ["Black", "Green", "Blue", "Ghost"];
+export const BgValues: Bg[] = ['Black', 'Green', 'Blue', 'Ghost'];
 
 /**
  * Primary application configuration struct.
@@ -23,7 +23,7 @@ export class Config {
   /**
    * Background to render.
    */
-  bg: Bg = "Black";
+  bg: Bg = 'Black';
 
   /**
    * Whether to show video input source.
@@ -60,5 +60,4 @@ export class Config {
    * Whether to show the hand-rendered figure
    */
   bespoke = true;
-
 }

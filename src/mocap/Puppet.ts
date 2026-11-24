@@ -15,9 +15,16 @@ export class Puppet implements RiggedModel {
   readonly boneMap: BoneMap;
   postLoad: PostLoader;
 
-  constructor(name: string, attribution: string, license: License, src: string,
-              filepath: string,
-              boneMap: BoneMap, charMeshIdx: number, setup: PostLoader = () => {}) {
+  constructor(
+    name: string,
+    attribution: string,
+    license: License,
+    src: string,
+    filepath: string,
+    boneMap: BoneMap,
+    charMeshIdx: number,
+    setup: PostLoader = () => {},
+  ) {
     this.name = name;
     this.attribution = attribution;
     this.license = license;
@@ -44,8 +51,15 @@ const lpp = (name: string, path: string) => {
     left_hip: new BoneSpec('Hip.L'), // parent: Stomach
     right_hip: new BoneSpec('Hip.R'), // parent: Stomach
   };
-  return new Puppet(name, `${name} from Low Poly People by David Jalbert`,
-    MIT, 'https://davidjalbert.itch.io/low-poly-people', path, bm, 1);
+  return new Puppet(
+    name,
+    `${name} from Low Poly People by David Jalbert`,
+    MIT,
+    'https://davidjalbert.itch.io/low-poly-people',
+    path,
+    bm,
+    1,
+  );
 };
 
 /**
@@ -56,14 +70,21 @@ const fatManA = lpp('Fat Man A', '/3d/lpp/fat-man-a.glb');
 /**
  * Loads and displays.
  */
-const toonTrooper = new Puppet('Toon Trooper', 'Toon Trooper by Blender Zone', CG_RF_NOAI,
-  'https://www.cgtrader.com/free-3d-models/character/sci-fi-character/toon-trooper-rigged', '/3d/TROOPER.glb',
-  { head: new BoneSpec('HEAD'), spine: new BoneSpec('CHEST') }, 0, (r) => {
+const toonTrooper = new Puppet(
+  'Toon Trooper',
+  'Toon Trooper by Blender Zone',
+  CG_RF_NOAI,
+  'https://www.cgtrader.com/free-3d-models/character/sci-fi-character/toon-trooper-rigged',
+  '/3d/TROOPER.glb',
+  { head: new BoneSpec('HEAD'), spine: new BoneSpec('CHEST') },
+  0,
+  (r) => {
     r.meshes[0].scaling = new Vector3(0.2, 0.2, 0.2);
     // remove gun
     const gunIdx = 11;
     r.meshes[gunIdx].isVisible = false;
-  });
+  },
+);
 
 const skaterBoneMap = {
   head: new BoneSpec('Head'),
@@ -73,13 +94,25 @@ const skaterBoneMap = {
 /**
  * loads and displays correctly
  */
-const skatergirl = new Puppet('SkaterGirl', 'Female Skater by Kenney',
-  CC0, 'https://market.pmnd.rs/model/skater-female',
-  '/3d/skatergirl.gltf', skaterBoneMap, 1);
+const skatergirl = new Puppet(
+  'SkaterGirl',
+  'Female Skater by Kenney',
+  CC0,
+  'https://market.pmnd.rs/model/skater-female',
+  '/3d/skatergirl.gltf',
+  skaterBoneMap,
+  1,
+);
 
-const skaterboy = new Puppet('SkaterBoy', 'Male Skater by Kenney',
-  CC0, 'https://market.pmnd.rs/model/skater-male',
-  '/3d/skaterboy.gltf', skaterBoneMap, 1);
+const skaterboy = new Puppet(
+  'SkaterBoy',
+  'Male Skater by Kenney',
+  CC0,
+  'https://market.pmnd.rs/model/skater-male',
+  '/3d/skaterboy.gltf',
+  skaterBoneMap,
+  1,
+);
 
 export const PUPPETS = [
   fatManA,

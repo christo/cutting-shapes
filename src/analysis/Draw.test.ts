@@ -3,7 +3,6 @@ import { NormalizedLandmark } from '@mediapipe/tasks-vision';
 import { expect } from 'chai';
 import { lerp, midPoint } from './Draw.ts';
 
-
 function visible(x: number, y: number, z: number): NormalizedLandmark {
   return {
     x: x,

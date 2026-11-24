@@ -1,6 +1,5 @@
 import { SkeletalRotation } from './SkeletalRotation.ts';
 
-
 export type PoseSupplier = () => Pose[];
 
 /**

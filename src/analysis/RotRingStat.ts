@@ -30,7 +30,7 @@ class RotRingStat {
       pitch: this.pitch.mean(),
       yaw: this.yaw.mean(),
       roll: this.roll.mean(),
-    }
+    };
   }
 
   min(): Rot {
@@ -38,7 +38,7 @@ class RotRingStat {
       pitch: this.pitch.min(),
       yaw: this.yaw.min(),
       roll: this.roll.min(),
-    }
+    };
   }
 
   max(): Rot {
@@ -46,7 +46,6 @@ class RotRingStat {
       pitch: this.pitch.max(),
       yaw: this.yaw.max(),
       roll: this.roll.max(),
-    }
+    };
   }
-
 }

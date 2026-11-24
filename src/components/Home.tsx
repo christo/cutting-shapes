@@ -17,10 +17,9 @@ export const DATA_STYLE = {
   fontFamily: '"Kode Mono", monospace',
   color: 'rgba(255, 80, 80, 1)',
   textShadow: '0 0 5px rgba(255, 50, 50, 0.7), 0 0 8px rgba(255, 50, 50, 0.4)',
-}
+};
 
-
-const Home = ({ config }: { config: Config; }) => {
+const Home = ({ config }: { config: Config }) => {
   const [showSplash, setShowSplash] = useState(true);
   const stickFigureCanvas = useRef<HTMLCanvasElement | null>(null);
   const bespokeScale = config.mesh ? '50%' : '100%';
@@ -38,7 +37,7 @@ const Home = ({ config }: { config: Config; }) => {
           poseSystem.justDraw(stickFigureCanvas.current, Z_INDEX_BESPOKE);
         }
         await poseSystem.detect(video, startTimeMs);
-      }
+      },
     };
     // if the other is present, go half size
 
@@ -48,31 +47,49 @@ const Home = ({ config }: { config: Config; }) => {
   }, [config]);
 
   return (
-    <Box className="App-body" sx={{
-      position: "absolute", alignContent: "center", justifyItems: "center",
-      top: 0, left: 0, width: "100%", height: "100%"}}>
-      {config.diag && <PerfPanel poseSystem={poseSystem} />}
-      {config.bespoke && <canvas ref={stickFigureCanvas} id="main_view"
-              style={{ position: 'absolute', left: 0, top: 0, width: bespokeScale, height: bespokeScale }}></canvas>}
-      <Box sx={{
+    <Box
+      className="App-body"
+      sx={{
         position: 'absolute',
-        right: 0,
-        bottom: 0,
-        width: '50%',
-        height: '50%',
-        maxHeight: "50%",
-        display: 'flex',
-        justifyContent: "end",
-        zIndex: Z_INDEX_CAMERA,
-        visibility: config.camera ? 'visible' : 'hidden',
-      }}>
+        alignContent: 'center',
+        justifyItems: 'center',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+      }}
+    >
+      {config.diag && <PerfPanel poseSystem={poseSystem} />}
+      {config.bespoke && (
+        <canvas
+          ref={stickFigureCanvas}
+          id="main_view"
+          style={{ position: 'absolute', left: 0, top: 0, width: bespokeScale, height: bespokeScale }}
+        ></canvas>
+      )}
+      <Box
+        sx={{
+          position: 'absolute',
+          right: 0,
+          bottom: 0,
+          width: '50%',
+          height: '50%',
+          maxHeight: '50%',
+          display: 'flex',
+          justifyContent: 'end',
+          zIndex: Z_INDEX_CAMERA,
+          visibility: config.camera ? 'visible' : 'hidden',
+        }}
+      >
         <VideoCamera consumers={vcs} />
       </Box>
-      {config.mesh && <MeshView
-        sx={{position: 'absolute', left: 0, bottom: 0, width: meshScale, height: meshScale}}
-        poseSupplier={poseSystem.subscribe}
-        config={config}
-      />}
+      {config.mesh && (
+        <MeshView
+          sx={{ position: 'absolute', left: 0, bottom: 0, width: meshScale, height: meshScale }}
+          poseSupplier={poseSystem.subscribe}
+          config={config}
+        />
+      )}
       <Splash visible={showSplash} />
     </Box>
   );

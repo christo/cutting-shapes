@@ -1,1 +1,1 @@
-export type StateSetter<T> = (value: (((prevState: T) => T) | T)) => void;
+export type StateSetter<T> = (value: ((prevState: T) => T) | T) => void;

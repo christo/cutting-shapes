@@ -29,7 +29,6 @@ const REST_HEAD_SCALE: Rot = {
  *
  */
 export interface SkeletalRotation {
-
   /**
    * Joint angle formed from neck to head.
    */
@@ -66,7 +65,6 @@ function v3(landmark: NormalizedLandmark): Vector3 {
   return new Vector3(landmark.x, landmark.y, landmark.z);
 }
 
-
 /**
  * Calculates the 3d rotation of a subject bone with respect to a connected reference bone.
  * e.g. calculate the rotation of the forearm at the elbow with shoulder, elbow, wrist.
@@ -90,8 +88,8 @@ function calcBone(
   const yaw = Math.atan2(target.z, target.x) - Math.atan2(refBone.z, refBone.x);
 
   // Calculate pitch (around side-to-side axis)
-  const pitch = Math.atan2(target.y,
-      Math.sqrt(target.x * target.x + target.z * target.z)) -
+  const pitch =
+    Math.atan2(target.y, Math.sqrt(target.x * target.x + target.z * target.z)) -
     Math.atan2(refBone.y, Math.sqrt(refBone.x * refBone.x + refBone.z * refBone.z));
 
   // Calculate roll using cross product
@@ -123,7 +121,13 @@ const v3f2 = (v3: Vector3): string => {
  * @param leftShoulder
  * @param rightShoulder
  */
-export function calcSpine(leftHip: Vector3, rightHip: Vector3, leftShoulder: Vector3, rightShoulder: Vector3, debug: (msg: string) => void = _ => {}): Rot {
+export function calcSpine(
+  leftHip: Vector3,
+  rightHip: Vector3,
+  leftShoulder: Vector3,
+  rightShoulder: Vector3,
+  debug: (msg: string) => void = (_) => {},
+): Rot {
   // Get hip and shoulder lines (from left to right)
   const hipLine = rightHip.subtract(leftHip).normalize();
   const shoulderLine = rightShoulder.subtract(leftShoulder).normalize();
@@ -149,11 +153,7 @@ export function calcSpine(leftHip: Vector3, rightHip: Vector3, leftShoulder: Vec
   // Project shoulder vector onto plane perpendicular to spine
   // and measure its angle from horizontal
   const verticalDiff = rightShoulder.y - leftShoulder.y;
-  const horizontalDist = new Vector3(
-    rightShoulder.x - leftShoulder.x,
-    0,
-    rightShoulder.z - leftShoulder.z,
-  ).length();
+  const horizontalDist = new Vector3(rightShoulder.x - leftShoulder.x, 0, rightShoulder.z - leftShoulder.z).length();
 
   const roll = -Math.atan2(verticalDiff, horizontalDist);
 

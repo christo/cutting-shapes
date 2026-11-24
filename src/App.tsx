@@ -8,7 +8,7 @@ import { PUPPETS } from './mocap/Puppet.ts';
 import { Persist } from './Persist.ts';
 import { StateSetter } from './StateSetter.ts';
 
-const KEY_CONFIG = "cs-config";
+const KEY_CONFIG = 'cs-config';
 
 function defaultConfig() {
   let cfg = new Config();
@@ -20,10 +20,9 @@ function defaultConfig() {
 }
 
 function App() {
-
   let cfg = Persist.load<Config>(KEY_CONFIG);
   if (!cfg) {
-    console.log("no persistent config, using default");
+    console.log('no persistent config, using default');
     cfg = defaultConfig();
     Persist.store(KEY_CONFIG, cfg);
   } else {
@@ -43,12 +42,12 @@ function App() {
       // console.log("persisting config");
       Persist.store(KEY_CONFIG, cfg);
     }, MIN_UPDATE_MS);
-  }
-  const persistentSetConfig: StateSetter<Config> = value => {
-    let v = (typeof value == "function") ? value(config) : value;
+  };
+  const persistentSetConfig: StateSetter<Config> = (value) => {
+    let v = typeof value == 'function' ? value(config) : value;
     safeStoreConfig(v);
     setConfig(value);
-  }
+  };
   return (
     <Router>
       <div className="App">
@@ -56,7 +55,7 @@ function App() {
       </div>
       <Routes>
         <Route path="/" element={<Home config={config} />} />
-        <Route path="/about" element={<About puppets={PUPPETS}/>} />
+        <Route path="/about" element={<About puppets={PUPPETS} />} />
       </Routes>
     </Router>
   );

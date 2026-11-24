@@ -2,8 +2,8 @@
  * Map of model bone specifications.
  */
 export type BoneMap = {
-  head: BoneSpec,
-  spine: BoneSpec,
+  head: BoneSpec;
+  spine: BoneSpec;
 };
 
 /**
@@ -28,11 +28,11 @@ export class BoneSpec {
  * geometry live in this object graph.
  */
 export type RiggedModel = {
-  filepath: string,
-  boneMap: BoneMap,
+  filepath: string;
+  boneMap: BoneMap;
 
   /**
    * The index of the main character mesh in the loaded file.
    */
-  charMeshIdx: number,
-}
+  charMeshIdx: number;
+};

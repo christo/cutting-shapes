@@ -34,7 +34,7 @@ function drawDefaultLandmarkers(result: PoseLandmarkerResult, ctx: CanvasRenderi
 }
 
 function cloneLandmarks(nlss: NormalizedLandmark[][]): NormalizedLandmark[][] {
-  return nlss.map((nls): NormalizedLandmark[] => nls.map(nl => ({ ...nl })));
+  return nlss.map((nls): NormalizedLandmark[] => nls.map((nl) => ({ ...nl })));
 }
 
 /**
@@ -47,7 +47,10 @@ const compareNlss = (a: NormalizedLandmark[], b: NormalizedLandmark[]) => {
   // x position preferred in camera field because gravity
   // future: empirical evidence from reference video of most useful way to distinguish people
   // leftmost shoulder
-  return Math.min(a[Body.left_shoulder].x, a[Body.right_shoulder].x) - Math.min(b[Body.left_shoulder].x, b[Body.right_shoulder].x);
+  return (
+    Math.min(a[Body.left_shoulder].x, a[Body.right_shoulder].x) -
+    Math.min(b[Body.left_shoulder].x, b[Body.right_shoulder].x)
+  );
 };
 
 /**
@@ -62,7 +65,6 @@ function sortPeople(nlss: NormalizedLandmark[][]) {
  * Component responsible for low-latency client-side image analysis to find people in the camera-field
  */
 class PoseSystem {
-
   private msVisionTime: RingStat = new RingStat(100);
   private msRenderTime: RingStat = new RingStat(100);
   private msTransformTime: RingStat = new RingStat(100);
@@ -139,11 +141,7 @@ class PoseSystem {
   }
 
   calcPerfTime = () => {
-    return new PerfTime(
-      this.msVisionTime.mean(),
-      this.msRenderTime.mean(),
-      this.msTransformTime.mean(),
-    );
+    return new PerfTime(this.msVisionTime.mean(), this.msRenderTime.mean(), this.msTransformTime.mean());
   };
 
   /**
@@ -236,12 +234,11 @@ class PoseSystem {
 
     // TODO unit test
     if (this.poseCacheDirty) {
-
       const poses = [];
       for (let i = 0; i < lss.length; i++) {
         const ls = lss[i];
         const messages: string[] = [];
-        let skeletalRotation = skeletalRotations(ls, m => messages.push(m));
+        let skeletalRotation = skeletalRotations(ls, (m) => messages.push(m));
         poses.push(new Pose(skeletalRotation, messages));
       }
       this.poseCacheDirty = false;
@@ -306,7 +303,9 @@ class PoseSystem {
     this.canvas.setAttribute('width', bounds.width * 2 + 'px');
     this.canvas.setAttribute('height', bounds.height * 2 + 'px');
     const refStyle = canv.computedStyleMap();
-    this.canvas.setAttribute('style', `position: absolute;
+    this.canvas.setAttribute(
+      'style',
+      `position: absolute;
         left: ${refStyle.get('left')};
         top: ${refStyle.get('top')};
         width: ${refStyle.get('width')};
@@ -314,7 +313,8 @@ class PoseSystem {
         transform: ${refStyle.get('transform')};
         z-index: ${zIndex};
         object-fit: ${refStyle.get('object-fit')};
-        object-position: ${refStyle.get('object-position')};`);
+        object-position: ${refStyle.get('object-position')};`,
+    );
     return this.canvas;
   }
 }

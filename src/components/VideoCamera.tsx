@@ -1,7 +1,7 @@
 import { MutableRefObject, useEffect, useRef } from 'react';
 
 interface VideoConsumer {
-  video: (video: HTMLVideoElement, startTimeMs: number, deltaMs: number) => Promise<void>,
+  video: (video: HTMLVideoElement, startTimeMs: number, deltaMs: number) => Promise<void>;
 }
 
 /**
@@ -32,13 +32,14 @@ function VideoCamera({ consumers }: { consumers: VideoConsumer[] }) {
         lastVideoTimeRef.current = cam!.currentTime;
         const deltaMs = startTimeMs - lastFrameStartMsRef.current;
         lastFrameStartMsRef.current = startTimeMs;
-        await Promise.all(consumersRef.current.map(c => c.video(cam!, startTimeMs, deltaMs)));
+        await Promise.all(consumersRef.current.map((c) => c.video(cam!, startTimeMs, deltaMs)));
       }
       window.requestAnimationFrame(readVideoFrame);
     }
 
-    navigator.mediaDevices.getUserMedia({ video: true, audio: false })
-      .then(function(stream) {
+    navigator.mediaDevices
+      .getUserMedia({ video: true, audio: false })
+      .then(function (stream) {
         cam.srcObject = stream;
         cam.addEventListener('loadeddata', readVideoFrame);
       })

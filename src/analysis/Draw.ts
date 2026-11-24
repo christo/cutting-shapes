@@ -28,4 +28,3 @@ export const lerp = (s: number, a: NormalizedLandmark, b: NormalizedLandmark): N
     visibility: (b.visibility - a.visibility) * s + a.visibility,
   } as NormalizedLandmark;
 };
-

@@ -21,7 +21,6 @@ interface Render3DProps {
  * @constructor
  */
 export function MeshView({ sx, poseSupplier, config }: Render3DProps) {
-
   const renderCanvas = useRef<HTMLCanvasElement | null>(null);
   const [scene, setScene] = useState<Scene | null>(null);
   // @ts-ignore TODO use loader result so puppets can be disposed and swapped dynamically
@@ -32,7 +31,7 @@ export function MeshView({ sx, poseSupplier, config }: Render3DProps) {
       const canvas = renderCanvas.current;
       const engine = new Engine(canvas, true);
       if (!scene) {
-        createScene(engine, canvas, poseSupplier, config).then(sceneLoaded => {
+        createScene(engine, canvas, poseSupplier, config).then((sceneLoaded) => {
           const scene = sceneLoaded.scene;
           setScene(scene);
           setLoaderResult(sceneLoaded.loaderResult);
@@ -48,8 +47,9 @@ export function MeshView({ sx, poseSupplier, config }: Render3DProps) {
     }
   }, []);
 
-  return <Box sx={sx}>
-    <canvas ref={renderCanvas} style={{ width: '100%', height: '100%' }}></canvas>
-  </Box>;
+  return (
+    <Box sx={sx}>
+      <canvas ref={renderCanvas} style={{ width: '100%', height: '100%' }}></canvas>
+    </Box>
+  );
 }
-

@@ -17,16 +17,16 @@ import { Pose, PoseSupplier } from './Pose.ts';
 import { Puppet, PUPPETS } from './Puppet.ts';
 
 export type SceneLoaded = {
-  scene: Scene,
-  loaderResult: ISceneLoaderAsyncResult
-}
+  scene: Scene;
+  loaderResult: ISceneLoaderAsyncResult;
+};
 
 export async function loadPuppet(
   scene: Scene,
   puppet: Puppet,
   poseSupplier: () => Pose[],
-  _config: Config): Promise<ISceneLoaderAsyncResult> {
-
+  _config: Config,
+): Promise<ISceneLoaderAsyncResult> {
   console.log(`loading puppet ${puppet.name}`);
   const result: ISceneLoaderAsyncResult = await SceneLoader.ImportMeshAsync(null, puppet.filepath, undefined, scene);
   dumpMeshes(result.meshes);
@@ -39,9 +39,7 @@ export async function loadPuppet(
   console.log(`${result.skeletons.length} skeletons`);
   dumpSkeletons(result.skeletons);
 
-  const skeleton = (result.skeletons.length === 0) ?
-    result.meshes[puppet.charMeshIdx].skeleton :
-    result.skeletons[0];
+  const skeleton = result.skeletons.length === 0 ? result.meshes[puppet.charMeshIdx].skeleton : result.skeletons[0];
   if (skeleton) {
     skeleton.returnToRest();
   }
@@ -55,8 +53,7 @@ export async function loadPuppet(
     const xHead = headBone.getTransformNode();
     const xSpine = spineBone.getTransformNode();
     if (xHead && xSpine) {
-      scene.registerBeforeRender(function() {
-
+      scene.registerBeforeRender(function () {
         const poses = poseSupplier();
         if (poses.length > 0) {
           // TODO handle all poses with additional puppets
@@ -74,7 +71,6 @@ export async function loadPuppet(
       // TODO maybe rotate the bone directly if there's no TransformNode?
       console.error(`missing bone transform node(s), no rotations applied`);
     }
-
   }
   return result;
 }
@@ -92,13 +88,12 @@ function babylonBgColor(config: Config) {
   }
 }
 
-export const createScene = async function(
+export const createScene = async function (
   engine: Engine,
   canvas: HTMLCanvasElement,
   poseSupplier: PoseSupplier,
   config: Config,
 ): Promise<SceneLoaded> {
-
   const scene = new Scene(engine);
 
   scene.clearColor = babylonBgColor(config);

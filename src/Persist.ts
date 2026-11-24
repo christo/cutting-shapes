@@ -1,5 +1,3 @@
-
-
 export class Persist {
   static store<T>(key: string, data: T): void {
     try {

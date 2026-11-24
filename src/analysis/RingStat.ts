@@ -34,13 +34,13 @@ export class RingStat {
     if (this.empty()) {
       return NaN;
     }
-    return Math.max(...this.list)
+    return Math.max(...this.list);
   }
 
   min() {
     if (this.empty()) {
       return NaN;
     }
-    return Math.min(...this.list)
+    return Math.min(...this.list);
   }
 }

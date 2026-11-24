@@ -16,7 +16,7 @@ describe('RingStat', () => {
   });
   it('drops oldest values after wrapping', () => {
     const r = new RingStat(2);
-    [1, 2, 3].forEach(x => r.push(x));
+    [1, 2, 3].forEach((x) => r.push(x));
     expect(r.mean()).to.equal(2.5);
     expect(r.min()).to.equal(2);
   });

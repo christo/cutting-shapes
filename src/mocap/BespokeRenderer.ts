@@ -76,7 +76,7 @@ function bgColour(config: Config) {
 
 function timeHue(msPeriod: number): string {
   const now = Date.now();
-  const hue = (now % msPeriod) / msPeriod * 360;
+  const hue = ((now % msPeriod) / msPeriod) * 360;
   return `hsl(${hue}, 50%, 65%)`;
 }
 
@@ -111,7 +111,7 @@ export function drawCustomStickFigure(
   if (cycle == 0) {
     boneStyle = timeHue(500);
   } else if (cycle > 3) {
-    boneStyle = `rgb(255, ${cycle*30}, 0)`;
+    boneStyle = `rgb(255, ${cycle * 30}, 0)`;
   }
 
   const ballStyle = boneStyle;
@@ -153,7 +153,6 @@ export function drawCustomStickFigure(
 
   landmarks.forEach((ls, pi) => {
     try {
-
       // TODO if we can't get all the parts, we probably can't draw this frame
 
       const canvasPoint = (part: number): NormalizedLandmark => {
@@ -202,7 +201,6 @@ export function drawCustomStickFigure(
         // TODO maybe extend by 50% and make fatter
         ctx.lineWidth = neckWidth;
         line(neck.x, neck.y, midEar.x, midEar.y);
-
       }
 
       // draw ball joints
@@ -213,12 +211,10 @@ export function drawCustomStickFigure(
       }
       //spot(neck.x, neck.y, jointRadius); // neck balljoint
 
-
       // draw face
 
       // face background
       if (DRAW_FACE_BG) {
-
         ctx.lineWidth = faceLineWidth;
         ctx.strokeStyle = faceStyle;
         ctx.fillStyle = faceStyle;

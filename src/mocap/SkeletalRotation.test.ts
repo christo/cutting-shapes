@@ -51,8 +51,8 @@ describe('Spine', () => {
   it('should calculate roll for tilted shoulders', () => {
     const leftHip = new Vector3(-1, 0, 0);
     const rightHip = new Vector3(1, 0, 0);
-    const leftShoulder = new Vector3(-1, 0, 0);   // lowered shoulder
-    const rightShoulder = new Vector3(1, 2, 0);   // raised shoulder
+    const leftShoulder = new Vector3(-1, 0, 0); // lowered shoulder
+    const rightShoulder = new Vector3(1, 2, 0); // raised shoulder
 
     const rotation = calcSpine(leftHip, rightHip, leftShoulder, rightShoulder, debug);
 
