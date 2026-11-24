@@ -31,6 +31,7 @@ visual effects and interactive elements.
   * [ ] minimalist on-screen buttons, hidden in show mode
   * [ ] presets, e.g. show (bespoke only) and dev (everything)
 * [ ] obs integration MVP to evaluate easy scene composition
+  * [ ] server: pass `OBS_PASSWORD` from `server/.env` to `obs.connect` (currently unused)
   * [ ] find previous OBS scenes
   * obs scene rotation
   * obs scene control integration
