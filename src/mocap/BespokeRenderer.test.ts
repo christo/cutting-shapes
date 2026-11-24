@@ -21,17 +21,24 @@ function stubCtx(): CanvasRenderingContext2D {
   }) as unknown as CanvasRenderingContext2D;
 }
 
-const draw = (poses: NormalizedLandmark[][]) => drawCustomStickFigure(poses, stubCtx(), new Config());
+/**
+ * Draws the poses, returning the indices of poses reported as failed.
+ */
+function failedPoses(poses: NormalizedLandmark[][]): number[] {
+  const failed: number[] = [];
+  drawCustomStickFigure(poses, stubCtx(), new Config(), (_, poseIndex) => failed.push(poseIndex));
+  return failed;
+}
 
-describe('drawCustomStickFigure failure count', () => {
-  it('is zero with nobody in view', () => {
-    expect(draw([])).to.equal(0);
+describe('drawCustomStickFigure pose errors', () => {
+  it('reports none with nobody in view', () => {
+    expect(failedPoses([])).to.deep.equal([]);
   });
-  it('is zero for complete poses', () => {
-    expect(draw([person(), person()])).to.equal(0);
+  it('reports none for complete poses', () => {
+    expect(failedPoses([person(), person()])).to.deep.equal([]);
   });
-  it('counts each pose missing landmarks', () => {
+  it('reports each pose missing landmarks', () => {
     const partial = person().slice(0, N_PARTIAL);
-    expect(draw([person(), partial, []])).to.equal(2);
+    expect(failedPoses([person(), partial, []])).to.deep.equal([1, 2]);
   });
 });

@@ -6,6 +6,7 @@ import {
   PoseLandmarkerResult,
 } from '@mediapipe/tasks-vision';
 import { lerp } from '../analysis/Draw.ts';
+import { describeError } from '../analysis/DescribeError.ts';
 import { PerfTime } from '../analysis/PerfTime.ts';
 import { RingStat } from '../analysis/RingStat.ts';
 import { Config } from '../Config.ts';
@@ -68,6 +69,11 @@ class PoseSystem {
   private msRenderTime: RingStat = new RingStat(100);
   private msTransformTime: RingStat = new RingStat(100);
   private renderErrors = 0;
+  private lastRenderError = '';
+  private onPoseError = (error: unknown) => {
+    this.renderErrors++;
+    this.lastRenderError = describeError(error);
+  };
 
   /**
    * Historic storage for subscribers and calculating smoothed motion.
@@ -146,6 +152,7 @@ class PoseSystem {
       this.msRenderTime.mean(),
       this.msTransformTime.mean(),
       this.renderErrors,
+      this.lastRenderError,
     );
   };
 
@@ -190,7 +197,7 @@ class PoseSystem {
       }
       ctx!.fillRect(0, 0, this.canvas.width, this.canvas.height);
       const startRender = performance.now();
-      this.renderErrors += drawCustomStickFigure(this.prevLandmarks, ctx, this.config);
+      drawCustomStickFigure(this.prevLandmarks, ctx, this.config, this.onPoseError);
       this.msRenderTime.push(performance.now() - startRender);
     } else {
       console.warn('PoseSystem has no canvas?');

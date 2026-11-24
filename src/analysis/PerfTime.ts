@@ -5,12 +5,21 @@ class PerfTime {
   msTransformTime: number;
   /** total poses that failed to render */
   renderErrors: number;
+  /** description of the most recent render failure, empty if none */
+  lastRenderError: string;
 
-  constructor(msVisionTime: number, msRenderTime: number, msTransformTime: number, renderErrors: number = 0) {
+  constructor(
+    msVisionTime: number,
+    msRenderTime: number,
+    msTransformTime: number,
+    renderErrors: number = 0,
+    lastRenderError: string = '',
+  ) {
     this.msVisionTime = msVisionTime;
     this.msRenderTime = msRenderTime;
     this.msTransformTime = msTransformTime;
     this.renderErrors = renderErrors;
+    this.lastRenderError = lastRenderError;
   }
 
   ready() {
