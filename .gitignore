@@ -33,3 +33,6 @@ dist-ssr
 # project local
 /original-assets/
 /videos/
+
+# server recordings (default RECORDINGS_DIR)
+server/recordings
