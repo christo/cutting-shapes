@@ -47,7 +47,18 @@ visual effects and interactive elements.
   * [ ] how to indicate that the person being tracked has changed
   * [ ] how to smooth transition between vastly different poses?
     * e.g. puff of smoke, disappear/reappear, zoom in etc.
-* [ ] video recording: record raw camera input in-app (record toggle), save to server
+* [ ] transport controls: live, browse (server-side videos), record, play, pause, stop
+  * [ ] record only on live source; no pause on live; source locked while recording; all disabled while saving
+  * [ ] file playback loops
+  * [ ] mode -> enabled buttons defined in one colocated table in code
+  * [ ] keyboard shortcuts: L live, O browse, R record, Space / K play/pause, S stop; also hardware media keys
+    * [ ] move side panel key from Space to backtick
+    * Esc kept free to exit fullscreen
+    * avoid keys planned for composition view shortcuts
+* [ ] fullscreen, no scrollbars; F toggles fullscreen
+  * [ ] show on mouse move, hide after idle timeout (not while hovered / browsing); hide cursor too
+  * [ ] recording indicator: controls hidden = small red dot in corner; shown = red record symbol + elapsed timer
+* [ ] video recording: record raw camera input, save to configured recordings folder on server
   * [ ] `MediaRecorder` on camera stream, high bitrate, camera's negotiated res/fps
   * [ ] audio (incidental testimonial commentary): request mic separately so camera still works if mic denied/absent
   * [ ] mute button, when recording UI is designed
